@@ -9,7 +9,7 @@ bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: mmoessler/juselius-2006
-description: "This book contains the replication of the empirical analysis of The Cointegrated VAR Model by Katarina Juselius using R."
+description: "This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R."
 ---
 
 <!-- # Prerequisites -->

@@ -7,4 +7,4 @@ bookdown::gitbook:
     sharing:
       facebook: false
       twitter: false
-    view: https://github.com/mmoessler/juslius-2006/%s
+    view: https://github.com/mmoessler/juselius-2006/blob/main/%s
