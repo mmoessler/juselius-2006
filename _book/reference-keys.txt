@@ -1,0 +1,17 @@
+fig:nice-fig
+tab:nice-tab
+prerequisites
+intro
+data
+load-data
+dummy-variables
+methods
+math-example
+applications
+example-one
+example-two
+final-words
+introduction
+the-unrestricted-var
+the-cointegrated-var
+testing-restrictions-on-beta
