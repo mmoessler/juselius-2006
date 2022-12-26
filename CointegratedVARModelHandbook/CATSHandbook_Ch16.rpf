@@ -1,0 +1,264 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	       *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch16.rpf                                                    *
+* Chapter 16                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data, load CATS
+*****************************************************************
+source CATSHandbook_DataRead.src
+
+source c:\cats2\cats.src
+
+
+*****************************************************************
+* I(2) Symptoms in I(1) models.	                             *
+*   (Note the model can only be estimated with                  *
+*	the PI-matrix on x(t-1) and not x(t-2))                    *
+*****************************************************************
+
+* Set broken trend dummy:
+set tDs831 / = t*Ds831
+
+** Compute differences, 4 period moving averages:
+diff lm3nc / dlm3nc
+
+mvstats(width=4,means=madlm3nc,centered) dlm3nc
+mvstats(width=4,means=madpy,centered) dpy
+
+
+** Graph Figure 16.1
+spgraph(vfield=2,hfield=2,footer="Fig 16.1")
+ graph(frame=half,key=above,nokbox)
+ # lm3nc
+ graph(frame=half,key=above,nokbox)
+ # lpy
+ graph(frame=half,key=above,nokbox) 2
+ # dlm3nc
+ # madlm3nc
+ graph(frame=half,key=above,nokbox) 2
+ # dpy
+ # madpy
+spgraph(done)
+
+* Graph co-movements:
+* Compute changes from first entry:
+set chlpy = lpy-lpy(1)
+set chlnm = lm3nc-lm3nc(1)
+
+* Get fitted value line for CHLPY as a function of CHLNM:
+linreg chlpy
+# constant chlnm
+prj fitted
+
+spgraph(vfield=2)
+ graph(key=upleft,nokbox,frame=half,patterns) 2
+ # chlpy
+ # chlnm
+
+ scatter(overlay=line,ovsame,pattern) 2
+ # chlpy chlnm / 9
+ # fitted chlnm / 1
+spgraph(done)
+
+*
+* Define permanent blip dummy variable:
+*
+
+set Dp831 = t==1983:1
+
+
+* Start CATS using the setup below, which includes the broken trend as a SHIFT dummy.
+* Note use of LM3NC and LPY rather than LM3RC and DLPY
+* This produces the roots for model 1 from page 298.
+
+*** Not clear what setup best reproduces the table from page 298.
+*** From original files supplied by Juselius:
+
+@cats(lags=2,noexo,shift,dum,dettrend=cidrift) 1973:1 2003:1
+# lm3nc lpy lyr Rm Rb
+# tDs831
+# Ds831 Dt754 Dp764
+
+* Other options:
+* @cats(lags=2,noexo,shift,dum,dettrend=cidrift) 1973:1 2003:1
+* # lm3nc lpy lyr Rm Rb
+* # tDs831
+* # Ds831 Dp831
+
+*** Same model, using the BREAK=TREND option with a break date, rather than SHIFT with a pre-existing dummy variable:
+* @cats(lags=2,noexo,break=trend,dum,dettrend=cidrift) 1973:1 2003:1
+* # lm3nc lpy lyr Rm Rb
+* # 1983:1
+* # Ds831 Dp831
+
+
+***
+*** Characteristic Roots:
+***
+
+* Just select "Roots of Companion Matrix" from the "Graphics" menu, and select ranks 2 through 5. CATS displays
+*  the graphs, and generates the tables of roots.
+
+
+* Quit CATS, restart with setup below (i.e. without the broken trend):
+* Approximately produces the roots for model 2 from page 299.
+* Reproduces CI Relations from Fig 16.3-16.7 (some are sign-flipped from those shown in the manual)
+
+@cats(lags=2,noexo,dum,dettrend=cidrift) 1973:1 2003:1
+# lm3nc lpy lyr Rm Rb
+# Ds831 Dp831 Dt754 Dp764
+
+* Once again, select "Roots of Companion Matrix" from the "Graphics" menu, and select ranks 2 through 5. CATS displays
+*  the graphs, and generates the tables of roots.
+
+* Select "Cointegrating Relations" from the "Graphics" menu.
+* Select (highlight) all five CI relations, click OK.
+* This graphs the 5 cointegration relations.
+
+*** Quit and reload model with broken trend. We'll use the BREAK option here:
+@cats(lags=2,noexo,break=trend,dum,dettrend=cidrift) 1973:1 2003:1
+# lm3nc lpy lyr Rm Rb
+# 1983:1
+# Ds831 Dp831 Dt754 Dp764
+
+* Set rank to 3, normalize on LM3NC, LPY, and LYR, respectively.
+* Reproduces first half of table 16.1, table 16.2.
+*
+
+* To test restrictions on trend and broken trend (page 303), can use "Restrictions on Each Beta Vector",
+* but easier to use "Zero-restrictions on Beta". In the book notation, Beta(11) are the terms
+* on the full trend (trend over full range), while Beta(12) are the terms for the broken trend (from 1983 on)
+*
+* To test that Beta(12) is zero (omitting broken trend), select that operation (on the I(1) menu) and put zeros in
+*   all three rows for the "T(1983:1)" column.
+* To test Beta(11)=0 (no full trend, only broken trend), do the same but put zeros in the "Trend" column.
+* For joint test that both are zero, use the same operation, and put zeros in both columns.
+*
+* To test Beta(11)-Beta(12)=0 using the Beta=H*Phi formulation, select "Restrictions on Each Beta vector",
+* impose 1 restriction on each vector, with a transposed H matrix of the form:
+*
+* 1  0  0  0  0  0  0
+* 0  1  0  0  0  0  0
+* 0  0  1  0  0  0  0
+* 0  0  0  1  0  0  0
+* 0  0  0  0  1  0  0
+* 0  0  0  0  0  1 -1
+*
+* for all 3 vectors
+
+* To impose long-run price homogeneity on two vectors, leaving third vector unresricted:
+* Use Beta=H*Phi formulation. Select "Restrictions on Subsets of Beta". Set up 2 subsets,
+* with 2 vectors in first subset, 1 in the second. Enter 1 restriction on first subset, with
+* H transposed as:
+*
+* 1 -1  0  0  0  0  0
+* 0  0  1  0  0  0  0
+* 0  0  0  1  0  0  0
+* 0  0  0  0  1  0  0
+* 0  0  0  0  0  1  0
+* 0  0  0  0  0  0  1
+*
+* Zero restrictions on second subset.
+* Normalize on LM3NC, LM3NC, and LYR, respectively.
+
+* Test of long-run homogeneity on all 3 vectors can be done using tests on subsets of beta, with a single
+*  subset, 1 restriction, using the H' as above. To reproduce first half of Table 16.3, normalize on LM3NC,
+*  LM3NC, and LYR
+
+* Table 16.3, right side:
+*
+* Adding Beta restrictions of H4, from Chapter 12, plus exclusion of broken and regular trend from first two vectors
+*
+*     Select R'*Beta = 0 formulation. Then choose "I(1)--Restrictions on Each Beta vector", and enter restrictions as follows:
+*
+*     Enter 5 restrictions on first vector, with design matrix:
+*       1  1  0  0  0  0  0
+*       1  0  1  0  0  0  0
+*       0  0  0  1  1  0  0
+*       0  0  0  0  0  1  0
+*       0  0  0  0  0  0  1
+*
+*     Enter 5 restrictions on second vector, with design matrix:
+*       1  0  0  0  0  0  0
+*       0  1  0  0  0  0  0
+*       0  0  1  0  0  0  0
+*       0  0  0  0  0  1  0
+*       0  0  0  0  0  0  1
+*
+*     Enter 2 restrictions on third vector, with design matrix:
+*       0  0  0  1  0  0  0
+*       0  0  0  0  1  0  0
+*
+*     When done, normalize on LYR, RM, and LPY
+*
+
+
+*** Table 16.4:
+
+*** Quit and reload model with broken trend excluded from cointegrating relation.
+
+@cats(lags=2,noexo,dum,dettrend=cidrift) 1973:1 2003:1
+# lm3nc lpy lyr Rm Rb
+# Ds831 Dp831
+
+* Unrestricted estimates in upper left in Table 16.4.
+*
+* For upper right, impose price homogeneity on first two vectors.
+*  With R'*Beta=0 formulation, choose "Restrictions on subsets of Beta", 2 subsets:
+*  2 vectors in first subset, 1 in second.
+*
+* 1 restriction on first subset:
+*       1  1  0  0  0  0
+* 0 restrictions on second subset.
+* Normalize on LM3NC, LYR, LM3NC respectively
+
+* For lower left, impose price homogeneity on all 3 vectors
+*  Choose "Restrictions on subsets of Beta", 1 subsets:
+*  3 vectors in subset
+*
+* 1 restriction on subset:
+*       1  1  0  0  0  0
+* Normalize on LM3NC, LYR, LYR respectively
+*
+
+* For lower right, use the money demand and interest rate structure from H4 and
+*  just-identified relation between money, prices, real income, and trend:
+
+*     Select R'*Beta = 0 formulation. Then choose "I(1)--Restrictions on Each Beta vector",
+*     and enter restrictions as follows:
+*
+*     Enter 4 restrictions on first vector, with design matrix:
+*       1  1  0  0  0  0
+*       1  0  1  0  0  0
+*       0  0  0  1  1  0
+*       0  0  0  0  0  1
+*
+*     Enter 4 restrictions on second vector, with design matrix:
+*       1  0  0  0  0  0
+*       0  1  0  0  0  0
+*       0  0  1  0  0  0
+*       0  0  0  0  0  1
+*
+*     Enter 2 restrictions on third vector, with design matrix:
+*       0  0  0  1  0  0
+*       0  0  0  0  1  0
+*
+*     When done, normalize on LM3NC, RM, and LM3NC
+
+
+
+
+
+

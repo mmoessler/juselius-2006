@@ -1,0 +1,144 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	       *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch14.rpf                                                    *
+* Chapter 14                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data, load CATS
+*****************************************************************
+source CATSHandbook_DataRead.src
+
+source c:\cats2\cats.src
+
+
+*
+* 14.2 Unrestriced MA Representation (Graphs and Table 14.1)
+*
+
+
+@cats(lags=2,noexo,shift,dum,dettrend=drift) 1973:1 2003:1
+# lm3rc lyr dpy Rm Rb
+# Ds831
+# Dt754 Dp764
+
+* Table 14.1
+
+* Set the rank to 3, accept default normalization
+* Select "MA Representation" from "Misc" menu.
+* Normalize on RB and LYR, respectively (note: these are not the defaults).
+
+* To generate the cumulated residuals, exit out of CATS, then do:
+accumulate res_lm3rc /  accres_lm3rc
+accumulate res_lyr /  accres_lyr
+accumulate res_dpy /  accres_dpy
+accumulate res_rm /  accres_rm
+accumulate res_rb /  accres_rb
+
+* Here's how to automate this using a DOFOR loop
+*  and the %S and %L functions:
+dofor ser = res_lm3rc res_lyr res_dpy res_rm res_rb
+ accumulate ser / %s("acc"+%l(ser))
+end do for
+
+spgraph(footer="Cumulated residuals from each equation",vfields=3,hfields=2)
+ graph(header="Cumulated residuals from money equation")
+ # accres_lm3rc
+ graph(header="Cumulated residuals from inflation rate equation")
+ # accres_dpy
+ graph(header="Cumulated residuals from bond rate equation")
+ #accres_rb
+ graph(header="Cumulated residuals from income equation")
+ #accres_lyr
+ graph(header="Cumulated residuals from short rate equation")
+ #accres_rm
+spgraph(done)
+
+*
+* 14.3 Restriced MA Representation
+*
+* Tables 14.2, 14.3
+* Restart CATS, and set rank to 3.
+*
+
+@cats(lags=2,noexo,shift,dum,dettrend=drift) 1973:1 2003:1
+# lm3rc lyr dpy Rm Rb
+# Ds831
+# Dt754 Dp764
+
+* Table 14.2
+* Treating Rb as weakly exogenous:
+*
+* Use I(1)--Test for Weak Exogeneity. Input 1 as the number of
+*   weakly exogenous variables. Set the R value to 1.0 on DRB.
+*   No restrictions on Beta.
+*
+* Select "MA Representation" from "Misc" menu. Normalize on LYR and RB,
+*  respectively.
+*
+* Table 14.3
+*
+* Adding Beta restrictions of H4, from Chapter 12:
+*
+*     Use I(1)--Restrictions on Each Beta vector, and enter restrictions as follows:
+*
+*     When prompted, choose to Keep restrictions on Alpha (from above)
+*
+*     Enter 3 restrictions on first vector, with design matrix:
+*       1 -1  0  0  0  0
+*       0  0  0 -1  1  0
+*       0  0  0  0  0  1
+*
+*     Enter 3 restrictions on second vector, with design matrix:
+*       0  1  0  0  0  0
+*       0  0  1  0  0  0
+*       0  0  0  0  0  1
+*
+*     Enter 3 restrictions on third vector, with design matrix:
+*       0  0  0  1  0  0
+*       0  0  0  0  1  0
+*       0  0  0  0  0  1
+*
+*     When done, normalize on LM3RC, DPY and RM.
+*
+* Select "MA Representation" from "Misc" menu. Normalize on LYR and RB,
+*  respectively.
+*
+* Table 14.4
+*
+* With two weak exogneity restrictions instead of one:
+*
+* Choose I(1)--Test for Weak Exogeneity. Input 2 as the number of
+*  weakly exogenous variables. Set the R value in the first row on DRB as 1.0
+*  and the R value in the second row on DLYR as 1.0.
+*
+*  Normalize on LM3RC, DPY and RM again.
+*
+* When prompted retain Current Restrictions on Beta (the H4 restriction from above)
+*
+
+*
+* 14.4 Imposing exclusion restrictions on Beta(ortho)
+*
+*
+
+* TBD
+
+
+
+
+
+
+
+
+

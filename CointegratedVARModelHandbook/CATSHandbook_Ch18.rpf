@@ -1,0 +1,178 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	       *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch18.rpf                                                    *
+* Chapter 18                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data, load CATS
+*****************************************************************
+source CATSHandbook_DataRead.src
+
+source c:\cats2\cats.src
+
+
+* Set broken trend dummy:
+set tDs831 / = t*Ds831
+
+* Define permanent blip dummy variable:
+set Dp831 = t==1983:1
+
+*****************************************************************
+* Testing Hypotheses in the I(2) Model. 	                   *
+*****************************************************************
+
+* Start CATS using the setup below
+@cats(lags=2,noexo,shift,dum,dettrend=cidrift) 1973:1 2003:1
+# lm3nc lpy lyr Rm Rb
+# tDs831
+# Dp831 Dp764
+
+* Choose I(2)-Set Reduced Ranks, enter 3 for the R value and 1 for the S2 value.
+* S1 will be 1 as well, as s1 = 5 - r - s2.
+
+* Select Same Restrictions on All Tau from the I(2) menu.
+* Enter 1 as the number of restrictions, then enter the H matrix from page 332, in H' form, as shown below:
+
+* 1 -1  0  0  0  0  0
+* 0  0  1  0  0  0  0
+* 0  0  0  1  0  0  0
+* 0  0  0  0  1  0  0
+* 0  0  0  0  0  1  0
+* 0  0  0  0  0  0  1
+
+* Click “OK” to initiate the test. The test statistic will be displayed in a dialog box. Click “OK” to display the estimation results.
+* Normalize on lm3nc, lpy, lpy, and lm3nc in the first dialog box, lm3nc in the second dialog, and rm in the third dialog.
+
+* To use the R'Tau = 0 formulation for restrictions, select Change Restriction Forumlation from the I(2) menu and
+* select the “R'*[Beta/Tau]  = 0” choice. Then select I(2)–Same Restrictions on All Tau and enter 1 as the number of restrictions.
+
+* Enter R' as:
+* 1 1 0 0 0 0 0
+
+* The rest proceeds as described above.
+
+* Medium-run Price Homogeneity
+* ??? How to get Gamma?
+
+* Table 18.2:
+* These are most easily accomplished using the R'Tau = 0 formulation
+
+* For the first hypothesis that both the trend and the broken trend variables can be excluded, select Same Restrictions on All Tau,
+* enter two as the number of restrictions, and enter zero restrictions on both trend variables by writing R' as:
+* 0 0 0 0 0 1 0
+* 0 0 0 0 0 0 1
+
+* To test the omission of the broken trend, do Same Restrictions on All Tau, enter one as the number of restrictions, and enter
+* a zero restrictions on the TDS831 variable by putting a 1 in the next-to-last column:
+* 0 0 0 0 0 1 0
+
+* For the restriction that the full-sample trend can be omitted, repeat the same steps but put the 1 in the last column (labeled TREND):
+* 0 0 0 0 0 0 1
+
+* To test the hypothesis that the two terms are equal,do Same Restrictions on All Tau, enter one as the number of restrictions, and
+* enter 1s for both the TDS831 and TREND columns:
+*  0 0 0 0 0 1 1
+
+* To test long-run homogeneity with the additional condition that the broken trend can be restricted to zero,
+* select I(2)–Same Restrictions on All Tau and enter 2 as the number of restrictions. Enter R' as:
+* 1 1 0 0 0 0 0
+* 0 0 0 0 0 1 0
+
+* Table 18.3 presents the estimates from this last test. To produce these, click on "OK" when asked about printing estimates,
+* normalize on RM, LPY, RB, and LM3NC in the first dialog, LM3NC in the second dialog, and LPY in the third dialog.
+
+* Table 18.4
+*    This combines the H15, H17, and H27 restrictions from Table 10.3 (and from Table 12.3), adjusted
+*      to fit the the changes in model specification (i.e. the use of LPY rather than DPY).
+*
+*    Use I(2)-Change Restriction Formulation to switch back to the [Beta/Tau] = H*Phi formulation
+*
+*    Select I(2)--Restrictions on Beta and enter restrictions as follows:
+*
+*     Enter 5 restrictions on first vector, H' matrix:
+*       1 -1 -1  0  0  0  0
+*       0  0  0 -1  1  0  0
+*
+*     Enter 5 restrictions on second vector, with design matrix:
+*       0  0  0  1  0  0  0
+*       0  0  0  0  1  0  0
+*
+*     Enter 6 restrictions on third vector, with design matrix:
+*       0  0  1  0  0  0  0
+*
+*     In the test statistic dialog, click "OK" to print estimates, and normalize on LM3NC, RM, LYR, and LM3NC in the first dialog,
+*      LPY in the second dialog, and RM in the third dialog.
+
+
+* Create nominal income:
+
+set lynom = lyr + lpy
+* Re-estimate using nominal income:
+@cats(lags=2,noexo,shift,dum,dettrend=cidrift) 1973:1 2003:1
+# lm3nc lpy lynom Rm Rb
+# tDs831
+# Dp831 Dp764
+
+
+
+* Table 18.5
+
+* Start CATS using the setup below
+@cats(lags=2,noexo,shift,dum,dettrend=cidrift) 1973:1 2003:1
+# lm3nc lpy lyr Rm Rb
+# tDs831
+# Dp831 Dp764
+
+
+* Choose I(2)-Set Reduced Ranks, enter 3 for the R value and 1 for the S2 value.
+
+* Long-run structure:
+
+* Use I(2)-Restrictions on Beta, with the following restrictions:
+*
+* Four restrictions on the first relation, with H' as
+* 1 -1  0  0  0  0  0
+* 0  0  1  0  0  0  0
+* 0  0  0  1 -1  0  0
+
+* Three restrictions on the second relation, with H' as
+* 0  1  1  0  0  0  0
+* 0  0  0  0  1  0  0
+* 0  0  0  0  0  1  0
+* 0  0  0  0  0  0  1
+
+* Two restrictions on the third relation, with H' as
+* 1  0  0  0  0  0  0
+* 0  1  0  0  0  0  0
+* 0  0  0  1  0  0  0
+* 0  0  0  0  0  1  0
+* 0  0  0  0  0  0  1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

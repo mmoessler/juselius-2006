@@ -1,0 +1,99 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	       *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch17.rpf                                                    *
+* Chapter 17                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data, load CATS
+*****************************************************************
+source CATSHandbook_DataRead.src
+
+source c:\cats2\cats.src
+
+
+* Set broken trend dummy:
+set tDs831 / = t*Ds831
+
+*
+* Define permanent blip dummy variable:
+*
+
+set Dp831 = t==1983:1
+
+*****************************************************************
+* Estimating the I(2) Model.                                    *
+*****************************************************************
+
+* Start CATS using the setup below
+@cats(lags=2,noexo,shift,dum,dettrend=cidrift) 1973:1 2003:1
+# lm3nc lpy lyr Rm Rb
+# tDs831
+# Dp831 Dp764
+
+
+
+* Choose I(2)-Rank Test Statistics to generate table of rank test results
+
+* Choose I(2)-Set Reduced Ranks, enter 3 for the R value and 1 for the S2 value.
+* S1 will be 1 as well, as s1 = 5 - r - s2.
+
+* Choose Graphics-Multi-Cointegration Relations to generate the graphs
+*
+
+* To impose identifying restrictions described on page 327, select I(2)-Restrictions on Beta:
+*
+* Enter two restrictions on the first vector, and input the H' matrix as:
+* 1 -1  0  0  0  0  0
+* 0  0  1  0  0  0  0
+* 0  0  0  1  0  0  0
+* 0  0  0  0  1  0  0
+* 0  0  0  0  0  1 -1
+*
+* Enter two restrictions on the second vector:
+* 0  1  1  0  0  0  0
+* 0  0  0  1  0  0  0
+* 0  0  0  0  1  0  0
+* 0  0  0  0  0  1  0
+* 0  0  0  0  0  0  1
+*
+* Enter two restrictions on the third vector:
+* 1  0  0  0  0  0  0
+* 0  1  0  0  0  0  0
+* 0  0  1  0  0  0  0
+* 0  0  0  0  0  1  0
+* 0  0  0  0  0  0  1
+*
+* Normalize on LM3NC, LPY, LPY, and LM3NC in the first dialog box, LYR in the second dialog, and RM the third dialog.
+*
+
+
+
+* Create nominal income:
+set lynom = lyr + lpy
+graph(key=upleft) 2
+# lynom
+# lyr
+
+* Re-estimate using nominal income:
+@cats(lags=2,noexo,shift,dum,dettrend=cidrift) 1973:1 2003:1
+# lm3nc lpy lynom Rm Rb
+# tDs831
+# Dp831 Dp764
+
+
+
+
+
+
+

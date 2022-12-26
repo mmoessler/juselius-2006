@@ -1,0 +1,231 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	       *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch21.rpf                                                    *
+* Chapter 21                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data					              *
+*****************************************************************
+
+calendar(q) 1971:1
+allocate 2003:1
+open data chpt_19_data.xls
+data(format=xls,org=obs) / Lwc LPc DLPc wedge Lc Urt bdk ppp
+
+open data catsoecd.rat
+data(format=rats,ver)
+
+* Rename short-term interest rate series:
+set shortdnk = dnkirstcb01st/400.
+set shortger = DEUIR3TIB01ST/400.
+
+* Rename long-term bond rates:
+set longger = DEUIRLTLT01ST/400
+set longdnk = bdk
+
+* Rename price series
+set lcpidnk = lpc
+set lcpiger = log(DEUCPALTT01XOB)
+
+* Figure 21.1 (partial):
+* Denmark vs. Germany price differential:
+set pricediff = lcpidnk - lcpiger
+
+spgraph(vfields=2,footer="Figure 21.1")
+ graph(key=upleft,picture="#.###") 1
+ # pricediff
+ graph(key=upleft,picture="#.###") 1
+ # ppp
+spgraph(done)
+
+
+* Figure 21.2:
+***** Long term diffs are close to book, short term are not
+
+* Denmark vs. Germany rate differentials:
+set shortdiff = shortdnk-shortger
+set longdiff = longdnk-longger
+
+spgraph(vfields=2,footer="Figure 21.2")
+ graph(key=upleft,picture="#.###") 1
+ # longdiff
+ graph(key=upleft,picture="#.###") 1
+ # shortdiff
+spgraph(done)
+
+* Figure 21.3:
+* Exchange rate and inflation rate
+diff(sdiffs=1) lcpidnk / inflratednk
+diff(sdiffs=1) lcpiger / inflrateger
+set infldiff = inflratednk - inflrateger
+
+spgraph(vfields=1,footer="Figure 21.3 (partial)")
+ graph(key=upleft,picture="#.###") 1
+ # infldiff
+spgraph(done)
+
+
+* Figure 21.4:
+* Long-short spreads:
+
+*** German graph does not match
+
+set spreaddnk = longdnk-shortdnk
+set spreadger = longger-shortger
+spgraph(vfields=2,footer="Figure 21.4")
+ graph(key=upleft,picture="#.###") 1
+ # spreaddnk
+ graph(key=upleft,picture="#.###") 1
+ # spreadger
+spgraph(done)
+
+
+* Figure 21.5:
+* Again, short term does not match
+* inflation rates and real interest rates:
+diff(diffs=1) lcpidnk / infldnk
+diff(diffs=1) lcpiger / inflger
+set longdnkr = longdnk - infldnk
+set longgerr = longger - inflger
+set shortdnkr = shortdnk - infldnk
+set shortgerr = shortger - inflger
+
+mvstats(width=4,centered,means=longdnkrma) longdnkr
+mvstats(width=4,centered,means=longgerrma) longgerr
+
+mvstats(width=4,centered,means=shortdnkrma) shortdnkr
+mvstats(width=4,centered,means=shortgerrma) shortgerr
+
+spgraph(vfields=2,footer="Figure 21.5")
+ graph(key=upleft,picture="#.###") 2
+ # longdnkrma
+ # longdnkr
+ graph(key=upleft,picture="#.###") 2
+ # longgerrma
+ # longgerr
+spgraph(done)
+
+* Figure 21.6:
+spgraph(vfields=2,footer="Figure 21.6")
+ graph(key=upleft,picture="#.###") 2
+ # shortdnkrma
+ # shortdnkr
+ graph(key=upleft,picture="#.###") 2
+ # shortgerrma
+ # shortgerr
+spgraph(done)
+
+* Long real rate is right, so we must have prices correct.
+* Short term rate itself must be wrong?
+
+* Figure 21.7:
+set realdiffshort = shortdnkr - shortgerr
+set realdifflong = longdnkr - longgerr
+spgraph(vfields=2,footer="Figure 21.7")
+ graph(key=upleft,picture="#.###") 1
+ # realdifflong
+ graph(key=upleft,picture="#.###") 1
+ # realdiffshort
+spgraph(done)
+
+source c:\CATS2\cats.src
+
+* Dummy variables:
+set Dt754 = 0.0
+compute Dt754(1975:4) = 1
+compute Dt754(1976:1) = -0.5
+compute Dt754(1976:2) = -0.5
+
+set Dp764 = 0.0
+compute Dp764 (1976:4) = 1
+
+set Dp842 = 0.0
+compute Dp842 (1984:2) = 1
+
+set Dp931 = 0.0
+compute Dp931 (1993:1) = 1
+
+set Ds831 = T>=83:1
+
+
+** Model 1 (excludes short-term rates)
+
+** Note use of CIMEAN model here:
+
+@cats(lags=2,shift,dum,dettrend=cimean) 1973:1 2003:1
+# infldnk inflger longdnk longger ppp
+# Ds831
+# Dt754 Dp931
+
+** Model 2:
+@cats(lags=2,shift,dum,dettrend=cimean) 1973:1 2003:1
+# infldnk inflger longdnk longger ppp shortdnk shortger
+# Ds831
+# Dt754 Dp764 Dp842 Dp931
+
+* Table 21.1: Use I(1)-Rank Test Statistics, and Graphics-Roots of the Companion Matrix (select all models)
+* Table 21.2: Use the Variable Stationarity, Weak Exogeneity,
+*             and Unit Vector in Alpha operations on Automated Tests
+*             (leave check boxes turned on for Unit Vector in Alpha test)
+
+* Table 21.3: Long run relations:
+* Set rank to 2 for small model
+* Select R'*Beta = 0 restriction formulation
+* Set Restrictions on Each Beta
+*  Two restriction on vector 1, putting ones in INFLGER and LONGGER columns, respectively
+*  Two restrictions on vector 2:
+*  1 0 1 0 0 0 0
+*  0 1 0 1 0 0 0
+
+* Table 21.4: Long run relations
+* For this table, variables are listed in the following order:
+
+@cats(lags=2,shift,dum,dettrend=cimean) 1973:1 2003:1
+# infldnk inflger longdnk longger shortdnk shortger ppp
+# Ds831
+# Dt754 Dp764 Dp842 Dp931
+
+* Set rank to 4 for large model
+* Restrictions on Each Beta
+*
+* Five restrictions on vector 1:
+* 1 0 0 0 0 0 0 0 0
+* 0 1 0 0 0 0 0 0 0
+* 0 0 0 1 0 0 0 0 0
+* 0 0 0 0 0 1 0 0 0
+* 0 0 0 0 0 0 1 0 0
+
+* Four restrictions on vector 2
+* 1 0 0 0 0 0 0 0 0
+* 0 1 0 0 0 0 0 0 0
+* 0 0 1 1 0 0 0 0 0
+* 0 0 0 0 1 1 0 0 0
+
+* Four restrictions on vector 3
+* 1 0 1 0 0 0 0 0 0
+* 0 1 0 1 0 0 0 0 0
+* 0 0 0 0 1 0 0 0 0
+* 0 0 0 0 0 1 0 0 0
+
+* Four restrictions on vector 4:
+* 0 1 0 0 0 0 0 0 0
+* 0 0 0 1 0 0 0 0 0
+* 0 0 0 0 1 0 0 0 0
+* 0 0 0 0 0 1 0 0 0
+
+* Normalize on LONGDNK, LONGDNK, INFLGER, and INFLDNK respectively
+
+* Use Misc-MA Representation to display the loadings to the common trends
+
+

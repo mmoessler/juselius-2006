@@ -1,0 +1,88 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	       *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch11.rpf                                                    *
+* Chapter 11                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data, load CATS
+*****************************************************************
+source CATSHandbook_DataRead.src
+
+source c:\cats2\cats.src
+
+
+*****************************************************************
+* Chapter 11 - Restrictions on alpha                            *
+* - The model with an unrestricted constant                     *
+* - The model with an unrestricted constant and Rb as w.e.      *
+*****************************************************************
+
+* Unrestricted constant
+
+*
+* Illustration 11.1.1. Use unrestricted constant model.
+*
+@cats(lags=2,noexo,shift,dum,dettrend=drift) 1973:1 2003:1
+# lm3rc lyr dpy Rm Rb
+# Ds831
+# Dt754 Dp764
+*
+* (a) Use I(1)--Set Rank of Pi and choose 3 cointegrating vectors.
+*
+* Test for Rb as weakly exogenous.
+* (b) Use I(1)--Test for Weak Exogeneity. Input 1 as the number of
+*     weakly exogenous variables. Set the R value to 1.0 on DRB.
+*
+* Automated test for weak exogeneity.
+* (c) Choose Automated Tests--West Exogeneity. This will produce table 11.1
+*
+* Joint test of weak exogeneity of yr and db
+* (d) Choose I(1)--Test for Weak Exogeneity. Input 2 as the number of weakly
+*     exogenous variables. For the R matrix, enter a 1.0 in the DRB column
+*     on the first row, and in the DLYR column on the second row.
+* (e) Exit CATS
+*
+* Illustration 11.2.1. Run CATS with unrestricted constant and Rb as weakly exogenous
+*
+@cats(lags=2,exo,shift,dum,dettrend=drift) 1973:1 2003:1
+# lm3rc lyr dpy Rm
+# Rb
+# Ds831
+# Dt754 Dp764
+*
+* (a) Do I(1)--Rank Test Statistics
+* (b) Do I(1)--Set Rank of Pi and set r=3. Normalize on DPY, LM3RC and RM in that order.
+* (c) Do Misc--Short Run Parameters to get the short-run matrices needed to fill in the bottom of
+*     page 199.
+* (d) Do Misc--Residual Analysis to get table 11.3
+* (e) Exit CATS
+*
+* Illustration 11.3.1. This is the original model from 11.1.1.
+*
+@cats(lags=2,noexo,shift,dum,dettrend=drift) 1973:1 2003:1
+# lm3rc lyr dpy Rm Rb
+# Ds831
+# Dt754 Dp764
+*
+* (a) Do I(1)--Set Rank of Pi and set r=3.
+* (b) Do Automated Tests--Unit Vector in Alpha. The r=3 line is reproduced in Table 11.4
+* (c) Exit CATS
+*
+
+
+
+
+
+
+

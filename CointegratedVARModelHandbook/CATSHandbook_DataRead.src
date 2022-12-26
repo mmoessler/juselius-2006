@@ -1,0 +1,94 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* This file contains code for reading in the data and creating series   *
+* needed for the analyses presented in Chapters 1 through 18 of         *
+* Juselius' "The Cointegraged VAR Model" text.                          *
+*                                                                       *
+* The code included here also appears in the BookCodes_Ch1_Ch6.rpf      *
+* example program, and these instructions are explained the             *
+* corresponding chapters of the Handbook                                *
+*                                                                       *
+*************************************************************************
+
+*************************************************************************
+* Load and transform data					                                 *
+*************************************************************************
+
+calendar(q) 1973:1
+open data book.xls
+data(format=xls,org=cols) 1973:1 2003:1 lyr lpy lm3n Rm Rb lm3rC dpy
+
+* NOTE!
+* Lm3rC used in the analysis is the log of real M3, corrected for the
+* mistake in 1999:1-3, and seasonally adjusted.
+*
+* Rm and Rb are the quaterly interest rates calculated as dividing by
+* 400.
+*
+* Create log real M3 from lognominal M3 and log price levels:
+*
+set lm3r = lm3n-lpy
+
+*****************************************************************
+* Define dummy variables						                      *
+*****************************************************************
+
+*
+* Create "Transitory blip" dummy at 1975:4:
+*
+set Dt754 = 0.0
+compute Dt754(1975:4) = 1
+compute Dt754(1976:1) = -0.5
+compute Dt754(1976:2) = -0.5
+
+*
+* Create "Permanent intervention" dummy at 1976:4
+*
+set Dp764 = t==1976:4
+
+*
+* Create "Mean shift" dummy at 1983:1
+*
+set Ds831 = T>=1983:1
+*
+
+*****************************************************************
+* Chapter 2: Detrended series in figure 2.4	           	       *
+*****************************************************************
+
+filter(remove=trend) lyr / tradjlyr
+filter(remove=trend) lpy / tradjlpy
+
+
+*****************************************************************
+* Chapter 3                                                     *
+*****************************************************************
+
+*
+* Creating a moving average of inflation series
+*
+mvstats(width=4,means=ma4dpy) dpy
+
+*
+* Create the first differences of five series:
+*
+diff lm3r / dlm3r
+diff lyr  / dlyr
+diff dpy  / ddpy
+diff rm   / drm
+diff rb   / drb
+
+*
+* Define centered seasonal dummy:
+*
+
+seasonal(centered) Dq
+
+*
+* Compute the nominal corrected M3 from the real corrected M3 (LM3RC):
+*
+set lm3nc = lm3rc + lpy
+
+

@@ -1,0 +1,4 @@
+# The Unrestricted VAR
+
+This chapter contains the replication of the material of Chapter 4 of @Juselius2006Cointegrated.
+

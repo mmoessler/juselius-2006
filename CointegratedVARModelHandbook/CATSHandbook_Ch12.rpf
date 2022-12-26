@@ -1,0 +1,188 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	      *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch12.rpf                                                    *
+* Chapter 12                                                            *
+*************************************************************************
+*****************************************************************
+* Load and transform data, load CATS
+*****************************************************************
+source CATSHandbook_DataRead.src
+
+source c:\cats2\cats.src
+
+*****************************************************************
+* Chapter 12 - Identification of the Long Run Structure         *
+*****************************************************************
+*
+*
+* Section 12.4, Table 12.1
+*
+* Use unrestricted constant model
+*
+@cats(lags=2,noexo,shift,dum,dettrend=drift) 1973:1 2003:1
+# lm3rc lyr dpy Rm Rb
+# Ds831
+# Dt754 Dp764
+*
+* (a) Use I(1)--Set Rank of Pi and choose 3 cointegrating vectors.
+* (b) Example 1: Use I(1)--Restrictions on Each Beta vector. For each beta
+*     vector indicate two restrictions. (These are that the other
+*     two "endogenous" variables have zero coefficients). Note that
+*     the H matrix is transposed from what is shown on page 217.
+*     Enter the patterns of 1's and 0's shown there. When done,
+*     normalize on LM3RC in the first, DPY in the second and RM in
+*     the third. This should give you the left column in Table 12.1
+* (c) Example 2: Use I(1)--Restrictions on Each Beta vector.
+*     Enter 2 for the first, with design matrix
+*        1  -1  0  0  0  0
+*        0   0  0  1  0  0
+*        0   0  0  0  1  0
+*        0   0  0  0  0  1
+*
+*     Enter 2 for the second, with design matrix
+*        0   1  0  0  0  0
+*        0   0  1  0  0  0
+*        0   0  0  1 -1  0
+*        0   0  0  0  0  1
+*
+*     Enter 2 for the third, with design matrix
+*        0   1  0  0  0  0
+*        0   0  1  0  0  0
+*        0   0  0  1  0  0
+*        0   0  0  0  0  1
+*
+*     When done, normalize on LM3RC, DPY and RM again.
+*
+
+* Section 12.5, Table 12.3
+*
+* (a) Example 3: Use I(1)--Restrictions on Each Beta vector.
+*
+*     Enter 4 restrictions for the first vector, with design matrix
+*        1  -1  0  0  0  0
+*        0   0  0  0  0  1
+*
+*     Enter 3 restrictions for the second, with design matrix
+*        0  1  0  0  0  0
+*        0  0  1  0  0  0
+*        0  0  0  0  0  1
+*
+*     Enter 3 restrictions for the third, with design matrix
+*        0  0  1 -1  0  0
+*        0  0  0 -1  1  0
+*        0  0  0  0  0  1
+*
+*     When done, normalize on LM3RC, DPY and RM again.
+*
+
+
+* (b) Example 4:
+*
+*     This combines the H15, H17, and H27 restrictions from Table 10.3.
+*     Use I(1)--Restrictions on Each Beta vector, and enter restrictions as follows:
+*
+*     Enter 3 restrictions on first vector, with design matrix:
+*       1 -1  0  0  0  0
+*       0  0  0 -1  1  0
+*       0  0  0  0  0  1
+*
+*     Enter 3 restrictions on second vector, with design matrix:
+*       0  1  0  0  0  0
+*       0  0  1  0  0  0
+*       0  0  0  0  0  1
+*
+*     Enter 3 restrictions on third vector, with design matrix:
+*       0  0  0  1  0  0
+*       0  0  0  0  1  0
+*       0  0  0  0  0  1
+*
+*     When done, normalize on LM3RC, DPY and RM again.
+*
+
+* Section 12.6, Table 12.4
+*
+* (a) Example 5: Use I(1)--Restrictions on Each Beta vector.
+*
+*     Enter 2 restrictions for the first vector, with design matrix
+*        1  0  0  0  0  0
+*        0  1  0  0  0  0
+*        0  0  0  1 -1  0
+*        0  0  0  0  0  1
+*
+*     Enter 2 restrictions for the second, with design matrix
+*        0  0  1  0  0  0
+*        0  0  0  1  0  0
+*        0  0  0  0  1  0
+*        0  0  0  0  0  1
+*
+*     Enter 3 restrictions for the third, with design matrix
+*        0  0  0  1  0  0
+*        0  0  0  0  1  0
+*        0  0  0  0  0  1
+*
+*     Let CATS estimate with non-identifying restrictions.
+*
+*     Override recommend choice for degrees of freedom, and enter 2 instead
+*      as indicated on page 223.
+*
+*     When done, normalize on LM3RC, DPY and RM again.
+*
+* (b) Example 6: Use I(1)--Restrictions on Each Beta vector.
+*
+*     Enter 4 restrictions for the first vector, with design matrix
+*        1  -1  0  0  0  0
+*        0   0  0  0  0  1
+*
+*     Enter 3 restrictions for the second, with design matrix
+*        0  0  0  1  0  0
+*        0  0  0  0  1  0
+*        0  0  0  0  0  1
+*
+*     Enter 2 restrictions for the third, with design matrix
+*        0  1  0  0  0  0
+*        0  0  1  0  0  0
+*        0  0  0  1  0  0
+*        0  0  0  0  1  0
+*
+*     When done, normalize on LM3RC, RM and DPY.
+*
+* Section 12.7, Figures 12.1-12.7
+*
+* (a) Impose restrictions from Example 3: Use I(1)--Restrictions on Each Beta vector.
+*
+*     Enter 4 restrictions for the first vector, with design matrix
+*        1  -1  0  0  0  0
+*        0   0  0  0  0  1
+*
+*     Enter 3 restrictions for the second, with design matrix
+*        0  1  0  0  0  0
+*        0  0  1  0  0  0
+*        0  0  0  0  0  1
+*
+*     Enter 3 restrictions for the third, with design matrix
+*        0  0  1 -1  0  0
+*        0  0  0 -1  1  0
+*        0  0  0  0  0  1
+*
+*     When done, normalize on LM3RC, DPY and RM again.
+*
+*  Select I(1)--Recursive Estimation. Set end of base sample to 1985:3,
+*    beginning of known sample to 1985:4, and end of known sample at 2003:1.
+*
+
+
+
+
+
+
+

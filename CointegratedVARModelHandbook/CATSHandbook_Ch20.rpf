@@ -1,0 +1,249 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	       *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch20.rpf                                                    *
+* Chapter 20                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data					              *
+*****************************************************************
+
+calendar(q) 1971:1
+allocate 2003:1
+open data chpt_19_data.xls
+data(format=xls,org=obs) / Lwc LPc DLPc wedge Lc Urt bdk ppp
+
+* Data:
+* LPC = consumer prices (Pc)
+* DLPc = first difference of LPC (consumer price inflation)
+* BDk = long-term bond rate (Rb)
+* Urt = unemployment rate (U = UT/L, total unemployed/labor force)
+* ppp = purchasing power parity (i.e. real exchange rate)
+* LC  = Log of labor productivity (Pr in the terms used in the text, where Pr = Yr - E where Yr is log of real GDP and E is log of total employment)
+* LWc = Wage costs (= W - Pc, where W = log of wate costs)
+* Wedge = internal price wedge (Pp = Pc - Py, where Py = log of GDP deflator)
+
+* Flip the sign on PPP:
+set ppp = -1*ppp
+
+* We will need the real consumption wage
+set Lwcr = Lwc-Lpc
+
+* The annual inflation rate:
+diff(sdiffs=1) lpc / inflc
+set inflc = inflc/4
+* And the nominal wage growth rate:
+set wagegrowth = (lwc-lwc{4})/4.
+
+compute keylab1 = ||"Inflation Rate","Unemployment Rate"||
+compute keylab2 = ||"Inflation Rate","The Price Wedge"||
+
+* Figure 20.3
+spgraph(vfields=2,footer="Figure 20.3")
+ graph(overlay=line,key=above,klabel=keylab1,ovkey,picture="#.###") 2
+ # inflc
+ # urt
+ graph(overlay=line,key=above,klabel=keylab2,picture="#.###") 2
+ # inflc
+ # wedge
+spgraph(done)
+
+
+* Figure 20.6
+
+spgraph(vfields=2,footer="Figure 20.6 Graphs of the nominal wage growth and CPI inflation rate.")
+ graph(header="Nominal wage growth",frame=half,picture="#.##",max=.06)
+ # wagegrowth
+ graph(header="The CPI Inflation Rate",frame=half,picture="#.##",max=.06)
+ # inflc
+spgraph(done)
+
+*****************************************************************
+* Dummy variables
+*****************************************************************
+
+source c:\CATS2\cats.src
+
+* Wedge = internal price wedge (Pp = Pc - Py, where Py = log of GDP deflator)
+set py = wedge - lpc
+
+* Full Nominal system from page 370 would be
+* @cats(lags=2,dettrend=cidrift)
+* # Lwc py lpc Lc urt bdk ppp
+
+* Real system from page 370
+* @cats(lags=2,dettrend=cidrift)
+* # Lwcr wedge Lc DLpc urt BDk ppp
+
+
+* The EMS period
+
+**********************************
+*Model 1*
+**********************************
+
+@cats(lags=2,dettrend=cidrift) 1983:1 2003:1
+# Lwcr wedge Lc DLPc urt
+
+*********************************
+*Model 2*
+*********************************
+
+@cats(lags=2,dettrend=cidrift) 1983:1 2003:1
+# Lwcr wedge Lc DLPc urt bdk
+
+
+*********************************
+*Model 3*
+*********************************
+
+@cats(lags=2,dettrend=cidrift) 1983:1 2003:1
+# Lwcr wedge Lc DLPc urt bdk ppp
+
+*
+* For each model, use I(1)-Rank Test Statistics to produce Table 20.1
+
+*
+* For Table 20.2, estimate Model 3 and do the following:
+*
+*  Select Automated Tests--Variable Exclusion (for rows 1 and 2)
+*  Select Automated Tests--Variable Stationarity (turn off restricted trend switch)
+
+* For Table 20.3, estimate each model and use the Weak Exogeneity and
+*  Unit Vector in Alpha operations on the Automated Tests menu
+
+* For Table 20.4, estimate each model and then set the rank as discussed
+*  in the text (rank 2 for Model 1, rank 3 for Model 2, rank 4 for Model 3)
+* The table results are drawn from the PI output.
+* Note: The TREND results must be scaled up by 100 to match the results in the
+*       book. This can be done using CATS-Preferences
+
+* For Table 20.5,
+* For Model 1:
+*  With rank set to 2, set restriction formulation to R'*Beta = 0, and use
+*  I(1)-Restrictions on each Beta Vector. Impose 1 restriction on vector 1,
+*  with a 1 in the DLPC column. Impose 2 restrictions on vector 2, with 1s in
+*  the WEDGE and LC columns.
+*  Normalize on LC and DLPC, respectively.
+
+
+* For Model 2:
+*  With rank set to 3 and restriction formulation R'*Beta = 0
+*  Use I(1)-Restrictions on each Beta Vector. Impose 3 restrictions on vector 1,
+*  with 1s in the LWCR, DLPC, and BDK columns. Impose 4 restrictions on vector 2, with 1s in
+*  the LWCR, WEDGE, LC, and TREND columns. Impose 4 restrictions on vector 3, with 1s in
+*  the WEDGE, LC, DLPC, and TREND columns
+*  Normalize on LC, DLPC, and URT respectively.
+
+* For Model 3:
+*  With rank set to 4 and restriction formulation R'*Beta = 0
+*  Use I(1)-Restrictions on each Beta Vector. Impose 3 restriction on vector 1,
+*  with 1s in the LWCR, DLPC, and BDK columns. Impose 4 restrictions on vector 2, with 1s in
+*  the LWCR, WEDGE, LC, and TREND columns.
+
+*  Impose 4 restrictions on vector 1 with the following R' matrix:
+*  1  0  0  0  0  0  0  0
+*  0  0  0  1  0  0  0  0
+*  0  0  0  0  0  1  0  0
+*  0  0  0  0  0  0  1  0
+
+*  Impose 5 restrictions on vector 2 with the following R' matrix:
+*  1  0  0  0  0  0  0  0
+*  0  1  0  0  0  0  0  0
+*  0  0  1  0  0  0  0  0
+*  0  0  0  0  0  0  1  0
+*  0  0  0  0  0  0  0  1
+*  Impose 4 restrictions on vector 3, with the following R' matrix:
+*  0  1  0  0  0  0  0  0
+*  0  0  1  0  0  0  0  0
+*  0  0  0  0  0  0  1  0
+*  0  0  0  0  0  0  0  1
+*  Impose 5 restrictions on vector 4, with the following R' matrix:
+*  1 -1  0  0  0  0  0  0
+*  1  0  1  0  0  0  0  0
+*  0  0  0  1  0  0  0  0
+*  0  0  0  0  1  0  0  0
+*  0  0  0  0  0  1  0  0
+
+* Note: these restrictions are reported as not-identifying, so you have to
+*  tell CATS to estimate with the non-identifying restrictions. When prompted,
+*  set DoF to 7.
+
+
+*The post Bretton Woods period*
+
+* 1975 dummy variable:
+set D75 / = 0.0
+compute D75(1975:4) = 1
+compute D75(1976:1) = -0.5
+compute D75(1976:2) = -0.5
+
+
+**********************************
+*Model 1*
+**********************************
+
+@cats(lags=2,dum,dettrend=cidrift) 1971:1 1983:1
+# Lwcr wedge Lc DLpc urt
+# D75
+
+
+**********************************
+*Model 2*
+**********************************
+
+@cats(lags=2,dum,dettrend=cidrift) 1971:1 1983:1
+# Lwcr wedge Lc DLpc urt bdk
+# D75
+
+**********************************
+*Model 3*
+**********************************
+
+@cats(lags=2,dum,dettrend=cidrift) 1971:1 1983:1
+# Lwcr wedge Lc DLpc urt ppp
+# D75
+
+* To produce Table 20.6,  estimate Model 3 as shown above and select Rank Test Statistics from the I(1) menu.
+* For Table 20.7, use the Variable Exclusion, Variable Stationarity (with the restricted trend switch turned off), Weak Exogeneity,
+*  and Unit Vector in Alpha operations on the Automated Tests menu.
+
+* Table 20.8
+* Select the Set Rank of Pi operation from the I(1) menu, enter 3 as the rank. Accept the default normalization when prompted.
+* As noted in the text, the TREND term has again by scaled up by a factor of 100, so use the CATS–Preferences operation to do the same if desired.
+
+* Table 20.9
+* If necessary, use Change Restriction Formulation on the I(1) menu to select the R'*Beta = 0 restriction formulation.
+* Then select I(1)–Restrictions on each Beta Vector.
+
+* Enter three as the number of restrictions on vector 1, with the following R' matrix:
+* 0  0  1  0  0  0  0
+* 0  0  0  1  0  0  0
+* 0  0  0  0  1  0  0
+
+* Enter two as the number of restrictions on vector 2, with the following R' matrix:
+* 1  0  0  0  0  0  0
+* 0  1  0  0  0  0  0
+
+* Enter four as the number of restrictions on vector 3, with the following R' matrix:
+* 1 -1  0  0  0  0  0
+* 0  0  0  0  1  0  0
+* 0  0  0  0  0  1  0
+* 0  0  0  0  0  0  1
+
+* Normalize on LWCR, URT, and WEDGE respectively.
+
+
+
+
+

@@ -1,0 +1,87 @@
+# Data
+
+This chapter contains the preparation of the data for the replication of the empirical analysis of @Juselius2006Cointegrated.
+
+## Load Data
+
+Download the material for the textbook provided by [Estima](https://www.estima.com/).
+
+See: [RATS Handbook for The Cointegrated VAR Model](https://www.estima.com/textbook_juselius.shtml)
+
+```{r, warning=FALSE, message=FALSE}
+
+# Load data
+library(readxl)
+data <- read_excel("./CointegratedVARModelHandbook/book.xls")
+data <- data[,colnames(data)[-1]]
+
+```
+
+Define the number of observations and a time variable.
+
+```{r}
+
+# Number of observations
+TT <- nrow(data)
+
+# Define time variable
+data$time <- seq(as.Date("1973-01-01"), as.Date("2003-01-01"), by="quarter")
+time <- seq(as.Date("1973-01-01"), as.Date("2003-01-01"), by="quarter")
+
+```
+
+## Dummy Variables
+
+Construct the dummy variables.
+
+Define *"transitory intervention" dummy* at *1975-Q4*.
+
+```{r}
+
+# Create "transitory intervention" dummy at 1975:4
+data$Dt754 <- rep(0,TT)
+data$Dt754[which(data$time == as.Date("1975-10-01"))] <- 1
+data$Dt754[which(data$time == as.Date("1976-01-01"))] <- -0.5
+data$Dt754[which(data$time == as.Date("1976-04-01"))] <- -0.5
+
+```
+
+Define *"permanent intervention" dummy* at *1976-Q4*.
+
+```{r}
+
+# Create "permanent intervention" dummy at 1976:4
+data$Dp764 <- rep(0,TT)
+data$Dp764[which(data$time == as.Date("1976-10-01"))] <- 1
+
+```
+
+Define *"mean shift" dummy* at *1983-Q1*.
+
+```{r}
+
+# Create "mean shift" dummy at 1983:1
+data$Ds831 <- rep(0,TT)
+data$Ds831[which(data$time %in% seq(as.Date("1983-01-01"), as.Date("2003-01-01"), by="quarter"))] <- 1
+
+```
+
+Define difference of *"mean shift" dummy*, i.e., *"permanent intervention" dummy* at *1983-Q1*.
+
+```{r}
+
+# Create difference of "mean shift" dummy, i.e., "permanent intervention" dummy, at 1983:1
+data$Dp831 <- rep(0,TT)
+data$Dp831[which(data$time == as.Date("1983-01-01"))] <- 1
+
+```
+
+Define lag of *"permanent intervention" dummy* at *1983-Q1*, i.e., *"permanent intervention" dummy* at *1983-Q2*.
+
+```{r}
+
+# Define lag of "permanent intervention" dummy, at 1983:1
+data$Dp832 <- rep(0,TT)
+data$Dp832[which(data$time == as.Date("1983-04-01"))] <- 1
+
+```

@@ -1,0 +1,77 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	       *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch15.rpf                                                    *
+* Chapter 15                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data, load CATS
+*****************************************************************
+source CATSHandbook_DataRead.src
+
+source c:\cats2\cats.src
+
+
+*
+* Use unrestricted constant model
+*
+**** NOTE! Order of variables in first supplementary card changed
+****       from previous chapters to match the text--important
+****       for matching the matrices shown on pages 282-3, etc.
+
+@cats(lags=2,noexo,shift,dum,dettrend=drift) 1973:1 2003:1
+* Instead of # lm3rc lyr dpy Rm Rb, use
+# lm3rc dpy Rm lyr Rb
+# Ds831
+# Dt754 Dp764
+
+* Set rank to 3.
+*
+* Select "Structural MA Model" from "Misc" menu.
+*
+* In dialog box, set:
+* Permanent shock, Id(1) to 4
+* Transitory shocks: Id(2) to 3, Id(1) to 2
+*
+* Restriction arrays on next screen should match those
+* shown of page 282 of text
+*
+* Normalize on LYR and RB respectively.
+
+* For Rotation matrix, normalize on row,col pairs as follows
+* 1,3; 2,5; 3,3; 4,3; 5,5.
+
+* For Inverse rotation, normalize on the following row,col pairs:
+* 1,3; 2,5; 3,3; 4,4; 5,5.
+
+*
+* For Table 15.1:
+*
+* Select "Structural MA Model" from "Misc" menu.
+*
+* The SVAR 1 model appears to be the same as above, but with a
+* different normalization for the 4th row of the Rotation matrix B:
+*
+* 1,3; 2,5; 3,3; 4,4; 5,5.
+*
+* For the SVAR 2 model, the analysis is nearly identical to the above
+* except that in the first dialog box, set:
+* Permanent shock, Id(1) to 2 (rather than 4)
+*
+* For the VAR model, select "MA Representation" from the "Misc" menu.
+* Normalize Alpha Orth. on RB and LYR, respectively.
+*
+
+
+
+

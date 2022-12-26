@@ -10,11 +10,7 @@
   url = {http://yihui.name/knitr/},
 }
 
-@Book{Juselius2006Cointegrated,
-  author    = {Juselius, Katarina},
-  publisher = {Oxford University Press},
-  title     = {The Cointegrated VAR Model: Methodology and Applications},
-  year      = {2006},
+@Article{,
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

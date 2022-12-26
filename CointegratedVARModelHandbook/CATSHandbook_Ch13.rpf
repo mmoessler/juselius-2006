@@ -1,0 +1,272 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducing results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	      *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch13.rpf                                                    *
+* Chapter 13                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data, load CATS
+*****************************************************************
+source CATSHandbook_DataRead.src
+
+source c:\cats2\cats.src
+
+
+*****************************************************************
+* Chapter 13 - Identification of the Short Run Structure        *
+*****************************************************************
+
+* HS3 and HS4 models from Chapter 12
+*
+* Create error correction series using values from restricted
+* models:
+*
+set ecm1HS3 = lm3rc - lyr - 0.3355*ds831
+set ecm2HS3 = dpy + 0.0274*lyr + 0.013*ds831
+set ecm3HS3 = Rm - 0.2014*dpy - 0.7986*Rb - 0.0127*ds831
+
+set ecm1HS4 = lm3rc - lyr - 13.2670*(Rm-Rb) - 0.1533*Ds831
+set ecm2HS4 = dpy + 0.0297*lyr + 0.0124*Ds831
+set ecm3HS4 = Rm - 0.8087*Rb - 0.0090*Ds831
+*
+* Create differenced dependent variables:
+*
+diff lm3rc / dlm3rc
+diff lyr   / dlyr
+diff dpy   / ddpy
+diff rm    / drm
+diff rb    / drb
+diff ds831 / dp831
+*
+* Set up and estimate full VECM model for HS3:
+*
+system(model=vecm1mod)
+variables dlm3rc ddpy drm dlyr drb
+lags 1
+deter ecm1hs3{1} ecm2hs3{1} ecm3hs3{1} dt754 dp764 dp831 constant
+end(system)
+*
+* Estimate the model:
+*
+estimate
+*
+* Cross equation F-statistics. Pull out a representative equation
+* to use for labels.
+*
+compute eqn=%modeleqn(vecm1mod,1)
+compute betaols=%modelgetcoeffs(vecm1mod)
+*
+* Use REPORT feature to generate the output table:
+* (Check formula in Theil)
+*
+*** NOTE: test stats, p-values don't match well for 1st 3 terms
+
+report(action=define)
+report(atrow=1,atcol=1) "Label" "F-Stat" "Signif"
+do i=1,%eqnsize(eqn)
+   compute fstat=%qform(inv(%sigma),%xrow(betaols,i))*(%nobs-%nreg)/(5*%nobs*%xx(i,i))
+   compute fpval=%ftest(fstat,%nvar,%nobs-%nreg)
+   report(row=new,atcol=1) %eqnreglabels(eqn)(i) fstat fpval
+   if fpval<0.05
+      report(action=format,atrow=%reportrow,atcol=2,special=onestar)
+end do i
+report(action=format,atcol=2,picture="*.##",align=decimal)
+report(action=show)
+*
+* Tables 13.1 and 13.2, restrcited models with HS3, HS4 error
+* correction terms
+*
+* Restricted HS3 model:
+*
+* Full equations would be:
+
+equation vecm1hs3 dlm3rc
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs3{1} ecm2hs3{1} ecm3hs3{1} dt754 dp764 dp831 constant
+equation vecm2hs3 ddpy
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs3{1} ecm2hs3{1} ecm3hs3{1} dt754 dp764 dp831 constant
+equation vecm3hs3 drm
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs3{1} ecm2hs3{1} ecm3hs3{1} dt754 dp764 dp831 constant
+equation vecm4hs3 dlyr
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs3{1} ecm2hs3{1} ecm3hs3{1} dt754 dp764 dp831 constant
+equation vecm5hs3 drb
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs3{1} ecm2hs3{1} ecm3hs3{1} dt754 dp764 dp831 constant
+*
+* Restricted equations:
+*
+equation vecm1hs3 dlm3rc
+# drb{1} ecm1hs3{1} ecm3hs3{1} constant
+equation vecm2hs3 ddpy
+# drb{1} ecm2hs3{1} constant
+equation vecm3hs3 drm
+# drb{1} ecm2hs3{1} dp764 constant
+equation vecm4hs3 dlyr
+# dlyr{1} drb{1} ecm1hs3{1} ecm2hs3{1} ecm3hs3{1} dt754 constant
+equation vecm5hs3 drb
+# dlyr{1} drb{1} ecm2hs3{1} ecm3hs3{1} dp831 constant
+
+group vecmhs3mod_rest vecm1hs3 vecm2hs3 vecm3hs3 vecm4hs3 vecm5hs3
+
+estimate(model=vecmhs3mod_rest)
+*
+* Restricted HS4 model:
+*
+* Full equations would be:
+*
+equation vecm1hs4 dlm3rc
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+equation vecm2hs4 ddpy
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+equation vecm3hs4 drm
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+equation vecm4hs4 dlyr
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+equation vecm5hs4 drb
+# dlm3rc{1} ddpy{1} drm{1} dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+*
+* Restricted equations:
+*
+equation vecm1hs4 dlm3rc
+# drb{1} ecm1hs4{1} constant
+equation vecm2hs4 ddpy
+# drb{1} ecm2hs4{1} constant
+equation vecm3hs4 drm
+# drb{1} ecm2hs4{1} ecm3hs4{1} dp764 constant
+equation vecm4hs4 dlyr
+# dlyr{1} drb{1} ecm1hs4{1} dt754 constant
+equation vecm5hs4 drb
+# dlyr{1} drb{1} ecm3hs4{1} dp831 constant
+
+group vecmhs4mod_rest vecm1hs4 vecm2hs4 vecm3hs4 vecm4hs4 vecm5hs4
+estimate(model=vecmhs4mod_rest)
+*
+* Table 13.3. Include all current endogenous variables (other than
+* the dependent variable) in each equation.
+*
+linreg dlm3rc
+# ddpy drm dlyr drb dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+linreg ddpy
+# dlm3rc drm dlyr drb dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+linreg drm
+# dlm3rc ddpy dlyr drb dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+linreg dlyr
+# dlm3rc ddpy drm drb dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+linreg drb
+# dlm3rc ddpy drm dlyr dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+*
+* Table 13.4. These are done from the last in the causal ordering
+* towards the first.
+*
+linreg dlm3rc
+# ddpy drm dlyr drb dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+linreg ddpy
+# drm dlyr drb dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+linreg drm
+# dlyr drb dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+linreg dlyr
+# drb dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+linreg drb
+# dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+*
+* Tables 13.5-13.9?
+*
+instruments dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+linreg(inst) dlm3rc
+# ddpy dlyr ecm1hs4{1} ecm2hs4{1} constant
+frml(lastreg,vector=mb) mfrml
+linreg(inst) ddpy
+# dlm3rc dlyr{1} ecm1hs4{1} ecm2hs4{1} constant
+frml(lastreg,vector=pb) pfrml
+linreg(inst) drm
+# drb drb{1} ecm2hs4{1} ecm3hs4{1} dp764 dp831 constant
+frml(lastreg,vector=rmb) rmfrml
+linreg(inst) dlyr
+# dlm3rc dlyr{1} drb{1} ecm1hs4{1} dt754 constant
+frml(lastreg,vector=yb) yfrml
+linreg(inst) drb
+# drm dlyr{1} drb{1} ecm3hs4{1} dp831 constant
+frml(lastreg,vector=rbb) rbfrml
+group generic mfrml pfrml rmfrml yfrml rbfrml
+dec frml[rect] jacobian
+frml jacobian = $
+  ||1.0  ,pb(1),0.0   ,yb(1),0.0|$
+    mb(1),1.0  ,0.0   ,0.0  ,0.0|$
+    0.0  ,0.0  ,1.0   ,0.0  ,rbb(1)|$
+    mb(2),0.0  ,0.0   ,1.0  ,0.0|$
+    0.0  ,0.0  ,rmb(1),0.0  ,1.0||
+nonlin mb pb rmb yb rbb
+nlsystem(model=generic,jacobian=%det(jacobian),iters=0)
+nlsystem(model=generic,iters=0)
+disp %logconcdensity(%sigma,%nobs)
+*
+find(trace,method=bfgs) max %logl
+   nlsystem(model=generic,noprint,iters=0)
+   compute %logl=%logconcdensity(%sigma,%nobs)+.5*%nobs*log(%det(jacobian(1))^2)
+end find
+*
+disp %sigma %det(jacobian(1))
+disp %logl
+system(model=reducedform)
+variables dlm3rc ddpy drm dlyr drb
+det dlyr{1} drb{1} ecm1hs4{1} ecm2hs4{1} ecm3hs4{1} dt754 dp764 dp831 constant
+end(system)
+estimate(noprint)
+disp %logl
+***********************************
+*
+* Revised model for Table 13.6
+*
+linreg(inst) dlm3rc
+# ddpy ecm1hs4{1} ecm2hs4{1} constant
+frml(lastreg,vector=mb) mfrml
+linreg(inst) ddpy
+# dlm3rc drb{1} ecm2hs4{1} constant
+frml(lastreg,vector=pb) pfrml
+linreg(inst) drm
+# drb drb{1} ecm2hs4{1} dp764 constant
+frml(lastreg,vector=rmb) rmfrml
+linreg(inst) dlyr
+# dlyr{1} drb{1} ecm1hs4{1} dt754 constant
+frml(lastreg,vector=yb) yfrml
+linreg(inst) drb
+# drm dlyr{1} drb{1} ecm3hs4{1} dp831 constant
+frml(lastreg,vector=rbb) rbfrml
+*
+frml jacobian = $
+  ||1.0  ,pb(1),0.0   ,0.0  ,0.0|$
+    mb(1),1.0  ,0.0   ,0.0  ,0.0|$
+    0.0  ,0.0  ,1.0   ,0.0  ,rbb(1)|$
+    0.0  ,0.0  ,0.0   ,1.0  ,0.0|$
+    0.0  ,0.0  ,rmb(1),0.0  ,1.0||
+nlsystem(model=generic,jacobian=%det(jacobian),iters=1000)
+disp %logconcdensity(%sigma,%nobs)
+*
+find(trace,method=bfgs) max %logl
+   nlsystem(model=generic,noprint,iters=0)
+   compute %logl=%logconcdensity(%sigma,%nobs)+.5*%nobs*log(%det(jacobian(1))^2)
+end find
+disp %sqrt(%xdiag(%sigma))
+compute mb=||.11,-3.62,-.21,0.0||
+compute pb=||.00,.80,-1.09,0.0||
+compute rmb=||-.12,.38,.05,.006,0.0||
+compute yb=||.23,-3.02,.06,.04,0.0||
+compute rbb=||.30,.03,.24,.20,-.007,0.0||
+find(trace) max %logl
+   nlsystem(model=generic,noprint,iters=0)
+   compute %logl=%logconcdensity(%sigma,%nobs)+.5*%nobs*log(%det(jacobian(1))^2)
+end find
+disp %sqrt(%xdiag(%sigma))
+
+
+
+
+

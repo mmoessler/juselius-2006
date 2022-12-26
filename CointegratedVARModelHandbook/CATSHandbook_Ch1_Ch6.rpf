@@ -1,0 +1,435 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	      *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch1_Ch6.rpf                                                 *
+* Chapters 1 through 6                                                  *
+*************************************************************************
+
+
+*************************************************************************
+* Load and transform data					                                 *
+*************************************************************************
+
+calendar(q) 1973:1
+open data book.xls
+data(format=xls,org=cols) 1973:1 2003:1 lyr lpy lm3n Rm Rb lm3rC dpy
+
+* NOTE!
+* Lm3rC used in the analysis is the log of real M3, corrected for the
+* mistake in 1999:1-3, and seasonally adjusted.
+*
+* Rm and Rb are the quaterly interest rates calculated as dividing by
+* 400.
+*
+* Create log real M3 from lognominal M3 and log price levels:
+*
+set lm3r = lm3n-lpy
+*
+* We already have DPY from the data file, but it could also be computed using:
+* set dpy = lpy - lpy{1}
+* or
+* diff lpy / dpy
+*
+*****************************************************************
+* Define dummy variables						                      *
+*****************************************************************
+*
+* Create "Transitory blip" dummy at 1975:4:
+*
+set Dt754 = 0.0
+compute Dt754(1975:4) = 1
+compute Dt754(1976:1) = -0.5
+compute Dt754(1976:2) = -0.5
+*
+* Could also do this using
+*
+set dt754 = t==1975:4-.5*(t==1976:1.or.t==1976:2)
+*
+* Create "Permanent intervention" dummy at 1976:4
+*
+set Dp764 = t==1976:4
+*
+* Create "Mean shift" dummy at 1983:1
+*
+set Ds831 = T>=1983:1
+*
+graph(header="Interest Rates") 2
+# Rm
+# Rb
+
+*****************************************************************
+* Chapter 2: Detrended series in figure 2.4	           	       *
+*****************************************************************
+
+filter(remove=trend) lyr / tradjlyr
+filter(remove=trend) lpy / tradjlpy
+
+*
+* Graphing the trend-adjusted series:
+*
+graph(header="Trend adjusted real income")
+# tradjlyr
+
+graph(header="Trend adjusted price level")
+# tradjlpy
+
+*
+* Both series on a single graph:
+*
+graph(header="Trend adjusted income and prices",key=upleft) 2
+# tradjlyr
+# tradjlpy
+
+*
+* Reproducing Figure 2.4, using SPGRAPH to put 3 graphs on a single page:
+*
+spgraph(vfields=3)
+ graph(header="Trend adjusted log price: stochastic I(2) trend")
+ # tradjlpy
+ graph(header="Trend adjusted real aggregate income: stochastic I(1) trend")
+ # tradjlyr
+ graph(header="Inflation rate: stochastic I(1) trend")
+ # dpy
+spgraph(done)
+
+
+*****************************************************************
+* Chapter 3                                                     *
+*****************************************************************
+
+* Note that M3 is the uncorrected series so far.
+
+*
+* Creating a moving average of inflation series
+*
+mvstats(width=4,means=ma4dpy) dpy
+
+*
+* Create the first differences of five series.
+*  (DDPY will actually be the second-order difference
+*   of the first-difference series DPY)
+*
+diff lm3r / dlm3r
+diff lyr  / dlyr
+diff dpy  / ddpy
+diff rm   / drm
+diff rb   / drb
+
+
+*
+* Graphing levels and first differences
+*
+
+*
+* Figure 3.3
+*
+spgraph(vfields=3,hfields=2,footer="Fig 3.3 The Danish data in levels.")
+ graph(header="The log of real M3")
+ # lm3r
+ graph(header="The long-term government bond rate")
+ # rb
+ graph(header="The quarterly inflation rate")
+ # dpy
+ graph(header="The log of real GNE")
+ # lyr
+ graph(header="An average deposit rate")
+ # rm
+ graph(header="A four quarter moving average of inflation")
+ # ma4dpy
+spgraph(done)
+
+*
+* Figure 3.4
+*
+spgraph(vfields=3,hfields=2,footer="Fig 3.3 The Danish data in first differences.")
+ graph(header="Changes in real M3")
+ # dlm3r
+ graph(header="Changes in the deposit rate")
+ # drm
+ graph(header="Changes in the inflation rate")
+ # ddpy
+ graph(header="Changes in real GNE")
+ # dlyr
+ graph(header="Changes in the long-term government bond rate")
+ # drb
+spgraph(done)
+
+*
+* Define centered seasonal dummy:
+*
+
+seasonal(centered) Dq
+
+*
+* Define the VAR model:
+*
+system(model=var2mod)
+variables lm3r lyr dpy rm rb
+lags 1 2
+deter dq{0 1 2} constant
+end(system)
+
+*
+* Estimate the model, saving the residuals:
+*
+estimate(resids=varresids)
+
+*
+* Graph the residuals
+*
+
+* Page of graphs with labels
+spgraph(vfields=3,hfields=2)
+do i=1,5
+ graph(header="Residuals for "+%modellabel(var2mod,i))
+ # varresids(i)
+end do i
+spgraph(done)
+
+
+*
+* Roots of the companion matrix
+*
+
+compute companionmat = %modelcompanion(var2mod)
+eigen(cvalues=compval) companionmat
+declare vector absval(%rows(compval))
+ewise absval(i) = %real(%cabs(compval(i)))
+
+*
+* Two ways to generate the output as a REPORT.
+* The first loops over rows of the arrays, while
+* the second adds entire arrays with a single statement.
+*
+
+* Using DO loop:
+report(action=define,hlabels=||"Real","Complex","Modulus"||)
+ do i=1,%rows(compval)
+  report(atcol=1) %real(compval(i)) %imag(compval(i)) absval(i)
+  report(action=format,picture="###.##")
+ end do
+report(action=show)
+
+* Adding by full array:
+report(action=define,hlabels=||"Real","Complex","Modulus"||)
+ report(atcol=1,fillby=col) compval
+ report(atcol=3,atrow=1,fillby=col) absval
+ report(action=format,picture="###.##")
+report(action=show)
+
+*
+* Graphing the Roots
+*
+comp numroot = %rows(compval)
+set xaxis 1 numroot = %real(compval(t))
+set yaxis 1 numroot = %imag(compval(t))
+scatter(hmax=1.5,hmin=-1.0,vmax=1.0,vmin=-1.0)
+# xaxis yaxis
+
+
+*
+* Additional Estimation Output
+*
+
+display "Residual covariance matrix = " ##.#### %sigma
+display "Residual correlation matrix = " ##.#### %cvtocorr(%sigma)
+display "Log likelihood = " %logl
+display "Log determinant = " %logdet
+*
+* Cross equation F-statistics. Result in book is off by factor of
+* 105/101 (apparently due to double-counting the deterministic
+* coefficients)
+*
+compute eqn=%modeleqn(var2mod,1)
+compute betaols=%modelgetcoeffs(var2mod)
+*
+* Use REPORT feature to generate the output table:
+*
+report(action=define)
+report(atrow=1,atcol=1) "Label" "F-Stat"
+do i=1,%eqnsize(eqn)
+   compute fstat=%qform(inv(%sigma),%xrow(betaols,i))*(%nobs-%nreg)/(5*%nobs*%xx(i,i))
+   report(row=new,atcol=1) %eqnreglabels(eqn)(i) fstat
+   if %ftest(fstat,%nvar,%nobs-%nreg)<0.05
+      report(action=format,atrow=%reportrow,atcol=2,special=onestar)
+end do i
+report(action=format,atcol=2,picture="*.##",align=decimal)
+report(action=show)
+*
+compute xx10=inv(%xsubmat(%xx,1,10,1,10))
+compute beta10=%xsubmat(betaols,1,10,1,5)
+compute test=tr(beta10)*xx10*beta10
+display "F-test on all regressors" %dot(test,inv(%sigma))*(%nobs-%nreg)/(50.0*%nobs)
+
+*
+* Table 4.2:
+* VECM model, m=1
+*
+system(model=vecm1mod)
+variables dlm3r dlyr ddpy drm drb
+lags 1
+deter dq{0 1 2} lm3r{1} lyr{1} dpy{1} rm{1} rb{1} constant
+end(system)
+*
+* Estimate the model:
+*
+estimate
+*
+display "Log likelihood = " %logl
+display "Log determinant = " %logdet
+*
+* Table 4.3:
+* VECM model, m=2
+*
+system(model=vecm1mod)
+variables dlm3r dlyr ddpy drm drb
+lags 1
+deter dq{0 1 2} lm3r{2} lyr{2} dpy{2} rm{2} rb{2} constant
+end(system)
+*
+* Estimate the model:
+*
+estimate
+*
+display "Log likelihood = " %logl
+display "Log determinant = " %logdet
+*
+* Table 4.4 is similar.
+*
+
+
+*****************************************************************
+* Chapter 4                                                     *
+*****************************************************************
+
+* Source in the main CATS procedure file:
+source c:\cats2\cats.src
+
+*
+* Execute the CATS procedure:
+*
+@cats(lags=2,season=4,dettrend=drift)
+# lm3r lyr dpy rm rb
+*
+* Using CATS. Note that the graphs are organized differently
+*
+*  Figures 3.3, 3.4:  Use the Graphics-Series operation in CATS
+*  Figure 3.5:        Use the Graphics-Residuals operation
+*  Table 3.1,Fig 3.6: Use the Graphics-Roots of the Companion Matrix
+*                      operation (selecting rank 5)
+*
+* Table 4.1 (and F-tests on preceeding page)
+* Estimating Unrestricted VAR in RATS:
+*
+*
+* Now we'll reproduce Table 4.2, and other results, using CATS:
+*
+* Table 4.2: Use Misc-Short Run Parameters to display the parmeters on the
+*             lagged differences.
+*
+* Figures 4.1-4.5:
+*  Use Graphics-Residuals. Select (highlight) all 5 series and then
+*   click on OK.
+*
+* Figures 4.6:
+*  Use Graphics-Correlations. Select (highlight) all 5 series
+*   and click OK.
+*
+* Table 4.5:
+*  Do Misc-Lag Length Determination. Use default setting of 5 lags.
+*
+* Various specification tests, pages 73-77
+*  Use the Misc-Residual Analysis operation to produce these
+
+
+***************************************************************
+* Chapter 5                                                    *
+***************************************************************
+*
+* For the Pi matrix, see the initial output from executing CATS above.
+*
+
+* Figure 5.1:
+* Exit out of CATS and do the following:
+
+* Simple regression:
+linreg lyr
+# constant lm3rc
+
+* Compute fitted values:
+prj fitted
+
+* Draw the graph. Using OVERLAY and OVSAME to draw the fitted values as a line, while the
+*  main cross plot is done using DOTS:
+
+scatter(style=dots,overlay=line,ovsame,vlabel='Real Income',hlabel='Real Money Stock',frame=half) 2
+# lyr lm3rc
+# fitted lm3rc / 1
+
+***************************************************************
+* Chapter 6                                                   *
+***************************************************************
+
+* Note that we will now be using the corrected M3, which fixed an error in 1999
+* and omits seasonal effects.
+
+* To reproduce Figure 6.3, we need to compute the nominal corrected M3 from
+* the real corrected M3 (LM3RC):
+set lm3nc = lm3rc + lpy
+
+* Graphing Figure 6.3
+graph(footer="The original and corrected M3 in logs.",key=upleft,$
+      max=6.5,pattern) 2
+# lm3nc
+# lm3n
+
+* This graph shows a shorter subsample, making the de-seasonalization
+*  more obvious
+graph(footer="The original and corrected M3 in logs.",key=upleft,$
+      max=6.5,pattern) 2
+# lm3nc 1985:1 1992:1
+# lm3n 1985:1 1992:1
+
+
+* Now, restart CATS with some changes:
+* 1) Remove the seasonal dummy term, by deleting the seasonal=4 option
+* 2) Add Ds831 as a weakly exogenous variable, via the EXO option and
+*    the second supplementary card.
+* 3) Include Dt754 and Dp764 as dummy variables, via the DUM option and
+*    the third supplementary card.
+
+@cats(lags=2,exo,dum,dettrend=cidrift)
+# lm3rc lyr dpy Rm Rb
+# Ds831
+# Dt754 Dp764
+
+* Use the following menu operations:
+*  The middle portion of Table 6.3 is given by the Pi matrix in the initial output.
+*  Misc-Residual Analysis to produce Table 6.2 and the residual covariance matrix of Table 6.3
+*
+*  Note: CATS does LM(1) and LM(2) tests for autocorrelation by default. To get the
+*        LM(4) test as well, do CATS-Preferences, add "4" as the third value to test in
+*        the "AC/ARCH tests Order" section of the dialog box, click on "OK", and then
+*        do Misc-Residual Analysis again to reproduce the results.
+*
+
+*  Graphics-Roots of Companion Matrix, rank 5, for bottom of Table 6.3
+
+*  Misc-Short Run Parameters to produce the first and third portions
+*   of the coefficient table in Table 6.3 (note that third coefficient array in
+*   the text is transposed)
+
+
+
+
+
+

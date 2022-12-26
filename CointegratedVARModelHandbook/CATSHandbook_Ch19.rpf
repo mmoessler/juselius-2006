@@ -1,0 +1,81 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducign results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	       *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch19.rpf                                                    *
+* Chapter 19                                                            *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data					              *
+*****************************************************************
+
+calendar(q) 1970:1
+allocate  2003:1
+open data book.xls
+data(format=xls,org=obs) / lyr lpy lm3n Rm Rb lm3rC dpy
+
+open data chpt_19_data.xls
+data(format=xls,org=obs) / Lwc LPc wedge Lc DLPc Urt bdk ppp
+
+* Data:
+* LPC = consumer prices
+* DLPc = first difference of LPC
+* BDk = long-term bond rate
+* Urt = unemployment rate
+* ppp = purchasing power parity (i.e. real exchange rate)
+* LC  = Log of labor productivity (pr in the terms used in the text, where pr = yr - e where yr is log of real GDP and e is log of total employment)
+* Lwc = Wage costs
+
+* Figure 19.2:
+
+* Compute annual inflation rate, and define a grid series:
+diff(sdiffs=1) lpc / inflc
+set grid1983 = t==1983:1
+
+* Plot the graphs, from 1970:1 to match the time axis used in the book:
+spgraph(vfields=2)
+ graph(header="Annual Inflation Rate",grid=grid1983)
+ # inflc 1970:1 *
+ graph(header="Unemployment Rate",grid=grid1983)
+ # urt 1970:1 *
+spgraph(done)
+
+
+* Figure 19.3:
+
+* Compute annual growth rate
+diff(sdiffs=1) lyr / growth
+
+* Compute real bond rate
+*  Uses annual inflation rate divided by 4 to get quarterly inflation:
+set rrb = rb-inflc/4.
+
+spgraph(vfields=2)
+ graph(header="Annual Real Growth Rates",grid=grid1983)
+ # growth 1970:1 *
+ graph(header="Nominal and Real Bond Rates",grid=grid1983,key=uprigt) 2
+ # rb 1970:1 *
+ # rrb 1970:1 *
+spgraph(done)
+
+* Figure 19.4:
+
+* Data for the upper graph is not available. For lower graph:
+
+* Compute absolute value of PPP (same as real exchange rate):
+set pppa = ABS(ppp)
+graph(grid=grid1983,header="Real Exchange Rate") 1
+# pppa
+
+
+
+

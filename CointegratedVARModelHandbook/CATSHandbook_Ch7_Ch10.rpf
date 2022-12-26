@@ -1,0 +1,424 @@
+*************************************************************************
+*                                                                       *
+* RATS Handbook for the Cointegrated VAR Model                          *
+*                                                                       *
+* Program for reproducing results from "The Cointegrated VAR Model:     *
+* Methodology and Applications                                          *
+*                                                                       *
+* Based on original code by Robert Wagner, October, 15th, 2004 	      *
+* Revised by Tom Maycock, Estima, October, 2009-January, 2012           *
+*************************************************************************
+
+*************************************************************************
+* BookCodes_Ch7_Ch10.rpf                                                *
+* Chapters 7 through 10                                                 *
+*************************************************************************
+
+*****************************************************************
+* Load and transform data, load CATS
+*****************************************************************
+source CATSHandbook_DataRead.src
+
+source c:\cats2\cats.src
+
+
+* Note that we now use the 'shift' option for Ds831 instead of the 'exo'
+* because we exlude DDs831(t-1) and only include DDs831(t)
+
+* Exit out of CATS, and restart it using these options:
+*
+@cats(lags=2,shift,dum,dettrend=cidrift)
+# lm3rc lyr dpy Rm Rb
+# Ds831
+# Dt754 Dp764
+
+* Table 7.1:
+*  The non-normalized eigenvectors and PI matrix are shown automatically.
+*
+*  To get the normalized eigenvectors and Alpha matrix, select
+*    "Set Rank of Pi" from the "I(1)" menu and enter 5 as the rank.
+*
+*  Then normalize as indicated on the text (row 1 on Mr (DPY), row 2
+*    on Yr (LM3RC), and so on.
+
+* Figures 7.1-7.5:
+*  Select "Cointegrating Relations" from the "Graphics" menu, highlight
+*   all 5 series, and click OK.
+
+* Table 8.1:
+*  Select "Rank Test Statistics" from the "I(1)" menu for the first
+*   half of the table.
+*
+*  Select "Roots of Companion Matrix" from the "Graphics" menu to get
+*   the second part of the table.
+
+* Figures 9.1-9.12:
+*  Select "Set Rank of Pi" from the "I(1)" menu and enter 3 as the rank.
+*   Accept the suggested normalization.
+*
+*  Then, select "Recursive Estimation" from the "I(1)" menu. Change
+*   the ending date of the Base Sample to 1984:4 (as noted on p. 151).
+*
+*  Use the "Select All" button to get all the graphs. Say "no" when
+*   asked about saving the residuals, unless you wish to save them at this
+*   time.
+*
+*  Figure 9.8 is produced using a different estimation sample. To produce
+*   this, do "Recursive Estimation" again, answer "Yes" to re-estimate,
+*   set the starting date of the "Known Beta" range to 1986:1 and click
+*   OK. Select the checkbox for the "Test of Beta(t) = Known Beta" graph
+*   and click OK.
+*
+*  Figure 9.9 is produced using yet another sample. To produce
+*   this, do "Recursive Estimation" again, answer "Yes" to re-estimate,
+*   reset the starting date of the "Known Beta" range back to 1973:3 and
+*   and set the ending date of the "Known Beta" range to 1986:1. Click
+*   OK. Select the checkbox for the "Test of Beta(t) = Known Beta" graph
+*   and click OK.
+*
+* Backwards recursive tests -- Figures 9.13-9.21
+*   Procedure is basically the same as above, except using "Backwards
+*     Recursive Estimation" from the "I(1)" menu.
+*
+*   Set the starting date for the Base Sample to 1986:1.
+*
+*   Figure 9.18 is done using a different estimation range. Do "Backwards
+*     Recursive Estimation" and set the "Known Beta" range to run from 1983:1
+*     through 2003:1. The start of the "Base Sample" remains 1986:1. After
+*     estimating, select "Test of Beta(t) = Known Beta" to generate the graph.
+
+*****************************************************************
+* Chapter 10 - Restrictions on beta                             *
+* - First a model with a restricted trend (as in chp.8)         *
+* - Then the model is respecified with an unrestricted const.   *
+*****************************************************************
+*
+* Restricted trend
+*
+* If you have exited CATS, restart using this model:
+*
+@cats(lags=2,shift,dum,dettrend=cidrift)
+# lm3rc lyr dpy Rm Rb
+# Ds831
+# Dt754 Dp764
+
+* Set the Rank to 3
+*
+* Normalize as indicated in the text (row 1 on DPY, row 2 on LM3RC,
+*  and row 3 on RM).
+*
+* Tables 10.1 and 10.2
+*
+*  First, we'll impose the H1 hypothesis (Example 1 on page 178 of the text)
+*     using the Beta = H*Phi formulation.
+*
+* H1: Do the following:
+*  1) Select "Restrictions on Subsets of Beta" from the "I(1)" matrix,
+*  2) Accept the defalut values on the first dialog (one subset, with
+*      three vectors in that subset),
+*  3) Enter 1 as the number of restrictions
+*  4) Enter the following H' matrix (note that
+*      CATS takes the transpose of the H matrix shown
+*      in the text:
+*
+*     |1,0,0,0,0,0,0|
+*     |0,1,0,0,0,0,0|
+*     |0,0,1,0,0,0,0|
+*     |0,0,0,1,0,0,0|
+*     |0,0,0,0,1,0,0|
+*     |0,0,0,0,0,1,0|
+*
+*  5) Accept the suggest degrees of freedom
+*  6) Use same normalization as described above.
+*
+*  Compare the Beta (transposed) output with the "H1" section of Table 10.1
+*
+*
+*  As noted in the text, most of these hypotheses are more easily handled
+*     using the "R" formulation, where you specify R such that R'*Beta = 0.
+*
+*  To use that formulation, select "Change Restriction Formulation" from the
+*     "I(1)" menu and choose the "R'*(Beta/Tau) = 0" formulation. Note that
+*     you can also use the "Preferences" operation to change the default choice
+*     for this setting.
+*
+* H1: Do the following:
+*  1) Select "Restrictions on Subsets of Beta" from the "I(1)" matrix,
+*  2) Accept the defalut values on the first dialog (one subset, with
+*      three vectors in that subset),
+*  3) Enter 1 as the number of restrictions
+*  4) Enter the value 1 in the "Trend" column of R, as shown in the text.
+*  5) Accept the suggest degrees of freedom
+*  6) Use same normalization as described above.
+*
+* H2: As above, except set the D831 column of R to 1.
+*
+* H3: As above, except using the R' as shown in the text.
+*
+* H4: As above, but with 1s in the RM and RB columns of R.
+*
+* H5: This time, enter 2 as the number of restrictions, and enter R
+*      as shown in the text.
+*
+* H6: This time, enter 3 restrictions, and combine the values for R
+*      from H1, H3, and H4. That is, set row 1 of R according to the
+*      pattern for H1, row 2 according to the pattern used for H3, and
+*      row 3 to the pattern used for H4.
+*
+*****************************************************************
+* Table 10.2: 	Just compare unrestricted pi estimates (r=3)     *
+*		with pi under H6 (in the above output)                *
+*****************************************************************
+*
+*
+* Unrestricted constant
+*
+*
+* Exit CATS and restart with this model:
+*
+@cats(lags=2,shift,dum,dettrend=drift)
+# lm3rc lyr dpy Rm Rb
+# Ds831
+# Dt754 Dp764
+*
+* Set the Rank to 3
+* Normalize as indicated in the text (row 1 on DPY, row 2 on LM3RC,
+*  and row 3 on RM).
+*
+* Table 10.3
+* H7-H9: The "Variable Stationarity" operation on the "Automated Tests" menu handles
+*          all of these tests automatically. NOTE: Turn OFF the "Shift Dummies" switch
+*          in the dialog box to reproduce the results in rows 1 to 3 of Table 10.3 (row r=3, DPY,
+*          RM, and RB columns, repsectively, in the CATS output).
+*
+*        Full results can be obtained using the "Restrictions on Subsets of Beta" operation:
+*
+*        For this and subsequent tests, we'll demonstrate the "Beta=H*Phi" formulation--use
+*          the "Change Restriction Formulation" operation to switch back to that formulation.
+*
+*        For H7, choose "Restrictions on Subsets of Beta" from the "I(1)" menu.
+*        Use the dialog box to change the number of subsets to 2, and to select
+*         1 vector in the first subset and 2 vectors in the second subset.
+*
+*        Enter 5 as the number of restrictions on subset 1, and enter zeros for every column but DPY
+*          (which sould be set to 1) in the H' matrix.
+*        Enter 1 restriction on subset 2 (one "1" in each column of H', except for DPY, which has zeros in all rows.
+*          The H' arrays look like this:
+*            H' on subset 1 = [0,0,1,0,0,0]
+*            H' on subset 2 =
+*                     |1,0,0,0,0,0|
+*                     |0,1,0,0,0,0|
+*                     |0,0,0,1,0,0|
+*                     |0,0,0,0,1,0|
+*                     |0,0,0,0,0,1|
+*
+*            Choosing zero restrictions on subset 2 produces essentially the same results.
+*
+*        Normalize as indicated in the text (row 1 on DPY, row 2 on LM3RC, and row 3 on RM).
+*
+*
+* H8 and H9 are similar to above, just restricting a different variable.
+*
+* H10: Restrictions on Subsets of Beta, 2 subsets (1 and 2 vectors each, respectively).
+*            H' on 1   (5 restrictions) = [0,0,1,-1,0,0]
+*            H' on 2 = (1 restriction, zeros in column for RM)
+*                     |1,0,0,0,0,0|
+*                     |0,1,0,0,0,0|
+*                     |0,0,1,0,0,0|
+*                     |0,0,0,0,1,0|
+*                     |0,0,0,0,0,1|
+*
+*            Normalize vectors 1 and 3 on DPY, vector 2 on LM3RC.
+*
+*
+* H11: As above, but:
+*            H' on 1   (5 restrictions) = [0,0,1,0,-1,0]
+*            H' on 2 = (1 restriction, zeros in column for RB)
+*                     |1,0,0,0,0,0|
+*                     |0,1,0,0,0,0|
+*                     |0,0,1,0,0,0|
+*                     |0,0,0,1,0,0|
+*                     |0,0,0,0,0,1|
+*
+*            Normalize vector 1 on DPY, vector 2 on LM3RC, vector 3 on RM.
+*
+* H12: As above, but:
+*            H' on 1   (5 restrictions) = [0,0,0,1,-1,0]
+*            H' on 2 = (1 restriction, zeros in column for RB)
+*                     |1,0,0,0,0,0|
+*                     |0,1,0,0,0,0|
+*                     |0,0,1,0,0,0|
+*                     |0,0,0,1,0,0|
+*                     |0,0,0,0,0,1|
+*
+*            Normalize vectors 1 and 3 on RM, vector 2 on LM3RC.
+*
+* H13: As above, but:
+*            H' on 1   (4 restrictions)
+*                     [1,-1,0,0,0,0]
+*                     [0, 0,0,0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831)
+*                     |1,0,0,0,0,0|
+*                     |0,1,0,0,0,0|
+*                     |0,0,1,0,0,0|
+*                     |0,0,0,1,0,0|
+*                     |0,0,0,0,1,0|
+*
+*            Normalize on LM3RC, DPY, and RM.
+*
+* H14: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [1,-1,0,0,0,0]
+*                     [0, 0,1,0,0,0]
+*                     [0, 0,0,0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on LM3RC, DPY, and RM.
+*
+* H15: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [1,-1,0, 0,0,0]
+*                     [0, 0,0,-1,1,0]
+*                     [0, 0,0, 0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on LM3RC, DPY, and RM.
+*
+* H16: As above, but:
+*            H' on 1   (2 restrictions)
+*                     [1,-1,0, 0,0,0]
+*                     [0, 0,1, 0,0,0]
+*                     [0, 0,0,-1,1,0]
+*                     [0, 0,0, 0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on LM3RC, DPY, and RM.
+*
+*
+*
+* H17: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [0,1,0,0,0,0]
+*                     [0,0,1,0,0,0]
+*                     [0,0,0,0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on LYR, DPY, and RM.
+*
+* H18: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [0,1, 0,0,0,0]
+*                     [0,0,-1,1,0,0]
+*                     [0,0, 0,0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on LYR, DPY, and RM.
+
+* H19: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [0,1, 0,0,0,0]
+*                     [0,0,-1,0,1,0]
+*                     [0,0, 0,0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on LYR, DPY, and RM.
+
+* H20: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [0,1,0, 0,0,0]
+*                     [0,0,0,-1,1,0]
+*                     [0,0,0, 0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on LYR, DPY, and RM.
+*
+* H21: As above, but:
+*            H' on 1   (4 restrictions)
+*                     [0,0,1,0,0,0]
+*                     [0,0,0,0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on DPY, LM3RC, and RM.
+
+* H22: As above, but:
+*            H' on 1   (4 restrictions)
+*                     [0,0,1,-1,0,0]
+*                     [0,0,0, 0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on DPY, LM3RC, and RM.
+*
+* H23: As above, but:
+*            H' on 1   (4 restrictions)
+*                     [0,0,1,0,-1,0]
+*                     [0,0,0,0, 0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on DPY, LM3RC, and RM.
+*
+* H24: As above, but:
+*            H' on 1   (4 restrictions)
+*                     [0,0,0,1,-1,0]
+*                     [0,0,0,0, 0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on RM, LM3RC, and RM.
+*
+* H25: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [0,0,1,0,0,0]
+*                     [0,0,0,1,0,0]
+*                     [0,0,0,0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on DPY, LM3RC, and RM.
+*
+*
+* H26: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [0,0,1,0,0,0]
+*                     [0,0,0,0,1,0]
+*                     [0,0,0,0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on DPY, LM3RC, and RM.
+*
+* H27: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [0,0,0,1,0,0]
+*                     [0,0,0,0,1,0]
+*                     [0,0,0,0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on RM, LM3RC, and RM.
+*
+* H28: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [0,0,1,-1,0,0]
+*                     [0,0,0,-1,1,0]
+*                     [0,0,0, 0,0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on RM, LM3RC, and RM.
+*
+* H29: As above, but:
+*            H' on 1   (3 restrictions)
+*                     [0,0,1,0,0,0]
+*                     [0,0,0,1,-1,0]
+*                     [0,0,0,0, 0,1]
+*            H' on 2 = (1 restriction, zeros in column for DS831, as above)
+*
+*            Normalize on RM, LM3RC, and RM.
+
+
+
+
+
+
+
+
+
+
+
+
+

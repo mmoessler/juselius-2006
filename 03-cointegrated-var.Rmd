@@ -1,0 +1,3 @@
+# The Cointegrated VAR
+
+This chapter contains the replication of the material of Chapter 5 of @Juselius2006Cointegrated.
