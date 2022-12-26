@@ -6,7 +6,17 @@ This chapter contains the preparation of the data for the replication of the emp
 
 Download the material for the textbook provided by [Estima](https://www.estima.com/).
 
-See: [RATS Handbook for The Cointegrated VAR Model](https://www.estima.com/textbook_juselius.shtml)
+The material for the replication of the empirical analysis can be downloaded from the world wide web.
+
+1) Download the material [here](https://www.estima.com/cointhandbook/CointegratedVARModelHandbook.zip).
+2) Unpack the material in your directory.
+3) Load the data stored in the file `book.xls`.
+
+<!-- https://www.estima.com/cointhandbook/CointegratedVARModelHandbook.zip -->
+
+<!-- See: [RATS Handbook for The Cointegrated VAR Model](https://www.estima.com/textbook_juselius.shtml) -->
+
+
 
 ```{r, warning=FALSE, message=FALSE}
 
@@ -26,9 +36,10 @@ TT <- nrow(data)
 
 # Define time variable
 data$time <- seq(as.Date("1973-01-01"), as.Date("2003-01-01"), by="quarter")
-time <- seq(as.Date("1973-01-01"), as.Date("2003-01-01"), by="quarter")
 
 ```
+
+The data span observations from *1973-Q1* to *2003-Q1*.
 
 ## Dummy Variables
 

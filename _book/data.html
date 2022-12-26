@@ -4,20 +4,20 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 2 Data | Replication of The Cointegrated VAR Model of Katarina Juselius</title>
-  <meta name="description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model by Katarina Juselius using R." />
+  <title>Chapter 2 Data | Replication of The Cointegrated VAR Model</title>
+  <meta name="description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R." />
   <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 2 Data | Replication of The Cointegrated VAR Model of Katarina Juselius" />
+  <meta property="og:title" content="Chapter 2 Data | Replication of The Cointegrated VAR Model" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model by Katarina Juselius using R." />
+  <meta property="og:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R." />
   <meta name="github-repo" content="mmoessler/juselius-2006" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 2 Data | Replication of The Cointegrated VAR Model of Katarina Juselius" />
+  <meta name="twitter:title" content="Chapter 2 Data | Replication of The Cointegrated VAR Model" />
   
-  <meta name="twitter:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model by Katarina Juselius using R." />
+  <meta name="twitter:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R." />
   
 
 <meta name="author" content="Markus Mößler" />
@@ -155,7 +155,7 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">Replication of Juslius (2006)</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
@@ -166,11 +166,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3" data-path="the-unrestricted-var.html"><a href="the-unrestricted-var.html"><i class="fa fa-check"></i><b>3</b> The Unrestricted VAR</a></li>
 <li class="chapter" data-level="4" data-path="the-cointegrated-var.html"><a href="the-cointegrated-var.html"><i class="fa fa-check"></i><b>4</b> The Cointegrated VAR</a></li>
-<li class="chapter" data-level="5" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>5</b> Final Words</a></li>
+<li class="chapter" data-level="5" data-path="testing-restrictions-on-beta.html"><a href="testing-restrictions-on-beta.html"><i class="fa fa-check"></i><b>5</b> Testing Restrictions on <span class="math inline">\(\beta\)</span></a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
 </ul>
 
       </nav>
@@ -180,7 +177,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Replication of The Cointegrated VAR Model of Katarina Juselius</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Replication of The Cointegrated VAR Model</a>
           </h1>
         </div>
 
@@ -194,7 +191,14 @@ div.csl-indent {
 <div id="load-data" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Load Data<a href="data.html#load-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Download the material for the textbook provided by <a href="https://www.estima.com/">Estima</a>.</p>
-<p>See: <a href="https://www.estima.com/textbook_juselius.shtml">RATS Handbook for The Cointegrated VAR Model</a></p>
+<p>The material for the replication of the empirical analysis can be downloaded from the world wide web.</p>
+<ol style="list-style-type: decimal">
+<li>Download the material <a href="https://www.estima.com/cointhandbook/CointegratedVARModelHandbook.zip">here</a>.</li>
+<li>Unpack the material in your directory.</li>
+<li>Load the data stored in the file <code>book.xls</code>.</li>
+</ol>
+<!-- https://www.estima.com/cointhandbook/CointegratedVARModelHandbook.zip -->
+<!-- See: [RATS Handbook for The Cointegrated VAR Model](https://www.estima.com/textbook_juselius.shtml) -->
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load data</span></span>
 <span id="cb1-2"><a href="data.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb1-3"><a href="data.html#cb1-3" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;./CointegratedVARModelHandbook/book.xls&quot;</span>)</span>
@@ -204,8 +208,8 @@ div.csl-indent {
 <span id="cb2-2"><a href="data.html#cb2-2" aria-hidden="true" tabindex="-1"></a>TT <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
 <span id="cb2-3"><a href="data.html#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="data.html#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define time variable</span></span>
-<span id="cb2-5"><a href="data.html#cb2-5" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>time <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">&quot;1973-01-01&quot;</span>), <span class="fu">as.Date</span>(<span class="st">&quot;2003-01-01&quot;</span>), <span class="at">by=</span><span class="st">&quot;quarter&quot;</span>)</span>
-<span id="cb2-6"><a href="data.html#cb2-6" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">&quot;1973-01-01&quot;</span>), <span class="fu">as.Date</span>(<span class="st">&quot;2003-01-01&quot;</span>), <span class="at">by=</span><span class="st">&quot;quarter&quot;</span>)</span></code></pre></div>
+<span id="cb2-5"><a href="data.html#cb2-5" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>time <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">as.Date</span>(<span class="st">&quot;1973-01-01&quot;</span>), <span class="fu">as.Date</span>(<span class="st">&quot;2003-01-01&quot;</span>), <span class="at">by=</span><span class="st">&quot;quarter&quot;</span>)</span></code></pre></div>
+<p>The data span observations from <em>1973-Q1</em> to <em>2003-Q1</em>.</p>
 </div>
 <div id="dummy-variables" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Dummy Variables<a href="data.html#dummy-variables" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -263,8 +267,8 @@ gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
-"facebook": true,
-"twitter": true,
+"facebook": false,
+"twitter": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
@@ -278,18 +282,18 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-data.Rmd",
-"text": "Edit"
+"link": null,
+"text": null
 },
 "history": {
 "link": null,
 "text": null
 },
 "view": {
-"link": null,
+"link": "https://github.com/mmoessler/juselius-2006/blob/main/01-data.Rmd",
 "text": null
 },
-"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"download": null,
 "search": {
 "engine": "fuse",
 "options": null
@@ -301,6 +305,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
