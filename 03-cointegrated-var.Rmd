@@ -1,3 +1,46 @@
 # The Cointegrated VAR
 
+```{r, include=FALSE}
+
+source("./R/01-data.R")
+
+```
+
 This chapter contains the replication of the material of Chapter 5 of @Juselius2006Cointegrated.
+
+## Estimation
+
+Load the function `ca_jo_jus06_fun()` from *GitHub*. 
+
+```{r}
+
+source("https://raw.githubusercontent.com/mmoessler/juselius-2006/main/R/ca_jo_jus06_fun.R")
+
+```
+
+Call the function `ca_jo_jus06_fun()` for the Danisch data.
+
+
+
+Include *dummies* `Dt754`, `Dp764` and `Dp831` unrestricted.
+
+Include *dummy* `Ds831` restricted to the cointegrating relationship.
+
+Estimation *with trend in the cointegrating relationship*, i.e., call `ca_jo_jus06_fun(()` with `ecdet = c("trend")`.
+
+```{r}
+
+# with trend in cir, with shift dummy and with Ds831 in cir
+ca.jo.res.01 <- ca_jo_jus06_fun(x = data[,c("Lm3rC","Lyr","Dpy","Rm","Rb")], type = c("trace"), ecdet = c("trend"), K = 2, spec = c("transitory"), data = data)
+
+```
+
+Estimation *without trend in the cointegrating relationship*, i.e., call `ca_jo_jus06_fun(()` with `ecdet = c("none")`.
+
+```{r}
+
+# without trend in cir, with shift dummy and with Ds831 in cir
+ca.jo.res.02 <- ca_jo_jus06_fun(x = data[,c("Lm3rC","Lyr","Dpy","Rm","Rb")], type = c("trace"), ecdet = c("none"), K = 2, spec = c("transitory"), data = data)
+
+```
+
