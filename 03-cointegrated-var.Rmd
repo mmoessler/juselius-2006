@@ -18,7 +18,7 @@ source("https://raw.githubusercontent.com/mmoessler/juselius-2006/main/R/ca_jo_j
 
 ```
 
-Call the function `ca_jo_jus06_fun()` for the Danisch data.
+Call the function `ca_jo_jus06_fun()` for the Danish data.
 
 
 
@@ -43,4 +43,61 @@ Estimation *without trend in the cointegrating relationship*, i.e., call `ca_jo_
 ca.jo.res.02 <- ca_jo_jus06_fun(x = data[,c("Lm3rC","Lyr","Dpy","Rm","Rb")], type = c("trace"), ecdet = c("none"), K = 2, spec = c("transitory"), data = data)
 
 ```
+
+
+
+## Results
+
+Compare results with *Table 7.1* of *Juselius (2006)*.
+
+Lambdas $\widehat{\lambda}_i$
+
+```{r}
+
+round(Re(ca.jo.res.01$lambda),2) 
+
+```
+
+Non-nomralized eigenvectors $\widehat{v}_i^{'}$
+
+```{r}
+
+t(round(Re(ca.jo.res.01$Vorg),2))
+
+```
+
+Normalized eigenvectors
+
+```{r}
+
+round(ca.jo.res.01$Vorg[,1]/ca.jo.res.01$Vorg[3,1],2)
+round(ca.jo.res.01$Vorg[,2]/ca.jo.res.01$Vorg[1,2],2)
+round(ca.jo.res.01$Vorg[,3]/ca.jo.res.01$Vorg[4,3],2)
+round(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4],2)
+round(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4],2)
+round(ca.jo.res.01$Vorg[,5]/ca.jo.res.01$Vorg[5,5],2)
+
+V.01 <- cbind(cbind(ca.jo.res.01$Vorg[,1]/ca.jo.res.01$Vorg[3,1]),
+      cbind(ca.jo.res.01$Vorg[,2]/ca.jo.res.01$Vorg[1,2]),
+      cbind(ca.jo.res.01$Vorg[,3]/ca.jo.res.01$Vorg[4,3]),
+      cbind(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4]),
+      cbind(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4]),
+      cbind(ca.jo.res.01$Vorg[,5]/ca.jo.res.01$Vorg[5,5]))
+
+# W.01 <- Worg <- S0K %*% Vorg %*% solve(t(Vorg) %*% SKK %*% Vorg)
+
+```
+
+
+
+Combined effects: $\widehat{\Pi}$
+
+```{r}
+
+round(ca.jo.res.01$PI,2)
+
+```
+
+
+
 
