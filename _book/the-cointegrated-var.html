@@ -23,7 +23,7 @@
 <meta name="author" content="Markus Mößler" />
 
 
-<meta name="date" content="2022-12-27" />
+<meta name="date" content="2022-12-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -168,6 +168,7 @@ div.csl-indent {
 <li class="chapter" data-level="4" data-path="the-cointegrated-var.html"><a href="the-cointegrated-var.html"><i class="fa fa-check"></i><b>4</b> The Cointegrated VAR</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="the-cointegrated-var.html"><a href="the-cointegrated-var.html#estimation"><i class="fa fa-check"></i><b>4.1</b> Estimation</a></li>
+<li class="chapter" data-level="4.2" data-path="the-cointegrated-var.html"><a href="the-cointegrated-var.html#results"><i class="fa fa-check"></i><b>4.2</b> Results</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="testing-restrictions-on-beta.html"><a href="testing-restrictions-on-beta.html"><i class="fa fa-check"></i><b>5</b> Testing Restrictions on <span class="math inline">\(\beta\)</span></a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -195,7 +196,7 @@ div.csl-indent {
 <h2><span class="header-section-number">4.1</span> Estimation<a href="the-cointegrated-var.html#estimation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Load the function <code>ca_jo_jus06_fun()</code> from <em>GitHub</em>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="the-cointegrated-var.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;https://raw.githubusercontent.com/mmoessler/juselius-2006/main/R/ca_jo_jus06_fun.R&quot;</span>)</span></code></pre></div>
-<p>Call the function <code>ca_jo_jus06_fun()</code> for the Danisch data.</p>
+<p>Call the function <code>ca_jo_jus06_fun()</code> for the Danish data.</p>
 <p>Include <em>dummies</em> <code>Dt754</code>, <code>Dp764</code> and <code>Dp831</code> unrestricted.</p>
 <p>Include <em>dummy</em> <code>Ds831</code> restricted to the cointegrating relationship.</p>
 <p>Estimation <em>with trend in the cointegrating relationship</em>, i.e., call <code>ca_jo_jus06_fun(()</code> with <code>ecdet = c("trend")</code>.</p>
@@ -204,6 +205,31 @@ div.csl-indent {
 <p>Estimation <em>without trend in the cointegrating relationship</em>, i.e., call <code>ca_jo_jus06_fun(()</code> with <code>ecdet = c("none")</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="the-cointegrated-var.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># without trend in cir, with shift dummy and with Ds831 in cir</span></span>
 <span id="cb3-2"><a href="the-cointegrated-var.html#cb3-2" aria-hidden="true" tabindex="-1"></a>ca.jo.res<span class="fl">.02</span> <span class="ot">&lt;-</span> <span class="fu">ca_jo_jus06_fun</span>(<span class="at">x =</span> data[,<span class="fu">c</span>(<span class="st">&quot;Lm3rC&quot;</span>,<span class="st">&quot;Lyr&quot;</span>,<span class="st">&quot;Dpy&quot;</span>,<span class="st">&quot;Rm&quot;</span>,<span class="st">&quot;Rb&quot;</span>)], <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;trace&quot;</span>), <span class="at">ecdet =</span> <span class="fu">c</span>(<span class="st">&quot;none&quot;</span>), <span class="at">K =</span> <span class="dv">2</span>, <span class="at">spec =</span> <span class="fu">c</span>(<span class="st">&quot;transitory&quot;</span>), <span class="at">data =</span> data)</span></code></pre></div>
+</div>
+<div id="results" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Results<a href="the-cointegrated-var.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Compare results with <em>Table 7.1</em> of <em>Juselius (2006)</em>.</p>
+<p>Lambdas <span class="math inline">\(\widehat{\lambda}_i\)</span></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="the-cointegrated-var.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">Re</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>lambda),<span class="dv">2</span>) </span></code></pre></div>
+<pre><code>## [1] 0.35 0.23 0.20 0.09 0.06 0.00 0.00</code></pre>
+<p>Non-nomralized eigenvectors <span class="math inline">\(\widehat{v}_i^{&#39;}\)</span></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="the-cointegrated-var.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">round</span>(<span class="fu">Re</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg),<span class="dv">2</span>))</span></code></pre></div>
+<pre><code>##          Lm3rC.l1 Lyr.l1 Dpy.l1   Rm.l1   Rb.l1 Ds831 trend.l1
+## Lm3rC.l1    12.66  -6.68 193.80  -57.07  110.00 -0.35     0.01
+## Lyr.l1     -18.44  18.90  63.59  156.97 -147.57  4.50     0.01
+## Dpy.l1      -1.90  12.48   8.89  499.29 -310.13 -2.84    -0.02
+## Rm.l1        8.86  14.18   7.50  100.14  211.44 -0.07    -0.03
+## Rb.l1        1.07  18.32  -2.54 -148.22   60.12  1.00    -0.10
+## Ds831       -6.66   3.79   0.35  -17.94  -38.92 -2.39     0.05
+## trend.l1    -5.64  -1.49  -6.11 -116.62   83.95 -0.93     0.04</code></pre>
+<p>Combined effects: <span class="math inline">\(\widehat{\Pi}\)</span></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="the-cointegrated-var.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>PI,<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##         Lm3rC.l1 Lyr.l1 Dpy.l1 Rm.l1 Rb.l1 Ds831 trend.l1
+## Lm3rC.d    -0.26   0.13  -0.51  2.86 -3.39  0.03        0
+## Lyr.d       0.02  -0.15  -0.28 -2.13  0.59  0.00        0
+## Dpy.d       0.00   0.01  -0.84 -0.52  0.27  0.00        0
+## Rm.d        0.00   0.00   0.02 -0.11  0.05  0.00        0
+## Rb.d        0.00   0.00   0.01  0.08 -0.10  0.00        0</code></pre>
 
 </div>
 </div>
