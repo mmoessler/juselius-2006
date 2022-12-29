@@ -343,7 +343,8 @@ ca_jo_jus06_fun <- function (x, type = c("eigen", "trace"), ecdet = c("none", "c
                   DELTA = DELTA, GAMMA = GAMMA, R0 = R0, RK = RK, bp = NA,
                   test.name = "Johansen-Procedure", spec = spec, P = P,
                   call = match.call(), PP=P, SKK = SKK, S00 = S00, Worg = Worg,
-                  logl = logl)
+                  logl = logl,
+                  S0K = S0K)
 
   return(ret.lis)
 
