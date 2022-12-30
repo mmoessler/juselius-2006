@@ -44,7 +44,7 @@ ca.jo.res.02 <- ca_jo_jus06_fun(x = data[,c("Lm3rC","Lyr","Dpy","Rm","Rb")], typ
 
 ```
 
-Note, the function `ca_jo_jus06_fun()` is based on the function `ca.jo()` from the library `urca` (see also @Pfaff2008Analysis). The dummy variables are added inside the function, i.e., "hard". Check the code on [*GitHub*](https://github.com/mmoessler/juselius-2006/blob/main/R/ca_jo_jus06_fun.R) for more information.
+Note, the function `ca_jo_jus06_fun()` is based on the function `ca.jo()` from the library `urca` (see also @Pfaff2008Analysis). The dummy variables are added inside the function, i.e., "hard". Check the code on *GitHub* (`mmoessler/juselius-2006/main/R/ca_jo_jus06_fun.R`) for more information.
 
 ## Results
 
