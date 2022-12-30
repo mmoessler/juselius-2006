@@ -6,7 +6,7 @@ source("./R/01-data.R")
 
 ```
 
-This chapter contains the replication of the material of Chapter 5 of @Juselius2006Cointegrated.
+This chapter contains the replication of the material of Chapter 7 of @Juselius2006Cointegrated.
 
 ## Estimation
 
@@ -44,38 +44,29 @@ ca.jo.res.02 <- ca_jo_jus06_fun(x = data[,c("Lm3rC","Lyr","Dpy","Rm","Rb")], typ
 
 ```
 
-
+Note, the function `ca_jo_jus06_fun()` is based on the function `ca.jo()` from the library `urca` (see also @Pfaff2008Analysis). The dummy variables are added inside the function, i.e., "hard". Check the code on *GitHub* for more information.
 
 ## Results
 
-Compare results with *Table 7.1* of *Juselius (2006)*.
-
-Lambdas $\widehat{\lambda}_i$
+Lambdas $\widehat{\lambda}_i$ (see *Table 7.1* of @Juselius2006Cointegrated)
 
 ```{r}
 
-round(Re(ca.jo.res.01$lambda),2) 
+round(Re(ca.jo.res.01$lambda), 2) 
 
 ```
 
-Non-nomralized eigenvectors $\widehat{v}_i^{'}$
+Non-nomralized eigenvectors $\widehat{v}_i$ (see *Table 7.1* of @Juselius2006Cointegrated)
 
 ```{r}
 
-t(round(Re(ca.jo.res.01$Vorg),2))
+round(Re(ca.jo.res.01$Vorg), 2)
 
 ```
 
-Normalized eigenvectors
+Normalized eigenvectors $\widehat{\beta}_i$ (see *Table 7.1* of @Juselius2006Cointegrated)
 
 ```{r}
-
-round(ca.jo.res.01$Vorg[,1]/ca.jo.res.01$Vorg[3,1],2)
-round(ca.jo.res.01$Vorg[,2]/ca.jo.res.01$Vorg[1,2],2)
-round(ca.jo.res.01$Vorg[,3]/ca.jo.res.01$Vorg[4,3],2)
-round(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4],2)
-round(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4],2)
-round(ca.jo.res.01$Vorg[,5]/ca.jo.res.01$Vorg[5,5],2)
 
 V.01 <- cbind(cbind(ca.jo.res.01$Vorg[,1]/ca.jo.res.01$Vorg[3,1]),
               cbind(ca.jo.res.01$Vorg[,2]/ca.jo.res.01$Vorg[1,2]),
@@ -85,21 +76,26 @@ V.01 <- cbind(cbind(ca.jo.res.01$Vorg[,1]/ca.jo.res.01$Vorg[3,1]),
               cbind(ca.jo.res.01$Vorg[,6]/ca.jo.res.01$Vorg[1,6]),
               cbind(ca.jo.res.01$Vorg[,7]/ca.jo.res.01$Vorg[1,7]))
 
-V.01
-
-W.01 <- ca.jo.res.01$S0K %*% V.01 %*% solve(t(V.01) %*% ca.jo.res.01$SKK %*% V.01)
-
-W.01
+round(V.01, 2)
 
 ```
 
+Normalized weights $\widehat{\alpha}_i$ (see *Table 7.1* of @Juselius2006Cointegrated)
 
-
-Combined effects: $\widehat{\Pi}$
 
 ```{r}
 
-round(ca.jo.res.01$PI,2)
+W.01 <- ca.jo.res.01$S0K %*% V.01 %*% solve(t(V.01) %*% ca.jo.res.01$SKK %*% V.01)
+
+round(W.01, 2)
+
+```
+
+Combined effects: $\widehat{\Pi}$ (see *Table 7.1* of @Juselius2006Cointegrated)
+
+```{r}
+
+round(ca.jo.res.01$PI, 2)
 
 ```
 
