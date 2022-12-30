@@ -78,13 +78,18 @@ round(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4],2)
 round(ca.jo.res.01$Vorg[,5]/ca.jo.res.01$Vorg[5,5],2)
 
 V.01 <- cbind(cbind(ca.jo.res.01$Vorg[,1]/ca.jo.res.01$Vorg[3,1]),
-      cbind(ca.jo.res.01$Vorg[,2]/ca.jo.res.01$Vorg[1,2]),
-      cbind(ca.jo.res.01$Vorg[,3]/ca.jo.res.01$Vorg[4,3]),
-      cbind(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4]),
-      cbind(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4]),
-      cbind(ca.jo.res.01$Vorg[,5]/ca.jo.res.01$Vorg[5,5]))
+              cbind(ca.jo.res.01$Vorg[,2]/ca.jo.res.01$Vorg[1,2]),
+              cbind(ca.jo.res.01$Vorg[,3]/ca.jo.res.01$Vorg[4,3]),
+              cbind(ca.jo.res.01$Vorg[,4]/ca.jo.res.01$Vorg[2,4]),
+              cbind(ca.jo.res.01$Vorg[,5]/ca.jo.res.01$Vorg[5,5]),
+              cbind(ca.jo.res.01$Vorg[,6]/ca.jo.res.01$Vorg[1,6]),
+              cbind(ca.jo.res.01$Vorg[,7]/ca.jo.res.01$Vorg[1,7]))
 
-# W.01 <- Worg <- S0K %*% Vorg %*% solve(t(Vorg) %*% SKK %*% Vorg)
+V.01
+
+W.01 <- ca.jo.res.01$S0K %*% V.01 %*% solve(t(V.01) %*% ca.jo.res.01$SKK %*% V.01)
+
+W.01
 
 ```
 
