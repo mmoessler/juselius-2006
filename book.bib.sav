@@ -1,0 +1,29 @@
+% Encoding: UTF-8
+
+@Book{xie2015,
+  title = {Dynamic Documents with {R} and knitr},
+  author = {Yihui Xie},
+  publisher = {Chapman and Hall/CRC},
+  address = {Boca Raton, Florida},
+  year = {2015},
+  edition = {2nd},
+  note = {ISBN 978-1498716963},
+  url = {http://yihui.name/knitr/},
+}
+
+@Book{Juselius2006Cointegrated,
+  author    = {Juselius, Katarina},
+  publisher = {Oxford University Press},
+  title     = {The Cointegrated VAR Model: Methodology and Applications},
+  year      = {2006},
+}
+
+@Book{Pfaff2008Analysis,
+  author    = {Pfaff, Bernhard},
+  publisher = {Springer Science & Business Media},
+  title     = {Analysis of Integrated and Cointegrated Time Series with R},
+  year      = {2008},
+  address   = {Berlin Heidelberg},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

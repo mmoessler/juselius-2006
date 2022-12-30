@@ -23,7 +23,7 @@
 <meta name="author" content="Markus Mößler" />
 
 
-<meta name="date" content="2022-12-28" />
+<meta name="date" content="2022-12-30" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -191,7 +191,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="the-cointegrated-var" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">Chapter 4</span> The Cointegrated VAR<a href="the-cointegrated-var.html#the-cointegrated-var" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This chapter contains the replication of the material of Chapter 5 of <span class="citation"><a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">Juselius</a> (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>.</p>
+<p>This chapter contains the replication of the material of Chapter 7 of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>.</p>
 <div id="estimation" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Estimation<a href="the-cointegrated-var.html#estimation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Load the function <code>ca_jo_jus06_fun()</code> from <em>GitHub</em>.</p>
@@ -205,25 +205,53 @@ div.csl-indent {
 <p>Estimation <em>without trend in the cointegrating relationship</em>, i.e., call <code>ca_jo_jus06_fun(()</code> with <code>ecdet = c("none")</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="the-cointegrated-var.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># without trend in cir, with shift dummy and with Ds831 in cir</span></span>
 <span id="cb3-2"><a href="the-cointegrated-var.html#cb3-2" aria-hidden="true" tabindex="-1"></a>ca.jo.res<span class="fl">.02</span> <span class="ot">&lt;-</span> <span class="fu">ca_jo_jus06_fun</span>(<span class="at">x =</span> data[,<span class="fu">c</span>(<span class="st">&quot;Lm3rC&quot;</span>,<span class="st">&quot;Lyr&quot;</span>,<span class="st">&quot;Dpy&quot;</span>,<span class="st">&quot;Rm&quot;</span>,<span class="st">&quot;Rb&quot;</span>)], <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;trace&quot;</span>), <span class="at">ecdet =</span> <span class="fu">c</span>(<span class="st">&quot;none&quot;</span>), <span class="at">K =</span> <span class="dv">2</span>, <span class="at">spec =</span> <span class="fu">c</span>(<span class="st">&quot;transitory&quot;</span>), <span class="at">data =</span> data)</span></code></pre></div>
+<p>Note, the function <code>ca_jo_jus06_fun()</code> is based on the function <code>ca.jo()</code> from the library <code>urca</code> (see also <span class="citation">Pfaff (<a href="#ref-Pfaff2008Analysis" role="doc-biblioref">2008</a>)</span>). The dummy variables are added inside the function, i.e., “hard”. Check the code on <em>GitHub</em> for more information.</p>
 </div>
 <div id="results" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Results<a href="the-cointegrated-var.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Compare results with <em>Table 7.1</em> of <em>Juselius (2006)</em>.</p>
-<p>Lambdas <span class="math inline">\(\widehat{\lambda}_i\)</span></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="the-cointegrated-var.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">Re</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>lambda),<span class="dv">2</span>) </span></code></pre></div>
+<p>Lambdas <span class="math inline">\(\widehat{\lambda}_i\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="the-cointegrated-var.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">Re</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>lambda), <span class="dv">2</span>) </span></code></pre></div>
 <pre><code>## [1] 0.35 0.23 0.20 0.09 0.06 0.00 0.00</code></pre>
-<p>Non-nomralized eigenvectors <span class="math inline">\(\widehat{v}_i^{&#39;}\)</span></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="the-cointegrated-var.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">round</span>(<span class="fu">Re</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg),<span class="dv">2</span>))</span></code></pre></div>
-<pre><code>##          Lm3rC.l1 Lyr.l1 Dpy.l1   Rm.l1   Rb.l1 Ds831 trend.l1
-## Lm3rC.l1    12.66  -6.68 193.80  -57.07  110.00 -0.35     0.01
-## Lyr.l1     -18.44  18.90  63.59  156.97 -147.57  4.50     0.01
-## Dpy.l1      -1.90  12.48   8.89  499.29 -310.13 -2.84    -0.02
-## Rm.l1        8.86  14.18   7.50  100.14  211.44 -0.07    -0.03
-## Rb.l1        1.07  18.32  -2.54 -148.22   60.12  1.00    -0.10
-## Ds831       -6.66   3.79   0.35  -17.94  -38.92 -2.39     0.05
-## trend.l1    -5.64  -1.49  -6.11 -116.62   83.95 -0.93     0.04</code></pre>
-<p>Combined effects: <span class="math inline">\(\widehat{\Pi}\)</span></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="the-cointegrated-var.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>PI,<span class="dv">2</span>)</span></code></pre></div>
+<p>Non-nomralized eigenvectors <span class="math inline">\(\widehat{v}_i\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="the-cointegrated-var.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">Re</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg), <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##          Lm3rC.l1  Lyr.l1  Dpy.l1  Rm.l1   Rb.l1  Ds831 trend.l1
+## Lm3rC.l1    12.66  -18.44   -1.90   8.86    1.07  -6.66    -5.64
+## Lyr.l1      -6.68   18.90   12.48  14.18   18.32   3.79    -1.49
+## Dpy.l1     193.80   63.59    8.89   7.50   -2.54   0.35    -6.11
+## Rm.l1      -57.07  156.97  499.29 100.14 -148.22 -17.94  -116.62
+## Rb.l1      110.00 -147.57 -310.13 211.44   60.12 -38.92    83.95
+## Ds831       -0.35    4.50   -2.84  -0.07    1.00  -2.39    -0.93
+## trend.l1     0.01    0.01   -0.02  -0.03   -0.10   0.05     0.04</code></pre>
+<p>Normalized eigenvectors <span class="math inline">\(\widehat{\beta}_i\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="the-cointegrated-var.html#cb8-1" aria-hidden="true" tabindex="-1"></a>V<span class="fl">.01</span> <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">1</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">3</span>,<span class="dv">1</span>]),</span>
+<span id="cb8-2"><a href="the-cointegrated-var.html#cb8-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">2</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">1</span>,<span class="dv">2</span>]),</span>
+<span id="cb8-3"><a href="the-cointegrated-var.html#cb8-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">3</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">4</span>,<span class="dv">3</span>]),</span>
+<span id="cb8-4"><a href="the-cointegrated-var.html#cb8-4" aria-hidden="true" tabindex="-1"></a>              <span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">4</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">2</span>,<span class="dv">4</span>]),</span>
+<span id="cb8-5"><a href="the-cointegrated-var.html#cb8-5" aria-hidden="true" tabindex="-1"></a>              <span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">5</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">5</span>,<span class="dv">5</span>]),</span>
+<span id="cb8-6"><a href="the-cointegrated-var.html#cb8-6" aria-hidden="true" tabindex="-1"></a>              <span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">6</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">1</span>,<span class="dv">6</span>]),</span>
+<span id="cb8-7"><a href="the-cointegrated-var.html#cb8-7" aria-hidden="true" tabindex="-1"></a>              <span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">7</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">1</span>,<span class="dv">7</span>]))</span>
+<span id="cb8-8"><a href="the-cointegrated-var.html#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="the-cointegrated-var.html#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(V<span class="fl">.01</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##           [,1]  [,2]  [,3]  [,4]  [,5]  [,6]   [,7]
+## Lm3rC.l1  0.07  1.00  0.00  0.62  0.02  1.00   1.00
+## Lyr.l1   -0.03 -1.02  0.02  1.00  0.30 -0.57   0.26
+## Dpy.l1    1.00 -3.45  0.02  0.53 -0.04 -0.05   1.08
+## Rm.l1    -0.29 -8.51  1.00  7.06 -2.47  2.69  20.68
+## Rb.l1     0.57  8.00 -0.62 14.91  1.00  5.84 -14.88
+## Ds831     0.00 -0.24 -0.01  0.00  0.02  0.36   0.16
+## trend.l1  0.00  0.00  0.00  0.00  0.00 -0.01  -0.01</code></pre>
+<p>Normalized weights <span class="math inline">\(\widehat{\alpha}_i\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="the-cointegrated-var.html#cb10-1" aria-hidden="true" tabindex="-1"></a>W<span class="fl">.01</span> <span class="ot">&lt;-</span> ca.jo.res<span class="fl">.01</span><span class="sc">$</span>S0K <span class="sc">%*%</span> V<span class="fl">.01</span> <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(V<span class="fl">.01</span>) <span class="sc">%*%</span> ca.jo.res<span class="fl">.01</span><span class="sc">$</span>SKK <span class="sc">%*%</span> V<span class="fl">.01</span>)</span>
+<span id="cb10-2"><a href="the-cointegrated-var.html#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="the-cointegrated-var.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(W<span class="fl">.01</span>, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##       [,1]  [,2]  [,3]  [,4]  [,5] [,6] [,7]
+## [1,] -1.05 -0.15  1.18 -0.05 -0.15    0    0
+## [2,] -0.06  0.05 -1.54 -0.05 -0.05    0    0
+## [3,] -0.71  0.04 -0.30  0.01  0.07    0    0
+## [4,]  0.02  0.00 -0.10  0.00  0.01    0    0
+## [5,]  0.02  0.00  0.16  0.00  0.01    0    0</code></pre>
+<p>Combined effects: <span class="math inline">\(\widehat{\Pi}\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="the-cointegrated-var.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>PI, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##         Lm3rC.l1 Lyr.l1 Dpy.l1 Rm.l1 Rb.l1 Ds831 trend.l1
 ## Lm3rC.d    -0.26   0.13  -0.51  2.86 -3.39  0.03        0
 ## Lyr.d       0.02  -0.15  -0.28 -2.13  0.59  0.00        0
@@ -237,6 +265,9 @@ div.csl-indent {
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Juselius2006Cointegrated" class="csl-entry">
 Juselius, Katarina. 2006. <em>The Cointegrated VAR Model: Methodology and Applications</em>. Oxford University Press.
+</div>
+<div id="ref-Pfaff2008Analysis" class="csl-entry">
+Pfaff, Bernhard. 2008. <em>Analysis of Integrated and Cointegrated Time Series with r</em>. Springer Science &amp; Business Media.
 </div>
 </div>
             </section>
