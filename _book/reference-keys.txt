@@ -17,3 +17,7 @@ the-cointegrated-var
 testing-restrictions-on-beta
 estimation
 results
+identification-of-the-long-run-structure
+just-identified-long-run-structures
+s.1
+mathcalh_s.1
