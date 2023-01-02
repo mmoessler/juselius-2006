@@ -1,0 +1,122 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Identification of the long-run structure
+
+```{r, include=FALSE}
+
+source("./R/01-data.R")
+source("./R/03-cointegrated-var.R")
+
+```
+
+This chapter contains the replication of the material of Chapter 12 of @Juselius2006Cointegrated.
+
+## Just-identified long-run structures
+
+### $\mathcal{H}_{S.1}$
+
+Use the estimation result `ca.jo.res.02` and reorder the variables according to $\left(m^r, \Delta p, R_m, y^r, R_b\right)$.
+
+```{r}
+
+P <- matrix(c(1,0,0,0,0,0,
+              0,0,1,0,0,0,
+              0,0,0,1,0,0,
+              0,1,0,0,0,0,
+              0,0,0,0,1,0,
+              0,0,0,0,0,1), nrow = 6, byrow = T)
+
+beta.hat <- P %*% ca.jo.res.02$Vorg[,c(1,2,3)]
+
+alpha.hat <- P[-6,-6] %*% ca.jo.res.02$Worg[,c(1,2,3)]
+
+```
+
+Apply triangularization, i.e., normalize w.r.t. to $m^r$, $\Delta p$ and $R_m$.
+
+```{r}
+
+r <- 3
+S1 <- diag(r)
+S2 <- matrix(0, nrow = nrow(beta.hat) - r, ncol = r)
+S <- rbind(S1, S2)
+
+```
+
+```{r}
+
+beta.norm <- beta.hat %*% solve(t(S) %*% beta.hat)
+
+```
+
+$\widehat{\beta}_i$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
+
+```{r}
+
+round(beta.norm, 2)
+
+```
+
+```{r}
+
+alpha.norm <- alpha.hat %*% (t(beta.hat) %*% S)
+
+```
+
+$\widehat{\alpha}_i$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
+
+```{r}
+
+round(alpha.norm, 2)
+
+```
+
+Construct standard errors using *Equation 12.13* of @Juselius2006Cointegrated.
+
+Reorder the elements in $S_{11}$ and $\widehat{\Omega}$ according to $\left(m^r, \Delta p, R_m, y^r, R_b\right)$.
+
+```{r}
+
+S11 <- P %*% ca.jo.res.02$SKK %*% t(P)
+
+```
+
+```{r}
+
+Sig.e <- P[-6,-6] %*% ca.jo.res.02$DELTA %*% t(P[-6,-6])
+
+```
+
+```{r}
+
+TT <- nrow(ca.jo.res.02$R0)
+nr <- nrow(beta.norm)
+
+library(MASS)
+H <- Null(S)
+H <- diag(r) %x% H
+cov.beta.jus <- H %*% solve( t(H) %*% ( (t(alpha.norm) %*% solve(Sig.e) %*% alpha.norm) %x% S11 ) %*% H ) %*% t(H) / TT
+
+```
+
+```{r}
+
+se <- sqrt(diag(cov.beta.jus)[c((0*nr+r+1):(0*nr+r+r), (1*nr+r+1):(1*nr+r+r), (2*nr+r+1):(2*nr+r+r))])
+be <- rbind(beta.norm[(r+1):nr, 1, drop = FALSE], beta.norm[(r+1):nr, 2, drop = FALSE], beta.norm[(r+1):nr, 3, drop = FALSE])
+
+te <- be/se
+
+```
+
+Test statistic $\widehat{\beta}_i$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
+
+```{r}
+
+round(te, 2)
+
+```
+
+
