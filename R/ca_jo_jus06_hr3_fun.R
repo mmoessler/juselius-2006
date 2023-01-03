@@ -249,6 +249,7 @@ ca_jo_jus06_hr3_fun <- function(z,
                   lag = z$lag, ecdet = z$ecdet, x = z$x,
                   bet.nor = bet.nor,
                   teststat = teststat, pval = pval,
-                  diff = diff, iter = i)
+                  diff = diff, iter = i,
+                  SKK = SKK)
 
 }
