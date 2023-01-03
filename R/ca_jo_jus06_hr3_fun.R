@@ -248,6 +248,7 @@ ca_jo_jus06_hr3_fun <- function(z,
                   nor.id1 = nor.id1, nor.id2 = nor.id2, nor.id3 = nor.id3,
                   lag = z$lag, ecdet = z$ecdet, x = z$x,
                   bet.nor = bet.nor,
-                  teststat = teststat, pval = pval)
+                  teststat = teststat, pval = pval,
+                  diff = diff, iter = i)
 
 }
