@@ -3,6 +3,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+
 # Identification of the long-run structure
 
 ```{r, include=FALSE}
@@ -16,9 +17,19 @@ This chapter contains the replication of the material of Chapter 12 of @Juselius
 
 ## Just-identified long-run structures
 
-### $\mathcal{H}_{S.1}$
+<!-- .................................................. -->
+<hr>
+
+### $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated
+
+<!-- .................................................. -->
+<hr>
+
+#### Estimates
 
 Use the estimation result `ca.jo.res.02` and reorder the variables according to $\left(m^r, \Delta p, R_m, y^r, R_b\right)$.
+
+<!-- Apply triangularization, i.e., normalize w.r.t. to $m^r$, $\Delta p$ and $R_m$. -->
 
 ```{r}
 
@@ -35,69 +46,180 @@ alpha.hat <- P[-6,-6] %*% ca.jo.res.02$Worg[,c(1,2,3)]
 
 ```
 
-Apply triangularization, i.e., normalize w.r.t. to $m^r$, $\Delta p$ and $R_m$.
+<!-- .................................................. -->
+<hr>
+
+Apply normalization of $\widehat{\beta}$ by $c$ (see *Chapter 13.2* of @Johansen1995Likelihood)
+
+\begin{align}
+\widehat{\beta}_{c}=\widehat{\beta}\left(c^{'}\widehat{\beta}\right)^{-1},
+\end{align}
+
+with $c^{'}=\left(I_{r}, 0_{p}\right)$.
+
+Construct $c$
 
 ```{r}
 
 r <- 3
-S1 <- diag(r)
-S2 <- matrix(0, nrow = nrow(beta.hat) - r, ncol = r)
-S <- rbind(S1, S2)
+c1 <- diag(r)
+c2 <- matrix(0, nrow = nrow(beta.hat) - r, ncol = r)
+c.norm <- rbind(c1, c2)
 
 ```
+
+Construct $\widehat{\beta}_{c}$
 
 ```{r}
 
-beta.norm <- beta.hat %*% solve(t(S) %*% beta.hat)
+beta.norm <- beta.hat %*% solve(t(c.norm) %*% beta.hat)
 
 ```
 
-$\widehat{\beta}_i$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
+Compare with results under $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated
 
 ```{r}
 
-round(beta.norm, 2)
+round(t(P) %*% beta.norm, 2)
 
 ```
+
+
+
+
+
+<!-- .................................................. -->
+<hr>
+
+Apply normalization of $\widehat{\alpha}$ by $c$ (see *Chapter 13.2* of @Johansen1995Likelihood)
+
+\begin{align}
+\widehat{\alpha}_{c}=\widehat{\alpha}\widehat{\beta}^{'}c,
+\end{align}
+
+with $c^{'}=\left(I_{r}, 0_{p}\right)$.
+
+Construct $\widehat{\alpha}_{c}$
 
 ```{r}
 
-alpha.norm <- alpha.hat %*% (t(beta.hat) %*% S)
+alpha.norm <- alpha.hat %*% (t(beta.hat) %*% c.norm)
 
 ```
 
-$\widehat{\alpha}_i$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
+Compare with results under $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated
 
 ```{r}
 
-round(alpha.norm, 2)
+round(t(P[-6,-6]) %*% alpha.norm, 2)
 
 ```
 
-Construct standard errors using *Equation 12.13* of @Juselius2006Cointegrated.
 
-Reorder the elements in $S_{11}$ and $\widehat{\Omega}$ according to $\left(m^r, \Delta p, R_m, y^r, R_b\right)$.
 
-```{r}
 
-S11 <- P %*% ca.jo.res.02$SKK %*% t(P)
 
-```
+<!-- .................................................. -->
+<hr>
 
-```{r}
+#### Standard Errors
 
-Sig.e <- P[-6,-6] %*% ca.jo.res.02$DELTA %*% t(P[-6,-6])
+<!-- .................................................. -->
+<hr>
 
-```
+Construct standard errors based on *Equation 12.13* of @Juselius2006Cointegrated.
 
 ```{r}
 
 TT <- nrow(ca.jo.res.02$R0)
 nr <- nrow(beta.norm)
 
+```
+
+Reorder the elements in $S_{11}$, $S_{01}$ and $\widehat{\Omega}$ according to $\left(m^r, \Delta p, R_m, y^r, R_b\right)$.
+
+```{r}
+
+S11 <- P %*% ca.jo.res.02$SKK %*% t(P)
+S01 <- P[-6,-6] %*% ca.jo.res.02$S0K %*% t(P)
+Sig.e <- P[-6,-6] %*% ca.jo.res.02$DELTA %*% t(P[-6,-6])
+
+```
+
+<!-- .................................................. -->
+<hr>
+
+Construct design matrix for each relationship, e.g., $\widetilde{H}_1$
+
+<!-- Relationship between $C$, $R$ and $H$. -->
+
+<!-- Different ways to impose restrictions on $\beta_i$ -->
+
+<!-- * In terms of restrictions using $C_i$, i.e., $C^{'}_i \beta_i = 1$ (see *page 177* of @Johansen1995Likelihood) -->
+<!-- * In terms of restrictions using $R_i$, i.e., $R^{'}_i \beta_i = 0$ (see *page 175* of @Juselius2006Cointegrated.) -->
+<!-- * In terms of free parameters using $H_i$, i.e., $\beta_i = H_i \varphi_i$ (see *page 174* of @Juselius2006Cointegrated.) -->
+
+<!-- Relationship between $R_i$ and $H_i$ -->
+
+<!-- \begin{align} -->
+<!-- R_i = H_{\perp i} -->
+<!-- \end{align} -->
+
+Before normalization w.r.t. $\varphi_{11}$
+
+\begin{align}
+\beta^{c}_{1} = H_{1} \varphi_1
+\end{align}
+
+\begin{align}
+H_{1} = \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \qquad \text{and} \qquad 
+\varphi_{1} = \begin{bmatrix} \varphi_{11} \\ \varphi_{21} \\ \varphi_{31} \\ \varphi_{41} \end{bmatrix}.
+\end{align}
+
+After normalization w.r.t. $\varphi_{11}$
+
+\begin{align}
+\beta^{c}_{1} = h_{1} + \widetilde{H}_{1} \widetilde{\varphi}_1
+\end{align}
+
+\begin{align}
+\widetilde{H}_{1} = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \qquad \text{and} \qquad 
+\widetilde{\varphi}_{1} = \begin{bmatrix} \widetilde{\varphi}_{21} \\ \widetilde{\varphi}_{31} \\ \widetilde{\varphi}_{41} \end{bmatrix}.
+\end{align}
+
+with 
+
+\begin{align}
+\widetilde{\varphi}_{21} = \frac{\varphi_{21}}{\varphi_{11}}, \qquad
+\widetilde{\varphi}_{31} = \frac{\varphi_{31}}{\varphi_{11}}, \qquad
+\widetilde{\varphi}_{41} = \frac{\varphi_{41}}{\varphi_{11}}
+\end{align}
+
+<!-- .................................................. -->
+<hr>
+
+Combine all individual design matrices of each relationship in ${\bf \widetilde{H}}$
+
+<!-- \begin{align} -->
+<!-- {\bf \widetilde{H}} = \begin{bmatrix} {\bf \widetilde{H}_1} & 0 & \dots & 0 \\ 0 & {\bf \widetilde{H}_2} & 0 & \vdots \\ \vdots & 0 & \ddots & 0 \\ 0 & \vdots & 0 & {\bf \widetilde{H}_r} \end{bmatrix} -->
+<!-- \end{align} -->
+
+\begin{align}
+{\bf \widetilde{H}} = \begin{bmatrix} \widetilde{H}_1 & 0 & \dots & 0 \\ 0 & \widetilde{H}_2 & 0 & \vdots \\ \vdots & 0 & \ddots & 0 \\ 0 & \vdots & 0 & \widetilde{H}_r \end{bmatrix}
+\end{align}
+
+```{r}
+
 library(MASS)
-H <- Null(S)
+H <- MASS::Null(c.norm)
 H <- diag(r) %x% H
+
+```
+
+Construct $\widehat{\Sigma}_{\widehat{\beta}\widehat{\beta}}$
+
+```{r}
+
 cov.beta.jus <- H %*% solve( t(H) %*% ( (t(alpha.norm) %*% solve(Sig.e) %*% alpha.norm) %x% S11 ) %*% H ) %*% t(H) / TT
 
 ```
@@ -105,9 +227,12 @@ cov.beta.jus <- H %*% solve( t(H) %*% ( (t(alpha.norm) %*% solve(Sig.e) %*% alph
 ```{r}
 
 se <- sqrt(diag(cov.beta.jus)[c((0*nr+r+1):(0*nr+r+r), (1*nr+r+1):(1*nr+r+r), (2*nr+r+1):(2*nr+r+r))])
-be <- rbind(beta.norm[(r+1):nr, 1, drop = FALSE], beta.norm[(r+1):nr, 2, drop = FALSE], beta.norm[(r+1):nr, 3, drop = FALSE])
 
-te <- be/se
+```
+
+```{r}
+
+se.mat <- t(P) %*% rbind(diag(r), matrix(se, nrow = nr-r, ncol = r))
 
 ```
 
@@ -115,8 +240,67 @@ Test statistic $\widehat{\beta}_i$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @
 
 ```{r}
 
-round(te, 2)
+round(t(P) %*% beta.norm / se.mat, 2)
 
 ```
+
+
+
+<!-- .................................................. -->
+<hr>
+
+Construct standard errors based on *Equation 13.12* of @Johansen1995Likelihood
+
+```{r}
+
+cov.beta <- ((diag(nr) - beta.norm %*% t(c.norm)) %*% solve(S11) %*% (diag(nr) - c.norm %*% t(beta.norm))) %x% solve(t(alpha.norm) %*% solve(Sig.e) %*% alpha.norm) / TT
+
+se.beta <- sqrt(diag(cov.beta))
+se.beta
+
+```
+
+$\widehat{\Sigma}_{\alpha}$
+
+```{r}
+
+cov.alpha.jus <- Sig.e[1,1] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[1,1] / TT
+
+cov.alpha.jus
+sqrt(cov.alpha.jus)
+
+alpha.norm[1,1]/sqrt(cov.alpha.jus)
+round(alpha.norm[1,1], 3)/round(sqrt(cov.alpha.jus), 3)
+
+```
+
+```{r}
+
+cov.alpha.jus <- Sig.e[4,4] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[1,1] / TT
+
+cov.alpha.jus
+sqrt(cov.alpha.jus)
+
+alpha.norm[4,1]/sqrt(cov.alpha.jus)
+round(alpha.norm[4,1], 3)/round(sqrt(cov.alpha.jus), 3)
+
+```
+
+```{r}
+
+cov.alpha.jus <- Sig.e %x% solve(t(beta.norm) %*% S11 %*% beta.norm) / TT
+
+cov.alpha.jus
+sqrt(diag(cov.alpha.jus))
+
+xxx <- matrix(sqrt(diag(cov.alpha.jus)), nrow = 5, ncol = 3, byrow = TRUE)
+
+alpha.norm/xxx
+
+```
+
+
+
+
 
 
