@@ -23,7 +23,13 @@
   publisher = {Springer Science & Business Media},
   title     = {Analysis of Integrated and Cointegrated Time Series with R},
   year      = {2008},
-  address   = {Berlin Heidelberg},
+}
+
+@Book{Johansen1995Likelihood,
+  author    = {Johansen, S{\o}ren},
+  publisher = {OUP Oxford},
+  title     = {Likelihood-based inference in cointegrated vector autoregressive models},
+  year      = {1995},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

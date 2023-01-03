@@ -23,7 +23,7 @@
 <meta name="author" content="Markus Mößler" />
 
 
-<meta name="date" content="2023-01-02" />
+<meta name="date" content="2023-01-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -175,7 +175,7 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="6.1" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#just-identified-long-run-structures"><i class="fa fa-check"></i><b>6.1</b> Just-identified long-run structures</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.1"><i class="fa fa-check"></i><b>6.1.1</b> <span class="math inline">\(\mathcal{H}_{S.1}\)</span></a></li>
+<li class="chapter" data-level="6.1.1" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.1-in-table-12.1-of-juselius2006cointegrated"><i class="fa fa-check"></i><b>6.1.1</b> <span class="math inline">\(\mathcal{H}_{S.1}\)</span> in <em>Table 12.1</em> of <span class="citation">Juselius (2006)</span></a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -201,9 +201,16 @@ div.csl-indent {
 <p>This chapter contains the replication of the material of Chapter 12 of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>.</p>
 <div id="just-identified-long-run-structures" class="section level2 hasAnchor" number="6.1">
 <h2><span class="header-section-number">6.1</span> Just-identified long-run structures<a href="identification-of-the-long-run-structure.html#just-identified-long-run-structures" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="mathcalh_s.1" class="section level3 hasAnchor" number="6.1.1">
-<h3><span class="header-section-number">6.1.1</span> <span class="math inline">\(\mathcal{H}_{S.1}\)</span><a href="identification-of-the-long-run-structure.html#mathcalh_s.1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- .................................................. -->
+<hr>
+<div id="mathcalh_s.1-in-table-12.1-of-juselius2006cointegrated" class="section level3 hasAnchor" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> <span class="math inline">\(\mathcal{H}_{S.1}\)</span> in <em>Table 12.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span><a href="identification-of-the-long-run-structure.html#mathcalh_s.1-in-table-12.1-of-juselius2006cointegrated" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<!-- .................................................. -->
+<hr>
+<div id="estimates" class="section level4 hasAnchor" number="6.1.1.1">
+<h4><span class="header-section-number">6.1.1.1</span> Estimates<a href="identification-of-the-long-run-structure.html#estimates" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Use the estimation result <code>ca.jo.res.02</code> and reorder the variables according to <span class="math inline">\(\left(m^r, \Delta p, R_m, y^r, R_b\right)\)</span>.</p>
+<!-- Apply triangularization, i.e., normalize w.r.t. to $m^r$, $\Delta p$ and $R_m$. -->
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="identification-of-the-long-run-structure.html#cb1-1" aria-hidden="true" tabindex="-1"></a>P <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
 <span id="cb1-2"><a href="identification-of-the-long-run-structure.html#cb1-2" aria-hidden="true" tabindex="-1"></a>              <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
 <span id="cb1-3"><a href="identification-of-the-long-run-structure.html#cb1-3" aria-hidden="true" tabindex="-1"></a>              <span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
@@ -214,63 +221,233 @@ div.csl-indent {
 <span id="cb1-8"><a href="identification-of-the-long-run-structure.html#cb1-8" aria-hidden="true" tabindex="-1"></a>beta.hat <span class="ot">&lt;-</span> P <span class="sc">%*%</span> ca.jo.res<span class="fl">.02</span><span class="sc">$</span>Vorg[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)]</span>
 <span id="cb1-9"><a href="identification-of-the-long-run-structure.html#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="identification-of-the-long-run-structure.html#cb1-10" aria-hidden="true" tabindex="-1"></a>alpha.hat <span class="ot">&lt;-</span> P[<span class="sc">-</span><span class="dv">6</span>,<span class="sc">-</span><span class="dv">6</span>] <span class="sc">%*%</span> ca.jo.res<span class="fl">.02</span><span class="sc">$</span>Worg[,<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)]</span></code></pre></div>
-<p>Apply triangularization, i.e., normalize w.r.t. to <span class="math inline">\(m^r\)</span>, <span class="math inline">\(\Delta p\)</span> and <span class="math inline">\(R_m\)</span>.</p>
+<!-- .................................................. -->
+<hr>
+<p>Apply normalization of <span class="math inline">\(\widehat{\beta}\)</span> by <span class="math inline">\(c\)</span> (see <em>Chapter 13.2</em> of <span class="citation">Johansen (<a href="#ref-Johansen1995Likelihood" role="doc-biblioref">1995</a>)</span>)</p>
+<p><span class="math display">\[\begin{align}
+\widehat{\beta}_{c}=\widehat{\beta}\left(c^{&#39;}\widehat{\beta}\right)^{-1},
+\end{align}\]</span></p>
+<p>with <span class="math inline">\(c^{&#39;}=\left(I_{r}, 0_{p}\right)\)</span>.</p>
+<p>Construct <span class="math inline">\(c\)</span></p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="identification-of-the-long-run-structure.html#cb2-1" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb2-2"><a href="identification-of-the-long-run-structure.html#cb2-2" aria-hidden="true" tabindex="-1"></a>S1 <span class="ot">&lt;-</span> <span class="fu">diag</span>(r)</span>
-<span id="cb2-3"><a href="identification-of-the-long-run-structure.html#cb2-3" aria-hidden="true" tabindex="-1"></a>S2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="fu">nrow</span>(beta.hat) <span class="sc">-</span> r, <span class="at">ncol =</span> r)</span>
-<span id="cb2-4"><a href="identification-of-the-long-run-structure.html#cb2-4" aria-hidden="true" tabindex="-1"></a>S <span class="ot">&lt;-</span> <span class="fu">rbind</span>(S1, S2)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="identification-of-the-long-run-structure.html#cb3-1" aria-hidden="true" tabindex="-1"></a>beta.norm <span class="ot">&lt;-</span> beta.hat <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(S) <span class="sc">%*%</span> beta.hat)</span></code></pre></div>
-<p><span class="math inline">\(\widehat{\beta}_i\)</span> (see <span class="math inline">\(\mathcal{H}_{S.1}\)</span> in <em>Table 12.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="identification-of-the-long-run-structure.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(beta.norm, <span class="dv">2</span>)</span></code></pre></div>
+<span id="cb2-2"><a href="identification-of-the-long-run-structure.html#cb2-2" aria-hidden="true" tabindex="-1"></a>c1 <span class="ot">&lt;-</span> <span class="fu">diag</span>(r)</span>
+<span id="cb2-3"><a href="identification-of-the-long-run-structure.html#cb2-3" aria-hidden="true" tabindex="-1"></a>c2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> <span class="fu">nrow</span>(beta.hat) <span class="sc">-</span> r, <span class="at">ncol =</span> r)</span>
+<span id="cb2-4"><a href="identification-of-the-long-run-structure.html#cb2-4" aria-hidden="true" tabindex="-1"></a>c.norm <span class="ot">&lt;-</span> <span class="fu">rbind</span>(c1, c2)</span></code></pre></div>
+<p>Construct <span class="math inline">\(\widehat{\beta}_{c}\)</span></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="identification-of-the-long-run-structure.html#cb3-1" aria-hidden="true" tabindex="-1"></a>beta.norm <span class="ot">&lt;-</span> beta.hat <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(c.norm) <span class="sc">%*%</span> beta.hat)</span></code></pre></div>
+<p>Compare with results under <span class="math inline">\(\mathcal{H}_{S.1}\)</span> in <em>Table 12.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="identification-of-the-long-run-structure.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(P) <span class="sc">%*%</span> beta.norm, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##       [,1] [,2]  [,3]
 ## [1,]  1.00 0.00  0.00
-## [2,]  0.00 1.00  0.00
-## [3,]  0.00 0.00  1.00
-## [4,] -0.94 0.04  0.01
+## [2,] -0.94 0.04  0.01
+## [3,]  0.00 1.00  0.00
+## [4,]  0.00 0.00  1.00
 ## [5,]  3.04 0.20 -0.63
 ## [6,] -0.27 0.01 -0.01</code></pre>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="identification-of-the-long-run-structure.html#cb6-1" aria-hidden="true" tabindex="-1"></a>alpha.norm <span class="ot">&lt;-</span> alpha.hat <span class="sc">%*%</span> (<span class="fu">t</span>(beta.hat) <span class="sc">%*%</span> S)</span></code></pre></div>
-<p><span class="math inline">\(\widehat{\alpha}_i\)</span> (see <span class="math inline">\(\mathcal{H}_{S.1}\)</span> in <em>Table 12.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="identification-of-the-long-run-structure.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(alpha.norm, <span class="dv">2</span>)</span></code></pre></div>
+<!-- .................................................. -->
+<hr>
+<p>Apply normalization of <span class="math inline">\(\widehat{\alpha}\)</span> by <span class="math inline">\(c\)</span> (see <em>Chapter 13.2</em> of <span class="citation">Johansen (<a href="#ref-Johansen1995Likelihood" role="doc-biblioref">1995</a>)</span>)</p>
+<p><span class="math display">\[\begin{align}
+\widehat{\alpha}_{c}=\widehat{\alpha}\widehat{\beta}^{&#39;}c,
+\end{align}\]</span></p>
+<p>with <span class="math inline">\(c^{&#39;}=\left(I_{r}, 0_{p}\right)\)</span>.</p>
+<p>Construct <span class="math inline">\(\widehat{\alpha}_{c}\)</span></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="identification-of-the-long-run-structure.html#cb6-1" aria-hidden="true" tabindex="-1"></a>alpha.norm <span class="ot">&lt;-</span> alpha.hat <span class="sc">%*%</span> (<span class="fu">t</span>(beta.hat) <span class="sc">%*%</span> c.norm)</span></code></pre></div>
+<p>Compare with results under <span class="math inline">\(\mathcal{H}_{S.1}\)</span> in <em>Table 12.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="identification-of-the-long-run-structure.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(P[<span class="sc">-</span><span class="dv">6</span>,<span class="sc">-</span><span class="dv">6</span>]) <span class="sc">%*%</span> alpha.norm, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##       [,1]  [,2]  [,3]
 ## [1,] -0.22 -0.56  2.98
-## [2,] -0.01 -0.82 -0.47
-## [3,]  0.00  0.03 -0.09
-## [4,]  0.05 -0.29 -1.84
+## [2,]  0.05 -0.29 -1.84
+## [3,] -0.01 -0.82 -0.47
+## [4,]  0.00  0.03 -0.09
 ## [5,]  0.00  0.02  0.13</code></pre>
-<p>Construct standard errors using <em>Equation 12.13</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>.</p>
-<p>Reorder the elements in <span class="math inline">\(S_{11}\)</span> and <span class="math inline">\(\widehat{\Omega}\)</span> according to <span class="math inline">\(\left(m^r, \Delta p, R_m, y^r, R_b\right)\)</span>.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="identification-of-the-long-run-structure.html#cb9-1" aria-hidden="true" tabindex="-1"></a>S11 <span class="ot">&lt;-</span> P <span class="sc">%*%</span> ca.jo.res<span class="fl">.02</span><span class="sc">$</span>SKK <span class="sc">%*%</span> <span class="fu">t</span>(P)</span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="identification-of-the-long-run-structure.html#cb10-1" aria-hidden="true" tabindex="-1"></a>Sig.e <span class="ot">&lt;-</span> P[<span class="sc">-</span><span class="dv">6</span>,<span class="sc">-</span><span class="dv">6</span>] <span class="sc">%*%</span> ca.jo.res<span class="fl">.02</span><span class="sc">$</span>DELTA <span class="sc">%*%</span> <span class="fu">t</span>(P[<span class="sc">-</span><span class="dv">6</span>,<span class="sc">-</span><span class="dv">6</span>])</span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="identification-of-the-long-run-structure.html#cb11-1" aria-hidden="true" tabindex="-1"></a>TT <span class="ot">&lt;-</span> <span class="fu">nrow</span>(ca.jo.res<span class="fl">.02</span><span class="sc">$</span>R0)</span>
-<span id="cb11-2"><a href="identification-of-the-long-run-structure.html#cb11-2" aria-hidden="true" tabindex="-1"></a>nr <span class="ot">&lt;-</span> <span class="fu">nrow</span>(beta.norm)</span>
-<span id="cb11-3"><a href="identification-of-the-long-run-structure.html#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="identification-of-the-long-run-structure.html#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
-<span id="cb11-5"><a href="identification-of-the-long-run-structure.html#cb11-5" aria-hidden="true" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">Null</span>(S)</span>
-<span id="cb11-6"><a href="identification-of-the-long-run-structure.html#cb11-6" aria-hidden="true" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">diag</span>(r) <span class="sc">%x%</span> H</span>
-<span id="cb11-7"><a href="identification-of-the-long-run-structure.html#cb11-7" aria-hidden="true" tabindex="-1"></a>cov.beta.jus <span class="ot">&lt;-</span> H <span class="sc">%*%</span> <span class="fu">solve</span>( <span class="fu">t</span>(H) <span class="sc">%*%</span> ( (<span class="fu">t</span>(alpha.norm) <span class="sc">%*%</span> <span class="fu">solve</span>(Sig.e) <span class="sc">%*%</span> alpha.norm) <span class="sc">%x%</span> S11 ) <span class="sc">%*%</span> H ) <span class="sc">%*%</span> <span class="fu">t</span>(H) <span class="sc">/</span> TT</span></code></pre></div>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="identification-of-the-long-run-structure.html#cb12-1" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cov.beta.jus)[<span class="fu">c</span>((<span class="dv">0</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(<span class="dv">0</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span>r), (<span class="dv">1</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(<span class="dv">1</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span>r), (<span class="dv">2</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(<span class="dv">2</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span>r))])</span>
-<span id="cb12-2"><a href="identification-of-the-long-run-structure.html#cb12-2" aria-hidden="true" tabindex="-1"></a>be <span class="ot">&lt;-</span> <span class="fu">rbind</span>(beta.norm[(r<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>nr, <span class="dv">1</span>, <span class="at">drop =</span> <span class="cn">FALSE</span>], beta.norm[(r<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>nr, <span class="dv">2</span>, <span class="at">drop =</span> <span class="cn">FALSE</span>], beta.norm[(r<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>nr, <span class="dv">3</span>, <span class="at">drop =</span> <span class="cn">FALSE</span>])</span>
-<span id="cb12-3"><a href="identification-of-the-long-run-structure.html#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="identification-of-the-long-run-structure.html#cb12-4" aria-hidden="true" tabindex="-1"></a>te <span class="ot">&lt;-</span> be<span class="sc">/</span>se</span></code></pre></div>
+<!-- .................................................. -->
+<hr>
+</div>
+<div id="standard-errors" class="section level4 hasAnchor" number="6.1.1.2">
+<h4><span class="header-section-number">6.1.1.2</span> Standard Errors<a href="identification-of-the-long-run-structure.html#standard-errors" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<!-- .................................................. -->
+<hr>
+<p>Construct standard errors based on <em>Equation 12.13</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="identification-of-the-long-run-structure.html#cb9-1" aria-hidden="true" tabindex="-1"></a>TT <span class="ot">&lt;-</span> <span class="fu">nrow</span>(ca.jo.res<span class="fl">.02</span><span class="sc">$</span>R0)</span>
+<span id="cb9-2"><a href="identification-of-the-long-run-structure.html#cb9-2" aria-hidden="true" tabindex="-1"></a>nr <span class="ot">&lt;-</span> <span class="fu">nrow</span>(beta.norm)</span></code></pre></div>
+<p>Reorder the elements in <span class="math inline">\(S_{11}\)</span>, <span class="math inline">\(S_{01}\)</span> and <span class="math inline">\(\widehat{\Omega}\)</span> according to <span class="math inline">\(\left(m^r, \Delta p, R_m, y^r, R_b\right)\)</span>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="identification-of-the-long-run-structure.html#cb10-1" aria-hidden="true" tabindex="-1"></a>S11 <span class="ot">&lt;-</span> P <span class="sc">%*%</span> ca.jo.res<span class="fl">.02</span><span class="sc">$</span>SKK <span class="sc">%*%</span> <span class="fu">t</span>(P)</span>
+<span id="cb10-2"><a href="identification-of-the-long-run-structure.html#cb10-2" aria-hidden="true" tabindex="-1"></a>S01 <span class="ot">&lt;-</span> P[<span class="sc">-</span><span class="dv">6</span>,<span class="sc">-</span><span class="dv">6</span>] <span class="sc">%*%</span> ca.jo.res<span class="fl">.02</span><span class="sc">$</span>S0K <span class="sc">%*%</span> <span class="fu">t</span>(P)</span>
+<span id="cb10-3"><a href="identification-of-the-long-run-structure.html#cb10-3" aria-hidden="true" tabindex="-1"></a>Sig.e <span class="ot">&lt;-</span> P[<span class="sc">-</span><span class="dv">6</span>,<span class="sc">-</span><span class="dv">6</span>] <span class="sc">%*%</span> ca.jo.res<span class="fl">.02</span><span class="sc">$</span>DELTA <span class="sc">%*%</span> <span class="fu">t</span>(P[<span class="sc">-</span><span class="dv">6</span>,<span class="sc">-</span><span class="dv">6</span>])</span></code></pre></div>
+<!-- .................................................. -->
+<hr>
+<p>Construct design matrix for each relationship, e.g., <span class="math inline">\(\widetilde{H}_1\)</span></p>
+<!-- Relationship between $C$, $R$ and $H$. -->
+<!-- Different ways to impose restrictions on $\beta_i$ -->
+<!-- * In terms of restrictions using $C_i$, i.e., $C^{'}_i \beta_i = 1$ (see *page 177* of @Johansen1995Likelihood) -->
+<!-- * In terms of restrictions using $R_i$, i.e., $R^{'}_i \beta_i = 0$ (see *page 175* of @Juselius2006Cointegrated.) -->
+<!-- * In terms of free parameters using $H_i$, i.e., $\beta_i = H_i \varphi_i$ (see *page 174* of @Juselius2006Cointegrated.) -->
+<!-- Relationship between $R_i$ and $H_i$ -->
+<!-- \begin{align} -->
+<!-- R_i = H_{\perp i} -->
+<!-- \end{align} -->
+<p>Before normalization w.r.t. <span class="math inline">\(\varphi_{11}\)</span></p>
+<p><span class="math display">\[\begin{align}
+\beta^{c}_{1} = H_{1} \varphi_1
+\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}
+H_{1} = \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \qquad \text{and} \qquad
+\varphi_{1} = \begin{bmatrix} \varphi_{11} \\ \varphi_{21} \\ \varphi_{31} \\ \varphi_{41} \end{bmatrix}.
+\end{align}\]</span></p>
+<p>After normalization w.r.t. <span class="math inline">\(\varphi_{11}\)</span></p>
+<p><span class="math display">\[\begin{align}
+\beta^{c}_{1} = h_{1} + \widetilde{H}_{1} \widetilde{\varphi}_1
+\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align}
+\widetilde{H}_{1} = \begin{bmatrix} 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 \\ 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix} \qquad \text{and} \qquad
+\widetilde{\varphi}_{1} = \begin{bmatrix} \widetilde{\varphi}_{21} \\ \widetilde{\varphi}_{31} \\ \widetilde{\varphi}_{41} \end{bmatrix}.
+\end{align}\]</span></p>
+<p>with</p>
+<p><span class="math display">\[\begin{align}
+\widetilde{\varphi}_{21} = \frac{\varphi_{21}}{\varphi_{11}}, \qquad
+\widetilde{\varphi}_{31} = \frac{\varphi_{31}}{\varphi_{11}}, \qquad
+\widetilde{\varphi}_{41} = \frac{\varphi_{41}}{\varphi_{11}}
+\end{align}\]</span></p>
+<!-- .................................................. -->
+<hr>
+<p>Combine all individual design matrices of each relationship in <span class="math inline">\({\bf \widetilde{H}}\)</span></p>
+<!-- \begin{align} -->
+<!-- {\bf \widetilde{H}} = \begin{bmatrix} {\bf \widetilde{H}_1} & 0 & \dots & 0 \\ 0 & {\bf \widetilde{H}_2} & 0 & \vdots \\ \vdots & 0 & \ddots & 0 \\ 0 & \vdots & 0 & {\bf \widetilde{H}_r} \end{bmatrix} -->
+<!-- \end{align} -->
+<p><span class="math display">\[\begin{align}
+{\bf \widetilde{H}} = \begin{bmatrix} \widetilde{H}_1 &amp; 0 &amp; \dots &amp; 0 \\ 0 &amp; \widetilde{H}_2 &amp; 0 &amp; \vdots \\ \vdots &amp; 0 &amp; \ddots &amp; 0 \\ 0 &amp; \vdots &amp; 0 &amp; \widetilde{H}_r \end{bmatrix}
+\end{align}\]</span></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="identification-of-the-long-run-structure.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb11-2"><a href="identification-of-the-long-run-structure.html#cb11-2" aria-hidden="true" tabindex="-1"></a>H <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">Null</span>(c.norm)</span>
+<span id="cb11-3"><a href="identification-of-the-long-run-structure.html#cb11-3" aria-hidden="true" tabindex="-1"></a>H <span class="ot">&lt;-</span> <span class="fu">diag</span>(r) <span class="sc">%x%</span> H</span></code></pre></div>
+<p>Construct <span class="math inline">\(\widehat{\Sigma}_{\widehat{\beta}\widehat{\beta}}\)</span></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="identification-of-the-long-run-structure.html#cb12-1" aria-hidden="true" tabindex="-1"></a>cov.beta.jus <span class="ot">&lt;-</span> H <span class="sc">%*%</span> <span class="fu">solve</span>( <span class="fu">t</span>(H) <span class="sc">%*%</span> ( (<span class="fu">t</span>(alpha.norm) <span class="sc">%*%</span> <span class="fu">solve</span>(Sig.e) <span class="sc">%*%</span> alpha.norm) <span class="sc">%x%</span> S11 ) <span class="sc">%*%</span> H ) <span class="sc">%*%</span> <span class="fu">t</span>(H) <span class="sc">/</span> TT</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="identification-of-the-long-run-structure.html#cb13-1" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cov.beta.jus)[<span class="fu">c</span>((<span class="dv">0</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(<span class="dv">0</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span>r), (<span class="dv">1</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(<span class="dv">1</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span>r), (<span class="dv">2</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>(<span class="dv">2</span><span class="sc">*</span>nr<span class="sc">+</span>r<span class="sc">+</span>r))])</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="identification-of-the-long-run-structure.html#cb14-1" aria-hidden="true" tabindex="-1"></a>se.mat <span class="ot">&lt;-</span> <span class="fu">t</span>(P) <span class="sc">%*%</span> <span class="fu">rbind</span>(<span class="fu">diag</span>(r), <span class="fu">matrix</span>(se, <span class="at">nrow =</span> nr<span class="sc">-</span>r, <span class="at">ncol =</span> r))</span></code></pre></div>
 <p>Test statistic <span class="math inline">\(\widehat{\beta}_i\)</span> (see <span class="math inline">\(\mathcal{H}_{S.1}\)</span> in <em>Table 12.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="identification-of-the-long-run-structure.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(te, <span class="dv">2</span>)</span></code></pre></div>
-<pre><code>##        [,1]
-##  [1,] -6.55
-##  [2,]  1.51
-##  [3,] -8.08
-##  [4,]  3.24
-##  [5,]  1.16
-##  [6,]  5.11
-##  [7,]  2.06
-##  [8,] -7.03
-##  [9,] -5.12</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="identification-of-the-long-run-structure.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">t</span>(P) <span class="sc">%*%</span> beta.norm <span class="sc">/</span> se.mat, <span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##       [,1] [,2]  [,3]
+## [1,]  1.00 -Inf  -Inf
+## [2,] -6.55 3.24  2.06
+## [3,]  -Inf 1.00   NaN
+## [4,]   Inf -Inf  1.00
+## [5,]  1.51 1.16 -7.03
+## [6,] -8.08 5.11 -5.12</code></pre>
+<!-- .................................................. -->
+<hr>
+<p>Construct standard errors based on <em>Equation 13.12</em> of <span class="citation">Johansen (<a href="#ref-Johansen1995Likelihood" role="doc-biblioref">1995</a>)</span></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="identification-of-the-long-run-structure.html#cb17-1" aria-hidden="true" tabindex="-1"></a>cov.beta <span class="ot">&lt;-</span> ((<span class="fu">diag</span>(nr) <span class="sc">-</span> beta.norm <span class="sc">%*%</span> <span class="fu">t</span>(c.norm)) <span class="sc">%*%</span> <span class="fu">solve</span>(S11) <span class="sc">%*%</span> (<span class="fu">diag</span>(nr) <span class="sc">-</span> c.norm <span class="sc">%*%</span> <span class="fu">t</span>(beta.norm))) <span class="sc">%x%</span> <span class="fu">solve</span>(<span class="fu">t</span>(alpha.norm) <span class="sc">%*%</span> <span class="fu">solve</span>(Sig.e) <span class="sc">%*%</span> alpha.norm) <span class="sc">/</span> TT</span>
+<span id="cb17-2"><a href="identification-of-the-long-run-structure.html#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="identification-of-the-long-run-structure.html#cb17-3" aria-hidden="true" tabindex="-1"></a>se.beta <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(cov.beta))</span>
+<span id="cb17-4"><a href="identification-of-the-long-run-structure.html#cb17-4" aria-hidden="true" tabindex="-1"></a>se.beta</span></code></pre></div>
+<pre><code>##  [1] 3.029142e-17 2.586109e-18 1.341831e-18 1.780448e-17 1.520045e-18
+##  [6] 7.886918e-19 3.625819e-16 3.095518e-17 1.606143e-17 1.491418e-01
+## [11] 1.273288e-02 6.606592e-03 2.241794e+00 1.913916e-01 9.930561e-02
+## [16] 4.006750e-02 3.420735e-03 1.774885e-03</code></pre>
+<p><span class="math inline">\(\widehat{\Sigma}_{\alpha}\)</span></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="identification-of-the-long-run-structure.html#cb19-1" aria-hidden="true" tabindex="-1"></a>cov.alpha.jus <span class="ot">&lt;-</span> Sig.e[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(beta.norm) <span class="sc">%*%</span> S11 <span class="sc">%*%</span> beta.norm)[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">/</span> TT</span>
+<span id="cb19-2"><a href="identification-of-the-long-run-structure.html#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="identification-of-the-long-run-structure.html#cb19-3" aria-hidden="true" tabindex="-1"></a>cov.alpha.jus</span></code></pre></div>
+<pre><code>##             [,1]
+## [1,] 0.002182312</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="identification-of-the-long-run-structure.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(cov.alpha.jus)</span></code></pre></div>
+<pre><code>##            [,1]
+## [1,] 0.04671522</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="identification-of-the-long-run-structure.html#cb23-1" aria-hidden="true" tabindex="-1"></a>alpha.norm[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">/</span><span class="fu">sqrt</span>(cov.alpha.jus)</span></code></pre></div>
+<pre><code>##           [,1]
+## [1,] -4.776424</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="identification-of-the-long-run-structure.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(alpha.norm[<span class="dv">1</span>,<span class="dv">1</span>], <span class="dv">3</span>)<span class="sc">/</span><span class="fu">round</span>(<span class="fu">sqrt</span>(cov.alpha.jus), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##           [,1]
+## [1,] -4.744681</code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="identification-of-the-long-run-structure.html#cb27-1" aria-hidden="true" tabindex="-1"></a>cov.alpha.jus <span class="ot">&lt;-</span> Sig.e[<span class="dv">4</span>,<span class="dv">4</span>] <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(beta.norm) <span class="sc">%*%</span> S11 <span class="sc">%*%</span> beta.norm)[<span class="dv">1</span>,<span class="dv">1</span>] <span class="sc">/</span> TT</span>
+<span id="cb27-2"><a href="identification-of-the-long-run-structure.html#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="identification-of-the-long-run-structure.html#cb27-3" aria-hidden="true" tabindex="-1"></a>cov.alpha.jus</span></code></pre></div>
+<pre><code>##             [,1]
+## [1,] 0.000759574</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="identification-of-the-long-run-structure.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(cov.alpha.jus)</span></code></pre></div>
+<pre><code>##            [,1]
+## [1,] 0.02756037</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="identification-of-the-long-run-structure.html#cb31-1" aria-hidden="true" tabindex="-1"></a>alpha.norm[<span class="dv">4</span>,<span class="dv">1</span>]<span class="sc">/</span><span class="fu">sqrt</span>(cov.alpha.jus)</span></code></pre></div>
+<pre><code>##          [,1]
+## [1,] 1.914086</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="identification-of-the-long-run-structure.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(alpha.norm[<span class="dv">4</span>,<span class="dv">1</span>], <span class="dv">3</span>)<span class="sc">/</span><span class="fu">round</span>(<span class="fu">sqrt</span>(cov.alpha.jus), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##          [,1]
+## [1,] 1.892857</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="identification-of-the-long-run-structure.html#cb35-1" aria-hidden="true" tabindex="-1"></a>cov.alpha.jus <span class="ot">&lt;-</span> Sig.e <span class="sc">%x%</span> <span class="fu">solve</span>(<span class="fu">t</span>(beta.norm) <span class="sc">%*%</span> S11 <span class="sc">%*%</span> beta.norm) <span class="sc">/</span> TT</span>
+<span id="cb35-2"><a href="identification-of-the-long-run-structure.html#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="identification-of-the-long-run-structure.html#cb35-3" aria-hidden="true" tabindex="-1"></a>cov.alpha.jus</span></code></pre></div>
+<pre><code>##                [,1]          [,2]          [,3]          [,4]          [,5]
+##  [1,]  2.182312e-03  6.163833e-03 -2.165731e-02 -3.704599e-04 -1.046346e-03
+##  [2,]  6.163833e-03  1.830284e-01  1.278040e-02 -1.046346e-03 -3.107011e-02
+##  [3,] -2.165731e-02  1.278040e-02  1.252977e+00  3.676451e-03 -2.169545e-03
+##  [4,] -3.704599e-04 -1.046346e-03  3.676451e-03  2.612440e-04  7.378707e-04
+##  [5,] -1.046346e-03 -3.107011e-02 -2.169545e-03  7.378707e-04  2.191028e-02
+##  [6,]  3.676451e-03 -2.169545e-03 -2.127000e-01 -2.592590e-03  1.529938e-03
+##  [7,] -2.106404e-05 -5.949435e-05  2.090400e-04  8.934411e-06  2.523480e-05
+##  [8,] -5.949435e-05 -1.766621e-03 -1.233586e-04  2.523480e-05  7.493204e-04
+##  [9,]  2.090400e-04 -1.233586e-04 -1.209395e-02 -8.866526e-05  5.232310e-05
+## [10,]  1.801507e-04  5.088267e-04 -1.787819e-03 -2.718437e-05 -7.678090e-05
+## [11,]  5.088267e-04  1.510906e-02  1.055027e-03 -7.678090e-05 -2.279926e-03
+## [12,] -1.787819e-03  1.055027e-03  1.034337e-01  2.697782e-04 -1.592014e-04
+## [13,] -1.097997e-05 -3.101238e-05  1.089654e-04  7.810438e-06  2.206020e-05
+## [14,] -3.101238e-05 -9.208793e-04 -6.430262e-05  2.206020e-05  6.550539e-04
+## [15,]  1.089654e-04 -6.430262e-05 -6.304162e-03 -7.751094e-05  4.574072e-05
+##                [,6]          [,7]          [,8]          [,9]         [,10]
+##  [1,]  3.676451e-03 -2.106404e-05 -5.949435e-05  2.090400e-04  1.801507e-04
+##  [2,] -2.169545e-03 -5.949435e-05 -1.766621e-03 -1.233586e-04  5.088267e-04
+##  [3,] -2.127000e-01  2.090400e-04 -1.233586e-04 -1.209395e-02 -1.787819e-03
+##  [4,] -2.592590e-03  8.934411e-06  2.523480e-05 -8.866526e-05 -2.718437e-05
+##  [5,]  1.529938e-03  2.523480e-05  7.493204e-04  5.232310e-05 -7.678090e-05
+##  [6,]  1.499935e-01 -8.866526e-05  5.232310e-05  5.129703e-03  2.697782e-04
+##  [7,] -8.866526e-05  4.133634e-06  1.167525e-05 -4.102227e-05 -1.740959e-06
+##  [8,]  5.232310e-05  1.167525e-05  3.466839e-04  2.420804e-05 -4.917254e-06
+##  [9,]  5.129703e-03 -4.102227e-05  2.420804e-05  2.373331e-03  1.727731e-05
+## [10,]  2.697782e-04 -1.740959e-06 -4.917254e-06  1.727731e-05  7.595740e-04
+## [11,] -1.592014e-04 -4.917254e-06 -1.460126e-04 -1.019568e-05  2.145379e-03
+## [12,] -1.560794e-02  1.727731e-05 -1.019568e-05 -9.995739e-04 -7.538027e-03
+## [13,] -7.751094e-05  2.312529e-06  6.531624e-06 -2.294958e-05  7.183931e-06
+## [14,]  4.574072e-05  6.531624e-06  1.939496e-04  1.354300e-05  2.029066e-05
+## [15,]  4.484372e-03 -2.294958e-05  1.354300e-05  1.327741e-03 -7.129347e-05
+##               [,11]         [,12]         [,13]         [,14]         [,15]
+##  [1,]  5.088267e-04 -1.787819e-03 -1.097997e-05 -3.101238e-05  1.089654e-04
+##  [2,]  1.510906e-02  1.055027e-03 -3.101238e-05 -9.208793e-04 -6.430262e-05
+##  [3,]  1.055027e-03  1.034337e-01  1.089654e-04 -6.430262e-05 -6.304162e-03
+##  [4,] -7.678090e-05  2.697782e-04  7.810438e-06  2.206020e-05 -7.751094e-05
+##  [5,] -2.279926e-03 -1.592014e-04  2.206020e-05  6.550539e-04  4.574072e-05
+##  [6,] -1.592014e-04 -1.560794e-02 -7.751094e-05  4.574072e-05  4.484372e-03
+##  [7,] -4.917254e-06  1.727731e-05  2.312529e-06  6.531624e-06 -2.294958e-05
+##  [8,] -1.460126e-04 -1.019568e-05  6.531624e-06  1.939496e-04  1.354300e-05
+##  [9,] -1.019568e-05 -9.995739e-04 -2.294958e-05  1.354300e-05  1.327741e-03
+## [10,]  2.145379e-03 -7.538027e-03  7.183931e-06  2.029066e-05 -7.129347e-05
+## [11,]  6.370473e-02  4.448336e-03  2.029066e-05  6.025093e-04  4.207167e-05
+## [12,]  4.448336e-03  4.361103e-01 -7.129347e-05  4.207167e-05  4.124662e-03
+## [13,]  2.029066e-05 -7.129347e-05  7.725095e-06  2.181915e-05 -7.666399e-05
+## [14,]  6.025093e-04  4.207167e-05  2.181915e-05  6.478963e-04  4.524092e-05
+## [15,]  4.207167e-05  4.124662e-03 -7.666399e-05  4.524092e-05  4.435373e-03</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="identification-of-the-long-run-structure.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">diag</span>(cov.alpha.jus))</span></code></pre></div>
+<pre><code>##  [1] 0.046715225 0.427818194 1.119364605 0.016163044 0.148021213 0.387289996
+##  [7] 0.002033134 0.018619450 0.048716846 0.027560370 0.252397963 0.660386468
+## [13] 0.002779406 0.025453806 0.066598593</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="identification-of-the-long-run-structure.html#cb39-1" aria-hidden="true" tabindex="-1"></a>xxx <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">sqrt</span>(<span class="fu">diag</span>(cov.alpha.jus)), <span class="at">nrow =</span> <span class="dv">5</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb39-2"><a href="identification-of-the-long-run-structure.html#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="identification-of-the-long-run-structure.html#cb39-3" aria-hidden="true" tabindex="-1"></a>alpha.norm<span class="sc">/</span>xxx</span></code></pre></div>
+<pre><code>##            [,1]       [,2]      [,3]
+## [1,] -4.7764236 -1.3091996  2.664392
+## [2,] -0.7194841 -5.5061268 -1.207216
+## [3,] -0.7214642  1.5034888 -1.825088
+## [4,]  1.9140856 -1.1572995 -2.778756
+## [5,]  0.8596942  0.7452575  1.904005</code></pre>
 
+</div>
 </div>
 </div>
 </div>
 <h3>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Johansen1995Likelihood" class="csl-entry">
+Johansen, Søren. 1995. <em>Likelihood-Based Inference in Cointegrated Vector Autoregressive Models</em>. Oxford University Press.
+</div>
 <div id="ref-Juselius2006Cointegrated" class="csl-entry">
 Juselius, Katarina. 2006. <em>The Cointegrated VAR Model: Methodology and Applications</em>. Oxford University Press.
 </div>

@@ -21,3 +21,6 @@ identification-of-the-long-run-structure
 just-identified-long-run-structures
 s.1
 mathcalh_s.1
+estimates
+standard-errors
+mathcalh_s.1-in-table-12.1-of-juselius2006cointegrated
