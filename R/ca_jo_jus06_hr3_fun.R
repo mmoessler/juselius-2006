@@ -1,7 +1,7 @@
 
 ca_jo_jus06_hr3_fun <- function(z,
                                 H1, H2, H3,
-                                r1, r2, r3,
+                                r1 = 1, r2 = 1, r3 = 1,
                                 nor.id1, nor.id2, nor.id3,
                                 conv.val = 1e-04, max.iter = 50, df = 1) {
 
