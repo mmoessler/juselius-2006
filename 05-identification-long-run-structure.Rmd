@@ -15,232 +15,167 @@ source("./R/03-cointegrated-var.R")
 
 This chapter contains the replication of the material of Chapter 12 of @Juselius2006Cointegrated.
 
+
+
+<!-- .................................................. -->
+<hr>
+
 ## Just-identified long-run structures
+
+Load the function `ca_jo_jus06_hr3_fun()` from *GitHub*. 
+
+```{r}
+
+source("https://raw.githubusercontent.com/mmoessler/juselius-2006/main/R/ca_jo_jus06_hr3_fun.R")
+
+```
+
+Note, the function `ca_jo_jus06_hr3_fun()` is based on the function `bh6lrtest()` from the library `urca` (see also @Pfaff2008Analysis) and extended such that individual restriction on can be imposed on all three cointegrating relationships. Thus, the switching algorithm proposed by @JohansenJuselius1992Testing is applied by iterating over all three cointegrating relationships. This allows us to estimate the just-identified and over-identified long-run structures of Chapter 12. Check the code on *GitHub* (`mmoessler/juselius-2006/main/R/ca_jo_jus06_fun.R`) for more information.
 
 <!-- .................................................. -->
 <hr>
 
 ### $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated
 
-<!-- .................................................. -->
-<hr>
-
-#### Estimates
-
-Use the estimation result `ca.jo.res.02` and reorder the variables according to $\left(m^r, \Delta p, R_m, y^r, R_b\right)$.
-
-<!-- Apply triangularization, i.e., normalize w.r.t. to $m^r$, $\Delta p$ and $R_m$. -->
+Construct the design matrices $H_i$ for $i=1,2,3$.
 
 ```{r}
 
-P <- matrix(c(1,0,0,0,0,0,
-              0,0,1,0,0,0,
-              0,0,0,1,0,0,
-              0,1,0,0,0,0,
-              0,0,0,0,1,0,
-              0,0,0,0,0,1), nrow = 6, byrow = T)
+H1 <- matrix(c( 1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1), nrow = 6, ncol = 4, byrow = TRUE)
 
-beta.hat <- P %*% ca.jo.res.02$Vorg[,c(1,2,3)]
+H2 <- matrix(c( 0, 0, 0, 0,
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1), nrow = 6, ncol = 4, byrow = TRUE)
 
-alpha.hat <- P[-6,-6] %*% ca.jo.res.02$Worg[,c(1,2,3)]
+H3 <- matrix(c( 0, 0, 0, 0,
+                1, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1), nrow = 6, ncol = 4, byrow = TRUE)
 
 ```
 
-<!-- .................................................. -->
-<hr>
-
-Apply normalization of $\widehat{\beta}$ by $c$ (see *Chapter 13.2* of @Johansen1995Likelihood)
-
-\begin{align}
-\widehat{\beta}_{c}=\widehat{\beta}\left(c^{'}\widehat{\beta}\right)^{-1},
-\end{align}
-
-with $c^{'}=\left(I_{r}, 0_{p}\right)$.
-
-Construct $c$
+Estimate the (just) identified cointegrating and adjustment coefficients.
 
 ```{r}
 
-r <- 3
-c1 <- diag(r)
-c2 <- matrix(0, nrow = nrow(beta.hat) - r, ncol = r)
-c.norm <- rbind(c1, c2)
+z <- ca.jo.res.02
+z$P <- 6
+
+b.s1.res <- ca_jo_jus06_hr3_fun(z = z,
+                                H1 = H1, H2 = H2, H3 = H3,
+                                nor.id1 = 1, nor.id2 = 3, nor.id3 = 4)
 
 ```
 
-Construct $\widehat{\beta}_{c}$
+Compare results for $\widehat{\beta}$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
 
 ```{r}
 
-beta.norm <- beta.hat %*% solve(t(c.norm) %*% beta.hat)
+beta.norm <- b.s1.res$V
+round(beta.norm, 2)
 
 ```
 
-Compare with results under $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated
+Compare results for $\widehat{\alpha}$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
 
 ```{r}
 
-round(t(P) %*% beta.norm, 2)
+alpha.norm <- b.s1.res$W
+round(alpha.norm, 2)
 
 ```
 
-
-
-
-
-<!-- .................................................. -->
-<hr>
-
-Apply normalization of $\widehat{\alpha}$ by $c$ (see *Chapter 13.2* of @Johansen1995Likelihood)
-
-\begin{align}
-\widehat{\alpha}_{c}=\widehat{\alpha}\widehat{\beta}^{'}c,
-\end{align}
-
-with $c^{'}=\left(I_{r}, 0_{p}\right)$.
-
-Construct $\widehat{\alpha}_{c}$
+Compute standard error for $\widehat{\beta}$
 
 ```{r}
 
-alpha.norm <- alpha.hat %*% (t(beta.hat) %*% c.norm)
+H <- matrix(rep(0, 3*6*3*3), nrow = 3*6, ncol = 3*4-3)
 
-```
-
-Compare with results under $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated
-
-```{r}
-
-round(t(P[-6,-6]) %*% alpha.norm, 2)
-
-```
-
-
-
-
-
-<!-- .................................................. -->
-<hr>
-
-#### Standard Errors
-
-<!-- .................................................. -->
-<hr>
-
-Construct standard errors based on *Equation 12.13* of @Juselius2006Cointegrated.
-
-```{r}
-
-TT <- nrow(ca.jo.res.02$R0)
-nr <- nrow(beta.norm)
-
-```
-
-Reorder the elements in $S_{11}$, $S_{01}$ and $\widehat{\Omega}$ according to $\left(m^r, \Delta p, R_m, y^r, R_b\right)$.
-
-```{r}
-
-S11 <- P %*% ca.jo.res.02$SKK %*% t(P)
-S01 <- P[-6,-6] %*% ca.jo.res.02$S0K %*% t(P)
-Sig.e <- P[-6,-6] %*% ca.jo.res.02$DELTA %*% t(P[-6,-6])
-
-```
-
-<!-- .................................................. -->
-<hr>
-
-Construct design matrix for each relationship, e.g., $\widetilde{H}_1$
-
-<!-- Relationship between $C$, $R$ and $H$. -->
-
-<!-- Different ways to impose restrictions on $\beta_i$ -->
-
-<!-- * In terms of restrictions using $C_i$, i.e., $C^{'}_i \beta_i = 1$ (see *page 177* of @Johansen1995Likelihood) -->
-<!-- * In terms of restrictions using $R_i$, i.e., $R^{'}_i \beta_i = 0$ (see *page 175* of @Juselius2006Cointegrated.) -->
-<!-- * In terms of free parameters using $H_i$, i.e., $\beta_i = H_i \varphi_i$ (see *page 174* of @Juselius2006Cointegrated.) -->
-
-<!-- Relationship between $R_i$ and $H_i$ -->
-
-<!-- \begin{align} -->
-<!-- R_i = H_{\perp i} -->
-<!-- \end{align} -->
-
-Before normalization w.r.t. $\varphi_{11}$
-
-\begin{align}
-\beta^{c}_{1} = H_{1} \varphi_1
-\end{align}
-
-\begin{align}
-H_{1} = \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix} \qquad \text{and} \qquad 
-\varphi_{1} = \begin{bmatrix} \varphi_{11} \\ \varphi_{21} \\ \varphi_{31} \\ \varphi_{41} \end{bmatrix}.
-\end{align}
-
-After normalization w.r.t. $\varphi_{11}$
-
-\begin{align}
-\beta^{c}_{1} = h_{1} + \widetilde{H}_{1} \widetilde{\varphi}_1
-\end{align}
-
-\begin{align}
-\widetilde{H}_{1} = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \qquad \text{and} \qquad 
-\widetilde{\varphi}_{1} = \begin{bmatrix} \widetilde{\varphi}_{21} \\ \widetilde{\varphi}_{31} \\ \widetilde{\varphi}_{41} \end{bmatrix}.
-\end{align}
-
-with 
-
-\begin{align}
-\widetilde{\varphi}_{21} = \frac{\varphi_{21}}{\varphi_{11}}, \qquad
-\widetilde{\varphi}_{31} = \frac{\varphi_{31}}{\varphi_{11}}, \qquad
-\widetilde{\varphi}_{41} = \frac{\varphi_{41}}{\varphi_{11}}
-\end{align}
-
-<!-- .................................................. -->
-<hr>
-
-Combine all individual design matrices of each relationship in ${\bf \widetilde{H}}$
-
-<!-- \begin{align} -->
-<!-- {\bf \widetilde{H}} = \begin{bmatrix} {\bf \widetilde{H}_1} & 0 & \dots & 0 \\ 0 & {\bf \widetilde{H}_2} & 0 & \vdots \\ \vdots & 0 & \ddots & 0 \\ 0 & \vdots & 0 & {\bf \widetilde{H}_r} \end{bmatrix} -->
-<!-- \end{align} -->
-
-\begin{align}
-{\bf \widetilde{H}} = \begin{bmatrix} \widetilde{H}_1 & 0 & \dots & 0 \\ 0 & \widetilde{H}_2 & 0 & \vdots \\ \vdots & 0 & \ddots & 0 \\ 0 & \vdots & 0 & \widetilde{H}_r \end{bmatrix}
-\end{align}
-
-```{r}
-
-library(MASS)
-H <- MASS::Null(c.norm)
-H <- diag(r) %x% H
-
-```
-
-Construct $\widehat{\Sigma}_{\widehat{\beta}\widehat{\beta}}$
-
-```{r}
-
-cov.beta.jus <- H %*% solve( t(H) %*% ( (t(alpha.norm) %*% solve(Sig.e) %*% alpha.norm) %x% S11 ) %*% H ) %*% t(H) / TT
+H[( 0+1): 6,(0+1):3] <- H1[,-1]
+H[( 6+1):12,(3+1):6] <- H2[,-2]
+H[(12+1):18,(6+1):9] <- H3[,-2]
 
 ```
 
 ```{r}
 
-se <- sqrt(diag(cov.beta.jus)[c((0*nr+r+1):(0*nr+r+r), (1*nr+r+1):(1*nr+r+r), (2*nr+r+1):(2*nr+r+r))])
+Sig.e <- b.s1.res$z$DELTA
+S11   <- b.s1.res$z$SKK
+
+TT <- nrow(b.s1.res$z$R0)
 
 ```
 
 ```{r}
 
-se.mat <- t(P) %*% rbind(diag(r), matrix(se, nrow = nr-r, ncol = r))
+cov.beta <- H %*% solve( t(H) %*% ( (t(alpha.norm) %*% solve(Sig.e) %*% alpha.norm) %x% S11 ) %*% H ) %*% t(H) / TT
 
 ```
 
-Test statistic $\widehat{\beta}_i$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
+Compare with standard error for $\widehat{\beta}$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
 
 ```{r}
 
-round(t(P) %*% beta.norm / se.mat, 2)
+matrix(round(c(beta.norm)/sqrt(diag(cov.beta)), 2), nrow = 6, ncol = 3)
+
+```
+
+Compute standard error for $\widehat{\alpha}$
+
+```{r, include=FALSE}
+
+cov.alpha.11 <- Sig.e[1,1] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[1,1] / TT
+cov.alpha.11 # (1)
+
+cov.alpha.12 <- Sig.e[1,1] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[2,2] / TT
+cov.alpha.12 # (2)
+
+cov.alpha.13 <- Sig.e[1,1] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[3,3] / TT
+cov.alpha.13 # (3)
+
+
+cov.alpha.21 <- Sig.e[2,2] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[1,1] / TT
+cov.alpha.21 # (4)
+
+cov.alpha.22 <- Sig.e[2,2] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[2,2] / TT
+cov.alpha.22 # (5)
+
+cov.alpha.23 <- Sig.e[2,2] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[3,3] / TT
+cov.alpha.23 # (6)
+
+
+cov.alpha.31 <- Sig.e[3,3] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[1,1] / TT
+cov.alpha.31 # (7)
+
+cov.alpha.32 <- Sig.e[3,3] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[2,2] / TT
+cov.alpha.32 # (8)
+
+cov.alpha.33 <- Sig.e[3,3] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[3,3] / TT
+cov.alpha.33 # (9)
+
+```
+
+```{r}
+
+cov.alpha <- Sig.e %x% solve(t(beta.norm) %*% S11 %*% beta.norm) / TT
+
+```
+
+Compare with standard error for $\widehat{\alpha}$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
+
+```{r}
+
+round(alpha.norm/matrix(sqrt(diag(cov.alpha)), nrow = 5, ncol = 3, byrow = TRUE), 2)
 
 ```
 
@@ -249,58 +184,387 @@ round(t(P) %*% beta.norm / se.mat, 2)
 <!-- .................................................. -->
 <hr>
 
-Construct standard errors based on *Equation 13.12* of @Johansen1995Likelihood
+### $\mathcal{H}_{S.2}$ in *Table 12.1* of @Juselius2006Cointegrated
+
+Construct the design matrices $H_i$ for $i=1,2,3$.
 
 ```{r}
 
-cov.beta <- ((diag(nr) - beta.norm %*% t(c.norm)) %*% solve(S11) %*% (diag(nr) - c.norm %*% t(beta.norm))) %x% solve(t(alpha.norm) %*% solve(Sig.e) %*% alpha.norm) / TT
+H1 <- matrix(c( 1, 0, 0, 0,
+               -1, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1), nrow = 6, ncol = 4, byrow = T)
 
-se.beta <- sqrt(diag(cov.beta))
-se.beta
+H2 <- matrix(c( 0, 0, 0, 0,
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0,-1, 0,
+                0, 0, 0, 1), nrow = 6, ncol = 4, byrow = T)
+
+H3 <- matrix(c( 0, 0, 0, 0,
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 1), nrow = 6, ncol = 4, byrow = T)
 
 ```
 
-$\widehat{\Sigma}_{\alpha}$
+Estimate the (just) identified cointegrating and adjustment coefficients.
 
 ```{r}
 
-cov.alpha.jus <- Sig.e[1,1] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[1,1] / TT
+z <- ca.jo.res.02
+z$P <- 6
 
-cov.alpha.jus
-sqrt(cov.alpha.jus)
+b.s2.res <- ca_jo_jus06_hr3_fun(z = z,
+                                H1 = H1, H2 = H2, H3 = H3,
+                                nor.id1 = 1, nor.id2 = 3, nor.id3 = 3)
 
-alpha.norm[1,1]/sqrt(cov.alpha.jus)
-round(alpha.norm[1,1], 3)/round(sqrt(cov.alpha.jus), 3)
+```
+
+Compare results for $\widehat{\beta}$ (see $\mathcal{H}_{S.2}$ in *Table 12.1* of @Juselius2006Cointegrated)
+
+```{r}
+
+beta.norm <- b.s2.res$V
+round(beta.norm, 2)
+
+```
+
+Compare results for $\widehat{\alpha}$ (see $\mathcal{H}_{S.2}$ in *Table 12.1* of @Juselius2006Cointegrated)
+
+```{r}
+
+alpha.norm <- b.s2.res$W
+round(alpha.norm, 2)
+
+```
+
+Compute standard error for $\widehat{\beta}$
+
+```{r}
+
+H <- matrix(rep(0, 3*6*3*3), nrow = 3*6, ncol = 3*4-3)
+
+H[( 0+1): 6,(0+1):3] <- H1[,-1]
+H[( 6+1):12,(3+1):6] <- H2[,-2]
+H[(12+1):18,(6+1):9] <- H3[,-2]
 
 ```
 
 ```{r}
 
-cov.alpha.jus <- Sig.e[4,4] %*% solve(t(beta.norm) %*% S11 %*% beta.norm)[1,1] / TT
+Sig.e <- b.s2.res$z$DELTA
+S11   <- b.s2.res$z$SKK
 
-cov.alpha.jus
-sqrt(cov.alpha.jus)
-
-alpha.norm[4,1]/sqrt(cov.alpha.jus)
-round(alpha.norm[4,1], 3)/round(sqrt(cov.alpha.jus), 3)
+TT <- nrow(b.s2.res$z$R0)
 
 ```
 
 ```{r}
 
-cov.alpha.jus <- Sig.e %x% solve(t(beta.norm) %*% S11 %*% beta.norm) / TT
+cov.beta <- H %*% solve( t(H) %*% ( (t(alpha.norm) %*% solve(Sig.e) %*% alpha.norm) %x% S11 ) %*% H ) %*% t(H) / TT
 
-cov.alpha.jus
-sqrt(diag(cov.alpha.jus))
+```
 
-xxx <- matrix(sqrt(diag(cov.alpha.jus)), nrow = 5, ncol = 3, byrow = TRUE)
+Compare with standard error for $\widehat{\beta}$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated)
 
-alpha.norm/xxx
+```{r}
+
+matrix(round(c(beta.norm)/sqrt(diag(cov.beta)), 2), nrow = 6, ncol = 3)
+
+```
+
+Compute standard error for $\widehat{\alpha}$
+
+```{r}
+
+cov.alpha <- Sig.e %x% solve(t(beta.norm) %*% S11 %*% beta.norm) / TT
+
+```
+
+Compare with standard error for $\widehat{\alpha}$ (see $\mathcal{H}_{S.1}$ in *Table 12.1* of @Juselius2006Cointegrated
+
+```{r}
+
+round(alpha.norm/matrix(sqrt(diag(cov.alpha)), nrow = 5, ncol = 3, byrow = TRUE), 2)
 
 ```
 
 
 
+<!-- .................................................. -->
+<hr>
 
+## Over-Identified structures
+
+### $\mathcal{H}_{S.3}$ in *Table 12.3* of @Juselius2006Cointegrated
+
+Construct the design matrices $H_i$ for $i=1,2,3$.
+
+```{r}
+
+H1 <- matrix(c( 1, 0,
+               -1, 0,
+                0, 0,
+                0, 0,
+                0, 0,
+                0, 1), nrow = 6, ncol = 2, byrow = TRUE)
+
+H2 <- matrix(c( 0, 0, 0,
+                1, 0, 0,
+                0, 1, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 1), nrow = 6, ncol = 3, byrow = TRUE)
+
+H3 <- matrix(c( 0,  0, 0,
+                0,  0, 0,
+                1,  0, 0,
+               -1, -1, 0,
+                0,  1, 0,
+                0,  0, 1), nrow = 6, ncol = 3, byrow = TRUE)
+
+```
+
+Estimate the (over) identified cointegrating and adjustment coefficients.
+
+```{r}
+
+z <- ca.jo.res.02
+z$P <- 6
+
+b.s3.res <- ca_jo_jus06_hr3_fun(z = z,
+                                H1 = H1, H2 = H2, H3 = H3,
+                                nor.id1 = 1, nor.id2 = 3, nor.id3 = 4, df = 4)
+
+```
+
+Compare results for $\widehat{\beta}$ (see $\mathcal{H}_{S.3}$ in *Table 12.3* of @Juselius2006Cointegrated)
+
+```{r}
+
+beta.norm <- b.s3.res$V
+round(beta.norm, 2)
+
+```
+
+Compare results for $\widehat{\alpha}$ (see $\mathcal{H}_{S.3}$ in *Table 12.3* of @Juselius2006Cointegrated)
+
+```{r}
+
+alpha.norm <- b.s3.res$W
+round(alpha.norm, 2)
+
+```
+
+Compare value for *LR-test* on *page 220* of @Juselius2006Cointegrated
+
+```{r}
+
+round(b.s3.res$teststat, 2)
+round(b.s3.res$pval, 2)
+
+```
+
+Compute standard error for $\widehat{\beta}$
+
+```{r, include=FALSE}
+
+# H3 <- matrix(c( 0,  0, 0,
+#                 0,  0, 0,
+#                -1,  0, 0,
+#                 0,  0, 0,
+#                 0, -1, 0,
+#                 0,  0, 1), nrow = 6, ncol = 3, byrow = TRUE)
+# 
+# H <- matrix(rep(0, 3*6*(2+3+3-2)), nrow = 3*6, ncol = 2+3+3-2)
+# 
+# H[( 0+1): 6,(0+1):1] <- H1[,-1]
+# H[( 6+1):12,(1+1):3] <- H2[,-2]
+# H[(12+1):18,(3+1):6] <- H3
+
+```
+
+
+```{r}
+
+H <- matrix(rep(0, 3*6*(2+3+3-4)), nrow = 3*6, ncol = 2+3+3-4)
+
+H[( 0+1): 6,(0+1):1] <- H1[,-1]
+H[( 6+1):12,(1+1):3] <- H2[,-2]
+H[(12+1):18,(3+1):4] <- H3[,-c(1,2)]
+
+```
+
+```{r}
+
+Sig.e <- b.s3.res$z$DELTA
+S11   <- b.s3.res$z$SKK
+
+TT <- nrow(b.s3.res$z$R0)
+
+```
+
+```{r}
+
+cov.beta <- H %*% solve( t(H) %*% ( (t(alpha.norm) %*% solve(Sig.e) %*% alpha.norm) %x% S11 ) %*% H ) %*% t(H) / TT
+
+```
+
+Compare with standard error for $\widehat{\beta}$ (see $\mathcal{H}_{S.3}$ in *Table 12.3* of @Juselius2006Cointegrated)
+
+```{r}
+
+matrix(round(c(beta.norm)/sqrt(diag(cov.beta)), 2), nrow = 6, ncol = 3)
+
+```
+
+Compute standard error for $\widehat{\alpha}$
+
+```{r}
+
+cov.alpha <- Sig.e %x% solve(t(beta.norm) %*% S11 %*% beta.norm) / TT
+
+```
+
+Compare with standard error for $\widehat{\alpha}$ (see $\mathcal{H}_{S.3}$ in *Table 12.3* of @Juselius2006Cointegrated
+
+```{r}
+
+round(alpha.norm/matrix(sqrt(diag(cov.alpha)), nrow = 5, ncol = 3, byrow = TRUE), 2)
+
+```
+
+
+
+<!-- .................................................. -->
+<hr>
+
+### $\mathcal{H}_{S.4}$ in *Table 12.3* of @Juselius2006Cointegrated
+
+Construct the design matrices $H_i$ for $i=1,2,3$.
+
+```{r}
+
+H1 <- matrix(c( 1, 0, 0,
+               -1, 0, 0,
+                0, 0, 0,
+                0, 1, 0,
+                0,-1, 0,
+                0, 0, 1), nrow = 6, ncol = 3, byrow = TRUE)
+
+H2 <- matrix(c( 0, 0, 0,
+                1, 0, 0,
+                0, 1, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 1), nrow = 6, ncol = 3, byrow = TRUE)
+
+H3 <- matrix(c( 0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                1, 0, 0,
+                0, 1, 0,
+                0, 0, 1), nrow = 6, ncol = 3, byrow = TRUE)
+
+```
+
+Estimate the (over) identified cointegrating and adjustment coefficients.
+
+```{r}
+
+z <- ca.jo.res.02
+z$P <- 6
+
+b.s4.res <- ca_jo_jus06_hr3_fun(z = z,
+                                H1 = H1, H2 = H2, H3 = H3,
+                                nor.id1 = 1, nor.id2 = 3, nor.id3 = 4,
+                                conv.val = 1e-10, max.iter = 100,
+                                df = 3)
+
+```
+
+Compare results for $\widehat{\beta}$ (see $\mathcal{H}_{S.4}$ in *Table 12.3* of @Juselius2006Cointegrated)
+
+```{r}
+
+beta.norm <- b.s4.res$V
+round(beta.norm, 2)
+
+```
+
+Compare results for $\widehat{\alpha}$ (see $\mathcal{H}_{S.4}$ in *Table 12.3* of @Juselius2006Cointegrated)
+
+```{r}
+
+alpha.norm <- b.s4.res$W
+round(alpha.norm, 2)
+
+```
+
+Compare value for *LR-test* on *page 221* of @Juselius2006Cointegrated
+
+```{r}
+
+round(Re(b.s4.res$teststat), 2)
+round(b.s4.res$pval, 2)
+
+```
+
+Compute standard error for $\widehat{\beta}$
+
+```{r}
+
+H <- matrix(rep(0, 3*6*(3*3-3)), nrow = 3*6, ncol = 3*3-3)
+
+H[( 0+1): 6,(0+1):2] <- H1[,-1]
+H[( 6+1):12,(2+1):4] <- H2[,-2]
+H[(12+1):18,(4+1):6] <- H3[,-1]
+
+```
+
+```{r}
+
+Sig.e <- b.s4.res$z$DELTA
+S11   <- b.s4.res$z$SKK
+
+TT <- nrow(b.s4.res$z$R0)
+
+```
+
+```{r}
+
+cov.beta <- H %*% solve( t(H) %*% ( (t(alpha.norm) %*% solve(Sig.e) %*% alpha.norm) %x% S11 ) %*% H ) %*% t(H) / TT
+
+```
+
+Compare with standard error for $\widehat{\beta}$ (see $\mathcal{H}_{S.4}$ in *Table 12.3* of @Juselius2006Cointegrated)
+
+```{r}
+
+matrix(round(c(beta.norm)/sqrt(diag(cov.beta)), 2), nrow = 6, ncol = 3)
+
+```
+
+Compute standard error for $\widehat{\alpha}$
+
+```{r}
+
+cov.alpha <- Sig.e %x% solve(t(beta.norm) %*% S11 %*% beta.norm) / TT
+
+```
+
+Compare with standard error for $\widehat{\alpha}$ (see $\mathcal{H}_{S.4}$ in *Table 12.3* of @Juselius2006Cointegrated
+
+```{r}
+
+round(alpha.norm/matrix(sqrt(diag(cov.alpha)), nrow = 5, ncol = 3, byrow = TRUE), 2)
+
+```
 
 
