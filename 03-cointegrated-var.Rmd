@@ -82,7 +82,6 @@ round(V.01, 2)
 
 Normalized weights $\widehat{\alpha}_i$ (see *Table 7.1* of @Juselius2006Cointegrated)
 
-
 ```{r}
 
 W.01 <- ca.jo.res.01$S0K %*% V.01 %*% solve(t(V.01) %*% ca.jo.res.01$SKK %*% V.01)
