@@ -27,7 +27,7 @@
 
 @Book{Johansen1995Likelihood,
   author    = {Johansen, S{\o}ren},
-  publisher = {OUP Oxford},
+  publisher = {Oxford University Press},
   title     = {Likelihood-based inference in cointegrated vector autoregressive models},
   year      = {1995},
 }

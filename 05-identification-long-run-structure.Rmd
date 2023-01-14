@@ -69,7 +69,7 @@ Estimate the (just) identified cointegrating and adjustment coefficients.
 ```{r}
 
 z <- ca.jo.res.02
-z$P <- 6
+# z$P <- 6
 
 b.s1.res <- ca_jo_jus06_hr3_fun(z = z,
                                 H1 = H1, H2 = H2, H3 = H3,
@@ -99,7 +99,7 @@ Compute standard error for $\widehat{\beta}$
 
 ```{r}
 
-H <- matrix(rep(0, 3*6*3*3), nrow = 3*6, ncol = 3*4-3)
+H <- matrix(rep(0, (3*6)*(3*4-3)), nrow = (3*6), ncol = (3*4-3))
 
 H[( 0+1): 6,(0+1):3] <- H1[,-1]
 H[( 6+1):12,(3+1):6] <- H2[,-2]
@@ -218,7 +218,6 @@ Estimate the (just) identified cointegrating and adjustment coefficients.
 ```{r}
 
 z <- ca.jo.res.02
-z$P <- 6
 
 b.s2.res <- ca_jo_jus06_hr3_fun(z = z,
                                 H1 = H1, H2 = H2, H3 = H3,
@@ -248,7 +247,7 @@ Compute standard error for $\widehat{\beta}$
 
 ```{r}
 
-H <- matrix(rep(0, 3*6*3*3), nrow = 3*6, ncol = 3*4-3)
+H <- matrix(rep(0, (3*6)*(3*4-3)), nrow = (3*6), ncol = (3*4-3))
 
 H[( 0+1): 6,(0+1):3] <- H1[,-1]
 H[( 6+1):12,(3+1):6] <- H2[,-2]
@@ -336,7 +335,6 @@ Estimate the (over) identified cointegrating and adjustment coefficients.
 ```{r}
 
 z <- ca.jo.res.02
-z$P <- 6
 
 b.s3.res <- ca_jo_jus06_hr3_fun(z = z,
                                 H1 = H1, H2 = H2, H3 = H3,
@@ -393,7 +391,7 @@ Compute standard error for $\widehat{\beta}$
 
 ```{r}
 
-H <- matrix(rep(0, 3*6*(2+3+3-4)), nrow = 3*6, ncol = 2+3+3-4)
+H <- matrix(rep(0, (3*6)*(2+3+3-4)), nrow = (3*6), ncol = (2+3+3-4))
 
 H[( 0+1): 6,(0+1):1] <- H1[,-1]
 H[( 6+1):12,(1+1):3] <- H2[,-2]
@@ -479,7 +477,6 @@ Estimate the (over) identified cointegrating and adjustment coefficients.
 ```{r}
 
 z <- ca.jo.res.02
-z$P <- 6
 
 b.s4.res <- ca_jo_jus06_hr3_fun(z = z,
                                 H1 = H1, H2 = H2, H3 = H3,
@@ -520,7 +517,7 @@ Compute standard error for $\widehat{\beta}$
 
 ```{r}
 
-H <- matrix(rep(0, 3*6*(3*3-3)), nrow = 3*6, ncol = 3*3-3)
+H <- matrix(rep(0, (3*6)*(3*3-3)), nrow = (3*6), ncol = (3*3-3))
 
 H[( 0+1): 6,(0+1):2] <- H1[,-1]
 H[( 6+1):12,(2+1):4] <- H2[,-2]
