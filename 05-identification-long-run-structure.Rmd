@@ -30,7 +30,11 @@ source("https://raw.githubusercontent.com/mmoessler/juselius-2006/main/R/ca_jo_j
 
 ```
 
-Note, the function `ca_jo_jus06_hr3_fun()` is based on the function `bh6lrtest()` from the library `urca` (see also @Pfaff2008Analysis) and extended such that individual restriction on can be imposed on all three cointegrating relationships. Thus, the switching algorithm proposed by @JohansenJuselius1992Testing is applied by iterating over all three cointegrating relationships. This allows us to estimate the just-identified and over-identified long-run structures of Chapter 12. Check the code on *GitHub* (`mmoessler/juselius-2006/main/R/ca_jo_jus06_fun.R`) for more information.
+Note, the function `ca_jo_jus06_hr3_fun()` is based on the function `bh6lrtest()` from the library `urca` (see also @Pfaff2008Analysis) and extended such that restriction can be imposed on each of the three cointegrating relationships individually.
+
+Thus, the switching algorithm proposed by @JohansenJuselius1992Testing is applied by iterating over all three cointegrating relationships. This allows us to estimate just-identified and over-identified long-run structures as in Chapter 12.
+
+Check the code on *GitHub* (`mmoessler/juselius-2006/main/R/ca_jo_jus06_fun.R`) for more information.
 
 <!-- .................................................. -->
 <hr>
