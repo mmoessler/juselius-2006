@@ -4,26 +4,26 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 5 Testing Restrictions on \(\beta\) | Replication of The Cointegrated VAR Model of Katarina Juselius</title>
-  <meta name="description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model by Katarina Juselius using R." />
+  <title>5 Testing Restrictions on \(\beta\) | Replication of The Cointegrated VAR Model</title>
+  <meta name="description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R." />
   <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 5 Testing Restrictions on \(\beta\) | Replication of The Cointegrated VAR Model of Katarina Juselius" />
+  <meta property="og:title" content="5 Testing Restrictions on \(\beta\) | Replication of The Cointegrated VAR Model" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model by Katarina Juselius using R." />
+  <meta property="og:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R." />
   <meta name="github-repo" content="mmoessler/juselius-2006" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 5 Testing Restrictions on \(\beta\) | Replication of The Cointegrated VAR Model of Katarina Juselius" />
+  <meta name="twitter:title" content="5 Testing Restrictions on \(\beta\) | Replication of The Cointegrated VAR Model" />
   
-  <meta name="twitter:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model by Katarina Juselius using R." />
+  <meta name="twitter:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R." />
   
 
 <meta name="author" content="Markus Mößler" />
 
 
-<meta name="date" content="2022-12-26" />
+<meta name="date" content="2023-01-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="the-cointegrated-var.html"/>
-<link rel="next" href="references.html"/>
+<link rel="next" href="identification-of-the-long-run-structure.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -91,7 +91,7 @@ div.csl-indent {
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">Replication of Juslius (2006)</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
@@ -101,12 +101,26 @@ div.csl-indent {
 <li class="chapter" data-level="2.2" data-path="data.html"><a href="data.html#dummy-variables"><i class="fa fa-check"></i><b>2.2</b> Dummy Variables</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="the-unrestricted-var.html"><a href="the-unrestricted-var.html"><i class="fa fa-check"></i><b>3</b> The Unrestricted VAR</a></li>
-<li class="chapter" data-level="4" data-path="the-cointegrated-var.html"><a href="the-cointegrated-var.html"><i class="fa fa-check"></i><b>4</b> The Cointegrated VAR</a></li>
+<li class="chapter" data-level="4" data-path="the-cointegrated-var.html"><a href="the-cointegrated-var.html"><i class="fa fa-check"></i><b>4</b> The Cointegrated VAR</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="the-cointegrated-var.html"><a href="the-cointegrated-var.html#estimation"><i class="fa fa-check"></i><b>4.1</b> Estimation</a></li>
+<li class="chapter" data-level="4.2" data-path="the-cointegrated-var.html"><a href="the-cointegrated-var.html#results"><i class="fa fa-check"></i><b>4.2</b> Results</a></li>
+</ul></li>
 <li class="chapter" data-level="5" data-path="testing-restrictions-on-beta.html"><a href="testing-restrictions-on-beta.html"><i class="fa fa-check"></i><b>5</b> Testing Restrictions on <span class="math inline">\(\beta\)</span></a></li>
+<li class="chapter" data-level="6" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html"><i class="fa fa-check"></i><b>6</b> Identification of the long-run structure</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#just-identified-long-run-structures"><i class="fa fa-check"></i><b>6.1</b> Just-identified long-run structures</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.1-in-table-12.1-of-juselius2006cointegrated"><i class="fa fa-check"></i><b>6.1.1</b> <span class="math inline">\(\mathcal{H}_{S.1}\)</span> in <em>Table 12.1</em> of <span class="citation"><span>Juselius</span> (<span>2006</span>)</span></a></li>
+<li class="chapter" data-level="6.1.2" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.2-in-table-12.1-of-juselius2006cointegrated"><i class="fa fa-check"></i><b>6.1.2</b> <span class="math inline">\(\mathcal{H}_{S.2}\)</span> in <em>Table 12.1</em> of <span class="citation"><span>Juselius</span> (<span>2006</span>)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#over-identified-structures"><i class="fa fa-check"></i><b>6.2</b> Over-Identified structures</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.3-in-table-12.3-of-juselius2006cointegrated"><i class="fa fa-check"></i><b>6.2.1</b> <span class="math inline">\(\mathcal{H}_{S.3}\)</span> in <em>Table 12.3</em> of <span class="citation"><span>Juselius</span> (<span>2006</span>)</span></a></li>
+<li class="chapter" data-level="6.2.2" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.4-in-table-12.3-of-juselius2006cointegrated"><i class="fa fa-check"></i><b>6.2.2</b> <span class="math inline">\(\mathcal{H}_{S.4}\)</span> in <em>Table 12.3</em> of <span class="citation"><span>Juselius</span> (<span>2006</span>)</span></a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
 </ul>
 
       </nav>
@@ -116,7 +130,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Replication of The Cointegrated VAR Model of Katarina Juselius</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Replication of The Cointegrated VAR Model</a>
           </h1>
         </div>
 
@@ -125,7 +139,7 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="testing-restrictions-on-beta" class="section level1 hasAnchor" number="5">
-<h1><span class="header-section-number">Chapter 5</span> Testing Restrictions on <span class="math inline">\(\beta\)</span><a href="testing-restrictions-on-beta.html#testing-restrictions-on-beta" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<h1><span class="header-section-number">5</span> Testing Restrictions on <span class="math inline">\(\beta\)</span><a href="testing-restrictions-on-beta.html#testing-restrictions-on-beta" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>This chapter contains the replication of the material of Chapter 10 of <span class="citation"><a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">Juselius</a> (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>.</p>
 
 </div>
@@ -141,7 +155,7 @@ Juselius, Katarina. 2006. <em>The Cointegrated VAR Model: Methodology and Applic
         </div>
       </div>
 <a href="the-cointegrated-var.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="identification-of-the-long-run-structure.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -157,8 +171,8 @@ gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
 "sharing": {
 "github": false,
-"facebook": true,
-"twitter": true,
+"facebook": false,
+"twitter": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
@@ -172,18 +186,18 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-restricted-beta.Rmd",
-"text": "Edit"
+"link": null,
+"text": null
 },
 "history": {
 "link": null,
 "text": null
 },
 "view": {
-"link": null,
+"link": "https://github.com/mmoessler/juselius-2006/blob/main/04-restricted-beta.Rmd",
 "text": null
 },
-"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"download": null,
 "search": {
 "engine": "fuse",
 "options": null

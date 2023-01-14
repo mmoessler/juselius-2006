@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 The Cointegrated VAR | Replication of The Cointegrated VAR Model</title>
+  <title>4 The Cointegrated VAR | Replication of The Cointegrated VAR Model</title>
   <meta name="description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R." />
   <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 The Cointegrated VAR | Replication of The Cointegrated VAR Model" />
+  <meta property="og:title" content="4 The Cointegrated VAR | Replication of The Cointegrated VAR Model" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R." />
   <meta name="github-repo" content="mmoessler/juselius-2006" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 The Cointegrated VAR | Replication of The Cointegrated VAR Model" />
+  <meta name="twitter:title" content="4 The Cointegrated VAR | Replication of The Cointegrated VAR Model" />
   
   <meta name="twitter:description" content="This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R." />
   
@@ -23,7 +23,7 @@
 <meta name="author" content="Markus Mößler" />
 
 
-<meta name="date" content="2022-12-30" />
+<meta name="date" content="2023-01-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -92,7 +92,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
+code span.bu { } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -105,7 +105,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.im { } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -171,6 +171,19 @@ div.csl-indent {
 <li class="chapter" data-level="4.2" data-path="the-cointegrated-var.html"><a href="the-cointegrated-var.html#results"><i class="fa fa-check"></i><b>4.2</b> Results</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="testing-restrictions-on-beta.html"><a href="testing-restrictions-on-beta.html"><i class="fa fa-check"></i><b>5</b> Testing Restrictions on <span class="math inline">\(\beta\)</span></a></li>
+<li class="chapter" data-level="6" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html"><i class="fa fa-check"></i><b>6</b> Identification of the long-run structure</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#just-identified-long-run-structures"><i class="fa fa-check"></i><b>6.1</b> Just-identified long-run structures</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.1-in-table-12.1-of-juselius2006cointegrated"><i class="fa fa-check"></i><b>6.1.1</b> <span class="math inline">\(\mathcal{H}_{S.1}\)</span> in <em>Table 12.1</em> of <span class="citation"><span>Juselius</span> (<span>2006</span>)</span></a></li>
+<li class="chapter" data-level="6.1.2" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.2-in-table-12.1-of-juselius2006cointegrated"><i class="fa fa-check"></i><b>6.1.2</b> <span class="math inline">\(\mathcal{H}_{S.2}\)</span> in <em>Table 12.1</em> of <span class="citation"><span>Juselius</span> (<span>2006</span>)</span></a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#over-identified-structures"><i class="fa fa-check"></i><b>6.2</b> Over-Identified structures</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.3-in-table-12.3-of-juselius2006cointegrated"><i class="fa fa-check"></i><b>6.2.1</b> <span class="math inline">\(\mathcal{H}_{S.3}\)</span> in <em>Table 12.3</em> of <span class="citation"><span>Juselius</span> (<span>2006</span>)</span></a></li>
+<li class="chapter" data-level="6.2.2" data-path="identification-of-the-long-run-structure.html"><a href="identification-of-the-long-run-structure.html#mathcalh_s.4-in-table-12.3-of-juselius2006cointegrated"><i class="fa fa-check"></i><b>6.2.2</b> <span class="math inline">\(\mathcal{H}_{S.4}\)</span> in <em>Table 12.3</em> of <span class="citation"><span>Juselius</span> (<span>2006</span>)</span></a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
@@ -190,8 +203,8 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="the-cointegrated-var" class="section level1 hasAnchor" number="4">
-<h1><span class="header-section-number">Chapter 4</span> The Cointegrated VAR<a href="the-cointegrated-var.html#the-cointegrated-var" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This chapter contains the replication of the material of Chapter 7 of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>.</p>
+<h1><span class="header-section-number">4</span> The Cointegrated VAR<a href="the-cointegrated-var.html#the-cointegrated-var" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>This chapter contains the replication of the material of Chapter 7 of <span class="citation"><a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">Juselius</a> (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>.</p>
 <div id="estimation" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> Estimation<a href="the-cointegrated-var.html#estimation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Load the function <code>ca_jo_jus06_fun()</code> from <em>GitHub</em>.</p>
@@ -205,14 +218,14 @@ div.csl-indent {
 <p>Estimation <em>without trend in the cointegrating relationship</em>, i.e., call <code>ca_jo_jus06_fun(()</code> with <code>ecdet = c("none")</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="the-cointegrated-var.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># without trend in cir, with shift dummy and with Ds831 in cir</span></span>
 <span id="cb3-2"><a href="the-cointegrated-var.html#cb3-2" aria-hidden="true" tabindex="-1"></a>ca.jo.res<span class="fl">.02</span> <span class="ot">&lt;-</span> <span class="fu">ca_jo_jus06_fun</span>(<span class="at">x =</span> data[,<span class="fu">c</span>(<span class="st">&quot;Lm3rC&quot;</span>,<span class="st">&quot;Lyr&quot;</span>,<span class="st">&quot;Dpy&quot;</span>,<span class="st">&quot;Rm&quot;</span>,<span class="st">&quot;Rb&quot;</span>)], <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;trace&quot;</span>), <span class="at">ecdet =</span> <span class="fu">c</span>(<span class="st">&quot;none&quot;</span>), <span class="at">K =</span> <span class="dv">2</span>, <span class="at">spec =</span> <span class="fu">c</span>(<span class="st">&quot;transitory&quot;</span>), <span class="at">data =</span> data)</span></code></pre></div>
-<p>Note, the function <code>ca_jo_jus06_fun()</code> is based on the function <code>ca.jo()</code> from the library <code>urca</code> (see also <span class="citation">Pfaff (<a href="#ref-Pfaff2008Analysis" role="doc-biblioref">2008</a>)</span>). The dummy variables are added inside the function, i.e., “hard”. Check the code on <em>GitHub</em> (<code>mmoessler/juselius-2006/main/R/ca_jo_jus06_fun.R</code>) for more information.</p>
+<p>Note, the function <code>ca_jo_jus06_fun()</code> is based on the function <code>ca.jo()</code> from the library <code>urca</code> (see also <span class="citation"><a href="#ref-Pfaff2008Analysis" role="doc-biblioref">Pfaff</a> (<a href="#ref-Pfaff2008Analysis" role="doc-biblioref">2008</a>)</span>). The dummy variables are added inside the function, i.e., “hard.” Check the code on <em>GitHub</em> (<code>mmoessler/juselius-2006/main/R/ca_jo_jus06_fun.R</code>) for more information.</p>
 </div>
 <div id="results" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Results<a href="the-cointegrated-var.html#results" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Lambdas <span class="math inline">\(\widehat{\lambda}_i\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<p>Lambdas <span class="math inline">\(\widehat{\lambda}_i\)</span> (see <em>Table 7.1</em> of <span class="citation"><a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">Juselius</a> (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="the-cointegrated-var.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">Re</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>lambda), <span class="dv">2</span>) </span></code></pre></div>
 <pre><code>## [1] 0.35 0.23 0.20 0.09 0.06 0.00 0.00</code></pre>
-<p>Non-nomralized eigenvectors <span class="math inline">\(\widehat{v}_i\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<p>Non-nomralized eigenvectors <span class="math inline">\(\widehat{v}_i\)</span> (see <em>Table 7.1</em> of <span class="citation"><a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">Juselius</a> (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="the-cointegrated-var.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">Re</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg), <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##          Lm3rC.l1  Lyr.l1  Dpy.l1  Rm.l1   Rb.l1  Ds831 trend.l1
 ## Lm3rC.l1    12.66  -18.44   -1.90   8.86    1.07  -6.66    -5.64
@@ -222,7 +235,7 @@ div.csl-indent {
 ## Rb.l1      110.00 -147.57 -310.13 211.44   60.12 -38.92    83.95
 ## Ds831       -0.35    4.50   -2.84  -0.07    1.00  -2.39    -0.93
 ## trend.l1     0.01    0.01   -0.02  -0.03   -0.10   0.05     0.04</code></pre>
-<p>Normalized eigenvectors <span class="math inline">\(\widehat{\beta}_i\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<p>Normalized eigenvectors <span class="math inline">\(\widehat{\beta}_i\)</span> (see <em>Table 7.1</em> of <span class="citation"><a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">Juselius</a> (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="the-cointegrated-var.html#cb8-1" aria-hidden="true" tabindex="-1"></a>V<span class="fl">.01</span> <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">1</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">3</span>,<span class="dv">1</span>]),</span>
 <span id="cb8-2"><a href="the-cointegrated-var.html#cb8-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">2</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">1</span>,<span class="dv">2</span>]),</span>
 <span id="cb8-3"><a href="the-cointegrated-var.html#cb8-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">cbind</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[,<span class="dv">3</span>]<span class="sc">/</span>ca.jo.res<span class="fl">.01</span><span class="sc">$</span>Vorg[<span class="dv">4</span>,<span class="dv">3</span>]),</span>
@@ -240,7 +253,7 @@ div.csl-indent {
 ## Rb.l1     0.57  8.00 -0.62 14.91  1.00  5.84 -14.88
 ## Ds831     0.00 -0.24 -0.01  0.00  0.02  0.36   0.16
 ## trend.l1  0.00  0.00  0.00  0.00  0.00 -0.01  -0.01</code></pre>
-<p>Normalized weights <span class="math inline">\(\widehat{\alpha}_i\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<p>Normalized weights <span class="math inline">\(\widehat{\alpha}_i\)</span> (see <em>Table 7.1</em> of <span class="citation"><a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">Juselius</a> (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="the-cointegrated-var.html#cb10-1" aria-hidden="true" tabindex="-1"></a>W<span class="fl">.01</span> <span class="ot">&lt;-</span> ca.jo.res<span class="fl">.01</span><span class="sc">$</span>S0K <span class="sc">%*%</span> V<span class="fl">.01</span> <span class="sc">%*%</span> <span class="fu">solve</span>(<span class="fu">t</span>(V<span class="fl">.01</span>) <span class="sc">%*%</span> ca.jo.res<span class="fl">.01</span><span class="sc">$</span>SKK <span class="sc">%*%</span> V<span class="fl">.01</span>)</span>
 <span id="cb10-2"><a href="the-cointegrated-var.html#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="the-cointegrated-var.html#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(W<span class="fl">.01</span>, <span class="dv">2</span>)</span></code></pre></div>
@@ -250,7 +263,7 @@ div.csl-indent {
 ## [3,] -0.71  0.04 -0.30  0.01  0.07    0    0
 ## [4,]  0.02  0.00 -0.10  0.00  0.01    0    0
 ## [5,]  0.02  0.00  0.16  0.00  0.01    0    0</code></pre>
-<p>Combined effects: <span class="math inline">\(\widehat{\Pi}\)</span> (see <em>Table 7.1</em> of <span class="citation">Juselius (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
+<p>Combined effects: <span class="math inline">\(\widehat{\Pi}\)</span> (see <em>Table 7.1</em> of <span class="citation"><a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">Juselius</a> (<a href="#ref-Juselius2006Cointegrated" role="doc-biblioref">2006</a>)</span>)</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="the-cointegrated-var.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(ca.jo.res<span class="fl">.01</span><span class="sc">$</span>PI, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##         Lm3rC.l1 Lyr.l1 Dpy.l1 Rm.l1 Rb.l1 Ds831 trend.l1
 ## Lm3rC.d    -0.26   0.13  -0.51  2.86 -3.39  0.03        0
