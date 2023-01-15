@@ -37,3 +37,10 @@ mathcalh_s.2-in-table-12.1-of-juselius2006cointegrated-1
 over-identified-structures-1
 mathcalh_s.3-in-table-12.3-of-juselius2006cointegrated-1
 mathcalh_s.4-in-table-12.3-of-juselius2006cointegrated-1
+same-restrictions-on-all-beta
+mathcalh_1
+mathcalh_2
+mathcalh_3
+mathcalh_4
+mathcalh_5
+mathcalh_6

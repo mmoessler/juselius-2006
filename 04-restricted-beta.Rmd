@@ -1,3 +1,225 @@
+---
+output: html_document
+---
+
 # Testing Restrictions on $\beta$
 
+```{r, include=FALSE}
+
+source("./R/01-data.R")
+source("./R/03-cointegrated-var.R")
+
+```
+
 This chapter contains the replication of the material of Chapter 10 of @Juselius2006Cointegrated.
+
+
+
+<!-- .................................................. -->
+<hr>
+
+## Same restrictions on all $\beta$
+
+Load the function `ca_jo_jus06_hr3_fun()` from *GitHub*. 
+
+```{r}
+
+source("https://raw.githubusercontent.com/mmoessler/juselius-2006/main/R/blrtest_fun.R")
+
+```
+
+Note, the function `blrtest_fun()` is based on the function `blrtest()` from the library `urca` (see also @Pfaff2008Analysis) and edited such that it is compatible with the results from the function `ca_jo_jus06_fun`.
+
+### $\mathcal{H}_1$
+
+$\mathcal{H}_1$: $\beta_{trend}=0$
+
+```{r}
+
+ca.jo.res.01$P <- 6
+z <- ca.jo.res.01
+r <- 3
+
+# exclusion of trend in cir
+H1 <- matrix(c(1,0,0,0,0,0,
+               0,1,0,0,0,0,
+               0,0,1,0,0,0,
+               0,0,0,1,0,0,
+               0,0,0,0,1,0,
+               0,0,0,0,0,1,
+               0,0,0,0,0,0), nrow=7, ncol=6, byrow=T)
+
+b.h01.res <- blrtest_fun(z = z, H = H1, r = r)
+
+# test results
+b.h01.res$teststat
+b.h01.res$pval
+
+# restricted cointegrating vectors
+round(b.h01.res$V[,1]/b.h01.res$V[3,1], 2)
+round(b.h01.res$V[,2]/b.h01.res$V[1,2], 2)
+round(b.h01.res$V[,3]/b.h01.res$V[4,3], 2)
+
+```
+
+### $\mathcal{H}_2$
+
+$\mathcal{H}_2$: $\beta_{D_S831}=0$
+
+```{r}
+
+ca.jo.res.01$P <- 6
+z <- ca.jo.res.01
+r <- 3
+
+# exclusion of shift in cir
+H2 <- matrix(c(1,0,0,0,0,0,
+               0,1,0,0,0,0,
+               0,0,1,0,0,0,
+               0,0,0,1,0,0,
+               0,0,0,0,1,0,
+               0,0,0,0,0,0,
+               0,0,0,0,0,1), nrow=7, ncol=6, byrow=T)
+
+b.h02.res <- blrtest_fun(z = z, H = H2, r = r)
+
+# test results
+b.h02.res$teststat
+b.h02.res$pval
+
+# restricted cointegrating vectors
+round(b.h02.res$V[,1]/b.h02.res$V[3,1], 2)
+round(b.h02.res$V[,2]/b.h02.res$V[1,2], 2)
+round(b.h02.res$V[,3]/b.h02.res$V[4,3], 2)
+
+```
+
+### $\mathcal{H}_3$
+
+$\mathcal{H}_3$: $\beta_{m^{r}}=-\beta_{y^{r}}$
+
+```{r}
+
+ca.jo.res.01$P <- 6
+z <- ca.jo.res.01
+r <- 3
+
+# exclusion of shift in cir
+H3 <- matrix(c( 1,0,0,0,0,0,
+               -1,0,0,0,0,0,
+                0,1,0,0,0,0,
+                0,0,1,0,0,0,
+                0,0,0,1,0,0,
+                0,0,0,0,1,0,
+                0,0,0,0,0,1), nrow=7, ncol=6, byrow=T)
+H3
+
+b.h03.res <- blrtest_fun(z = z, H = H3, r = r)
+
+b.h03.res$teststat
+b.h03.res$pval
+
+b.h03.res$V
+
+round(b.h03.res$V[,1]/b.h03.res$V[3,1], 3)
+round(b.h03.res$V[,2]/b.h03.res$V[1,2], 3)
+round(b.h03.res$V[,3]/b.h03.res$V[4,3], 3)
+
+```
+### $\mathcal{H}_4$
+
+$\mathcal{H}_4$: $\beta_{R_{m}}=-\beta_{R_{b}}$
+
+```{r}
+
+ca.jo.res.01$P <- 6
+z <- ca.jo.res.01
+r <- 3
+
+# exclusion of shift in cir
+H4 <- matrix(c( 1,0,0, 0,0,0,
+                0,1,0, 0,0,0,
+                0,0,1, 0,0,0,
+                0,0,0, 1,0,0,
+                0,0,0,-1,0,0,
+                0,0,0, 0,1,0,
+                0,0,0, 0,0,1), nrow=7, ncol=6, byrow=T)
+H4
+
+b.h04.res <- blrtest_fun(z = z, H = H4, r = r)
+
+b.h04.res$teststat
+b.h04.res$pval
+
+b.h04.res$V
+
+round(b.h04.res$V[,1]/b.h04.res$V[3,1], 3)
+round(b.h04.res$V[,2]/b.h04.res$V[1,2], 3)
+round(b.h04.res$V[,3]/b.h04.res$V[4,3], 3)
+
+```
+
+### $\mathcal{H}_5$
+
+$\mathcal{H}_5$: $\beta_{m^{r}}=-\beta_{y^{r}}$ and $\beta_{trend}=0$
+
+```{r}
+
+ca.jo.res.01$P <- 6
+z <- ca.jo.res.01
+r <- 3
+
+# exclusion of shift in cir
+H5 <- matrix(c( 1,0,0, 0,0,
+               -1,0,0, 0,0,
+                0,1,0, 0,0,
+                0,0,1, 0,0,
+                0,0,0, 1,0,
+                0,0,0, 0,1,
+                0,0,0, 0,0), nrow=7, ncol=5, byrow=T)
+H5
+
+b.h05.res <- blrtest_fun(z = z, H = H5, r = r)
+
+b.h05.res$teststat
+b.h05.res$pval
+
+b.h05.res$V
+
+round(b.h05.res$V[,1]/b.h05.res$V[3,1], 3)
+round(b.h05.res$V[,2]/b.h05.res$V[1,2], 3)
+round(b.h05.res$V[,3]/b.h05.res$V[4,3], 3)
+
+```
+
+### $\mathcal{H}_6$
+
+$\mathcal{H}_6$: $\beta_{m^{r}}=-\beta_{y^{r}}$, $\beta_{R_{m}}=-\beta_{R_{b}}$ and $\beta_{trend}=0$
+
+```{r}
+
+ca.jo.res.01$P <- 6
+z <- ca.jo.res.01
+r <- 3
+
+H6 <- matrix(c( 1,0, 0, 0,
+               -1,0, 0, 0,
+                0,1, 0, 0,
+                0,0, 1, 0,
+                0,0,-1, 0,
+                0,0, 0, 1,
+                0,0, 0, 0), nrow=7, ncol=4, byrow=T)
+H6
+
+b.h06.res <- blrtest_fun(z = z, H = H6, r = r)
+
+b.h06.res$teststat
+b.h06.res$pval
+
+b.h06.res$V
+
+round(b.h06.res$V[,1]/b.h06.res$V[3,1], 3)
+round(b.h06.res$V[,2]/b.h06.res$V[1,2], 3)
+round(b.h06.res$V[,3]/b.h06.res$V[4,3], 3)
+
+```
