@@ -14,6 +14,320 @@ source("./R/03-cointegrated-var.R")
 This chapter contains the replication of the material of Chapter 10 of @Juselius2006Cointegrated.
 
 
+<!-- .................................................. -->
+<hr>
+
+## Formulating hypotheses as restrictions on $\beta$
+
+<span style="font-size: 18pt">1) </span><span style="font-size: 18pt; text-decoration: underline">Long-run *money demand* relationship</span>:
+
+<span style="font-size: 16pt">1.1) Formulated in terms of *free parameters*</span>
+
+\begin{align*}
+{\bf \beta}_1 &= {\bf \text{H}}_1 {\bf \varphi}_1 \\
+&= \begin{bmatrix}
+\phantom{-}1 & \phantom{-}0 & \phantom{-}0 \\
+-1 & \phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}1 & \phantom{-}0 \\
+\phantom{-}0 & -1 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 & \phantom{-}1
+\end{bmatrix}
+\begin{bmatrix}
+\varphi_{11} \\
+\varphi_{12} \\
+\varphi_{13}
+\end{bmatrix}
+\end{align*}
+
+```{r}
+
+H1 <- matrix(c( 1 , 0, 0,
+               -1,  0, 0,
+                0 , 0, 0,
+                0,  1, 0,
+                0, -1, 0,
+                0,  0, 1), c(6, 3), byrow = TRUE)
+H1
+
+```
+
+<span>1.2) Formulated in terms of *restricted parameters*</span>
+
+\begin{align*}
+{\bf \text{R}}_1^{'} {\bf \beta}_1 &=  {\bf 0} \\
+\begin{bmatrix}
+\phantom{-}1 & \phantom{-}1 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 & \phantom{-}1 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}1 & \phantom{-}1 & \phantom{-}0
+\end{bmatrix}
+\begin{bmatrix}
+\beta_{11} \\
+\beta_{12} \\
+\beta_{13} \\
+\beta_{14} \\
+\beta_{15} \\
+\beta_{16}
+\end{bmatrix}
+&=
+\begin{bmatrix}
+0 \\
+0 \\
+0
+\end{bmatrix}
+\end{align*}
+
+```{r}
+
+R1 <- t(matrix(c( 1, 1, 0, 0, 0, 0,
+                  0, 0, 1, 0, 0, 0,
+                  0, 0, 0, 1, 1, 0), c(3, 6), byrow = TRUE))
+t(R1)
+
+```
+
+<span>1.3) Relationship between specification in terms of *free* and *restricted parameters*</span>
+
+* ${\bf \text{R}}_i = {\bf \text{H}}_{\perp,i}$, i.e., ${\bf \text{R}}_i^{'} {\bf \text{H}}_{i} = {\bf 0}$
+
+```{r}
+
+t(R1) %*% H1
+
+```
+
+* ${\bf \text{H}}_i$ lies in the left nullspace of ${\bf \text{R}}_i$, i.e.,  ${\bf \text{H}}_i = {\bf N} \left( {\bf \text{R}}_i^{'} \right)$
+
+```{r}
+
+H1x <- MASS::Null(R1)
+H1x
+
+H1
+
+```
+
+Note, the condition above identifies only the space on which ${\bf \text{H}}_i$ lies. The particular 
+
+```{r}
+
+round(cbind(H1x[,1,drop=FALSE] + H1x[,2,drop=FALSE], H1x[,1,drop=FALSE] - H1x[,2,drop=FALSE], H1x[,3,drop=FALSE]), 3)
+
+H1
+
+```
+
+```{r, include=FALSE}
+
+norm(H1x, type = "2")
+
+```
+
+
+
+<span style="font-size: 18pt">2) </span><span style="font-size: 18pt; text-decoration: underline">Long-run *aggregate demand* relationship</span>:
+
+<span style="font-size: 16pt">2.1) Formulated in terms of *free parameters*</span>
+
+\begin{align*}
+{\bf \beta}_2 &= {\bf \text{H}}_2 {\bf \varphi}_2 \\
+&= \begin{bmatrix}
+\phantom{-}0 & \phantom{-}0 \\
+\phantom{-}1 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}1 \\
+\phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & -1 \\
+\phantom{-}0 & \phantom{-}0
+\end{bmatrix}
+\begin{bmatrix}
+\varphi_{21} \\
+\varphi_{22}
+\end{bmatrix}
+\end{align*}
+
+```{r}
+
+H2 <- matrix(c( 0,  0,
+                1,  0,
+                0 , 1,
+                0,  0,
+                0, -1,
+                0,  0), c(6, 2), byrow = TRUE)
+H2
+
+```
+
+<span style="font-size: 16pt">2.2) Formulated in terms of *restricted parameters*</span>
+
+\begin{align*}
+{\bf \text{R}}_2^{'} {\bf \beta}_2 &=  {\bf 0} \\
+\begin{bmatrix}
+\phantom{-}1 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 & \phantom{-}1 & \phantom{-}0 & \phantom{-}1 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}1 & \phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}1
+\end{bmatrix}
+\begin{bmatrix}
+\beta_{21} \\
+\beta_{22} \\
+\beta_{23} \\
+\beta_{24} \\
+\beta_{25} \\
+\beta_{26}
+\end{bmatrix}
+&=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+0
+\end{bmatrix}
+\end{align*}
+
+```{r}
+
+R2 <- t(matrix(c( 1, 0, 0, 0, 0, 0,
+                  0, 0, 1, 0, 1, 0,
+                  0, 0, 0, 1, 0, 0,
+                  0, 0, 0, 0, 0, 1), c(4, 6), byrow = TRUE))
+t(R2)
+
+```
+
+<span style="font-size: 16pt">2.3) Relationship between specification in terms of *free* and *restricted parameters*</span>
+
+* ${\bf \text{R}}_i = {\bf \text{H}}_{\perp,i}$, i.e., ${\bf \text{R}}_i^{'} {\bf \text{H}}_{i} = {\bf 0}$
+
+```{r}
+
+t(R2) %*% H2
+
+```
+
+* ${\bf \text{H}}_i$ lies in the left nullspace of ${\bf \text{R}}_i$, i.e.,  ${\bf \text{H}}_i = {\bf N} \left( {\bf \text{R}}_i^{'} \right)$
+
+```{r}
+
+H2x <- MASS::Null(R2)
+H2x
+
+H2
+
+```
+
+Note, the condition above identifies only the space on which ${\bf \text{H}}_i$ lies. The particular 
+
+```{r}
+
+round(cbind((H2x[,1,drop=FALSE] + H2x[,2,drop=FALSE]) / (H2x[2,1] + H2x[2,2]), (H2x[,2,drop=FALSE] - H2x[,1,drop=FALSE])), 3)
+
+H2
+
+```
+
+
+
+<span style="font-size: 18pt">3) </span><span style="font-size: 18pt; text-decoration: underline">Long-run *term structure* relationship</span>:
+
+<span style="font-size: 16pt">3.1) Formulated in terms of *free parameters*</span>
+
+\begin{align*}
+{\bf \beta}_3 &= {\bf \text{H}}_3 {\bf \varphi}_3 \\
+&= \begin{bmatrix}
+\phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 \\
+\phantom{-}1 & \phantom{-}0 \\
+-1 & -1 \\
+\phantom{-}0 & \phantom{-}1
+\end{bmatrix}
+\begin{bmatrix}
+\varphi_{31} \\
+\varphi_{32}
+\end{bmatrix}
+\end{align*}
+
+```{r}
+
+H3 <- matrix(c( 0,  0,
+                0,  0,
+                0 , 0,
+                1,  0,
+               -1,  0,
+                0,  1), c(6, 2), byrow = TRUE)
+H3
+
+```
+
+<span style="font-size: 16pt">3.2) Formulated in terms of *restricted parameters*</span>
+
+\begin{align*}
+{\bf \text{R}}_2^{'} {\bf \beta}_2 &=  {\bf 0} \\
+\begin{bmatrix}
+\phantom{-}1 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}1 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 & \phantom{-}1 & \phantom{-}0 & \phantom{-}0 & \phantom{-}0 \\
+\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \phantom{-}1 & \phantom{-}1 & \phantom{-}0
+\end{bmatrix}
+\begin{bmatrix}
+\beta_{21} \\
+\beta_{22} \\
+\beta_{23} \\
+\beta_{24} \\
+\beta_{25} \\
+\beta_{26}
+\end{bmatrix}
+&=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+0
+\end{bmatrix}
+\end{align*}
+
+```{r}
+
+R3 <- t(matrix(c( 1, 0, 0, 0, 0, 0,
+                  0, 1, 0, 0, 0, 0,
+                  0, 0, 1, 0, 0, 0,
+                  0, 0, 0, 1, 1, 0), c(4, 6), byrow = TRUE))
+t(R3)
+
+```
+
+<span style="font-size: 16pt">3.3) Relationship between specification in terms of *free* and *restricted parameters*</span>
+
+* ${\bf \text{R}}_i = {\bf \text{H}}_{\perp,i}$, i.e., ${\bf \text{R}}_i^{'} {\bf \text{H}}_{i} = {\bf 0}$
+
+```{r}
+
+t(R3) %*% H3
+
+```
+
+* ${\bf \text{H}}_i$ lies in the left nullspace of ${\bf \text{R}}_i$, i.e.,  ${\bf \text{H}}_i = {\bf N} \left( {\bf \text{R}}_i^{'} \right)$
+
+```{r}
+
+H3x <- MASS::Null(R3)
+H3x
+
+H3
+
+```
+
+Note, the condition above identifies only the space on which ${\bf \text{H}}_i$ lies. The particular 
+
+```{r}
+
+round(cbind(H3x[,1,drop=FALSE] / H3x[4,1], H3x[,2,drop=FALSE]), 3)
+
+H3
+
+```
+
+
 
 <!-- .................................................. -->
 <hr>
