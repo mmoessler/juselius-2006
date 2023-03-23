@@ -1,9 +1,9 @@
 --- 
-title: "Replication of The Cointegrated VAR Model"
+title: "A Minimal Book Example (Bootstrap Style)"
 author: "Markus Mößler"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
-output: bookdown::gitbook
+output: bookdown::html_book
 documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
@@ -11,6 +11,10 @@ link-citations: yes
 github-repo: mmoessler/juselius-2006
 description: "This book contains the replication of the empirical analysis of The Cointegrated VAR Model of Katarina Juselius using R."
 ---
+
+# Introduction
+
+This book contains the replication of the empirical analysis of The Cointegrated VAR Model of @Juselius2006Cointegrated using R.
 
 <!-- # Prerequisites -->
 
@@ -35,6 +39,4 @@ knitr::write_bib(c(
 ), 'packages.bib')
 ```
 
-# Introduction
 
-This book contains the replication of the empirical analysis of The Cointegrated VAR Model of @Juselius2006Cointegrated using R.

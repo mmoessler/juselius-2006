@@ -1,7 +1,3 @@
----
-output: html_document
----
-
 # Testing Restrictions on $\beta$
 
 ```{r, include=FALSE}
